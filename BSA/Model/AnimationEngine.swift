@@ -11,26 +11,27 @@ import pop
 
 class AnimationEngine {
     
-    private var layoutConstraints: [NSLayoutConstraint] = []
+    // Properties:
+    private var layoutConstraints: [NSLayoutConstraint] = [] // used to hold set of layout constraints to be animated
     
+    // Custom initialiser
     init(layoutConstraints: [NSLayoutConstraint]) {
         self.layoutConstraints = layoutConstraints
     }
     
-    /// define coordinates of centre-screen, off-screen-right and off-screen-left positions for display objects
-    
+    /// define coordinates of centre-screen, off-screen-right and off-screen-left positions for the costrained view
     var screenCenterPosition: CGPoint {
-        return CGPoint(x: 0.0, y: UIScreen.main.bounds.midY)
-    }
-    
+            return CGPoint(x: 0.0, y: UIScreen.main.bounds.midY)
+        }
     var offScreenRightPosition: CGPoint {
-        return CGPoint(x: UIScreen.main.bounds.width * 1.5, y: UIScreen.main.bounds.midY)
-    }
-    
+            return CGPoint(x: UIScreen.main.bounds.width * 1.5, y: UIScreen.main.bounds.midY)
+        }
     var offScreenLeftPosition: CGPoint {
-        return CGPoint(x: -UIScreen.main.bounds.width * 1.5, y: UIScreen.main.bounds.midY)
-    }
+            return CGPoint(x: -UIScreen.main.bounds.width * 1.5, y: UIScreen.main.bounds.midY)
+        }
     
+    
+    // Places position of the constrained view to off-screen-left
     func setOffScreenLeft() {
         var index = 0
         for _ in self.layoutConstraints {
@@ -39,6 +40,7 @@ class AnimationEngine {
         }
     }
     
+    // Places position of the constrained view to off-screen-right
     func setOffScreenRight() {
         var index = 0
         for _ in self.layoutConstraints {
@@ -47,6 +49,7 @@ class AnimationEngine {
         }
     }
     
+    // Animates constrained the view to off-screen-left position
     func animateOffScreenLeft() {
         var index = 0
         for _ in self.layoutConstraints {
@@ -64,6 +67,7 @@ class AnimationEngine {
         }
     }
     
+    // Animates constrained the view to off-screen-right position
     func animateOffScreenRight() {
         var index = 0
         for _ in self.layoutConstraints {
@@ -81,6 +85,7 @@ class AnimationEngine {
         }
     }
     
+    // Animates constrained view to on-screen centre position from off-screen-left position
     func animateOnFromScreenLeft(){
         var index = 0
         for _ in self.layoutConstraints {
@@ -101,6 +106,7 @@ class AnimationEngine {
         }
     }
     
+    // Animates constrained view to on-screen centre position from off-screen-right position
     func animateOnFromScreenRight() {
         var index = 0
         for _ in self.layoutConstraints {
@@ -121,6 +127,7 @@ class AnimationEngine {
         }
     }
     
+    // Animates a given constraint's 'constant' value to another given value
     static func animate(constraint: NSLayoutConstraint, by amount: CGFloat){
         
         // set up animation

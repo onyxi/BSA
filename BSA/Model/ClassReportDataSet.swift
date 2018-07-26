@@ -10,16 +10,16 @@ import Foundation
 
 class ClassReportDataSet {
     
+    // Properties:
     var entityName: String!
     var timePeriod: TimePeriod!
-    
     var averageReds: Double!
     var averageAmbers: Double!
     var averageGreens: Double!
-    
     var averageIntensity: Float!
     var likelihoodOfIncident: Double!
     
+    // Custom initialiser
     init(entityName: String, timePeriod: TimePeriod, aveReds: Double, aveAmbers: Double, aveGreens: Double, aveIntensity: Float, incidentLikelihood: Double) {
         self.entityName = entityName
         self.timePeriod = timePeriod

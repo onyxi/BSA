@@ -8,16 +8,43 @@
 
 import Foundation
 
-struct SchoolClass {
+struct SchoolClass: CustomStringConvertible, Equatable {
     
+    // Properties:
     var id: String!
-    var name: String!
-    var students: [Student]!
+//    var classNumber: Int!
+    var className: String!
+//    var classStudents: [Int]?
     
-    init (id: String, name: String, students: [Student]) {
+    // Custom initialiser
+    init (id: String, className: String) {
+//          classNumber: Int, className: String) {
+//          classStudents: [Int]?) {
+//          classNumber: Int, className: String, classStudents: [Int]?) {
         self.id = id
-        self.name = name
-        self.students = students
+//        self.classNumber = classNumber
+        self.className = className
+//        self.classStudents = classStudents
+    }
+    
+    
+    // Conform to 'Equatable' protocol by comparing instances on their unique 'id' attribute
+    static func == (lhs: SchoolClass, rhs: SchoolClass) -> Bool {
+//        return lhs.classNumber == rhs.classNumber
+        return lhs.id == rhs.id
+    }
+    
+    // Provides custom representation for printing of instances - in more readable format
+    var description: String {
+        let idString = String(describing: id)
+//        let classNumberString = String(describing: classNumber!)
+        let classNameString = String(describing: className!)
+//        let classStudentsString = String(describing: classStudents)
+        
+//        return "School Class object:\n Database_id: \(idString)\n Class_Number: \(classNumberString)\n Class_Name: \(classNameString)\n Class_Students: \(classStudentsString)"
+//        return "School Class object:\n Database_id: \(idString)\n Class_Name: \(classNameString)\n Class_Students: \(classStudentsString)"
+        return "School Class object:\n Database_id: \(idString)\n Class_Name: \(classNameString)"
+//        Class_Number: \(classNumberString)\n Class_Name: \(classNameString)"
     }
     
 }
