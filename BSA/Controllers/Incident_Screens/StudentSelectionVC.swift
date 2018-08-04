@@ -13,7 +13,8 @@ protocol StudentSelectionDelegate {
     func setStudent(to selection: Student)
 }
 
-class StudentSelectionVC: UIViewController, UITableViewDelegate, UITableViewDataSource, StudentFetchingDelegate {
+class StudentSelectionVC: UIViewController, UITableViewDelegate, UITableViewDataSource, SchoolClassFetchingDelegate, StudentFetchingDelegate {
+    
     
     // UI handles:
     @IBOutlet weak var tableView: UITableView!
@@ -43,9 +44,12 @@ class StudentSelectionVC: UIViewController, UITableViewDelegate, UITableViewData
         
             // retrieve Student objects from storage and reload table
         dataService = DataService()
+        dataService.schoolClassFetchingDelegate = self
         dataService.studentFetchingDelegate = self
         
-        if UserDefaults.standard.integer(forKey: Constants.FIREBASE_USER_ACCOUNTS_NUMBER) == 0 {
+       
+        
+        if UserDefaults.standard.string(forKey: Constants.LOGGED_IN_ACCOUNT_NAME) == "Admin" {
             dataService.getAllStudents()
         } else {
             dataService.getSchoolClass(withId: UserDefaults.standard.string(forKey: Constants.LOGGED_IN_ACCOUNT_CLASS_ID)!)
@@ -68,6 +72,10 @@ class StudentSelectionVC: UIViewController, UITableViewDelegate, UITableViewData
     }
     
     
+    func finishedFetching(schoolClasses: [SchoolClass]) {
+        dataService.getStudents(for: schoolClasses[0])
+    }
+    
     func finishedFetching(students: [Student]) {
         allStudents = students
         
@@ -85,7 +93,6 @@ class StudentSelectionVC: UIViewController, UITableViewDelegate, UITableViewData
     func finishedFetching(classesWithStudents: [(schoolClass: SchoolClass, students: [Student])]) {
         // no implementation needed in this class
     }
-    
     
     
     

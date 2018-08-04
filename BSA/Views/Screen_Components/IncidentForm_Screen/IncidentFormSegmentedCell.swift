@@ -40,11 +40,11 @@ class IncidentFormSegmentedCell: UITableViewCell {
         var restraint: String!
         switch sender.selectedSegmentIndex {
         case 1:
-            restraint = Constants.RESTRAINT[0]
+            restraint = Constants.RESTRAINTS.nonRPI
         case 2:
-            restraint = Constants.RESTRAINT[1]
+            restraint = Constants.RESTRAINTS.unplannedRPI
         default:
-            restraint = Constants.RESTRAINT[2]
+            restraint = Constants.RESTRAINTS.RPI
         }
         restraintSelectionDelegate.setRestraint(to: restraint)
         cellValue = sender.selectedSegmentIndex

@@ -9,7 +9,7 @@
 import UIKit
 
 protocol RAGSelectionDelegate {
-    func didSelectRAG(selection: RAGStatus, forCellWith: Int)
+    func didSelectRAG(selection: String, forCellWith: Int)
 }
 
 class RAGAssessmentCell: UITableViewCell {
@@ -28,44 +28,45 @@ class RAGAssessmentCell: UITableViewCell {
     
     var rAGSelectionDelegate: RAGSelectionDelegate!
     
-    var selectionIndicatorPosition: RAGStatus = .green
+    var selectionIndicatorPosition: String = "green"
     
     func refreshSelectionIndicator() {
         switch selectionIndicatorPosition {
-        case .green:
+        case "green":
             self.selectionIndicator.layer.backgroundColor = Constants.GREEN.cgColor
             self.selectionIndicatorTrailingConstraint.constant = 15
             self.greenButton.setTitleColor(.white, for: .normal)
             self.amberButton.setTitleColor(Constants.GRAY, for: .normal)
             self.redButton.setTitleColor(Constants.GRAY, for: .normal)
             self.naButton.setTitleColor(Constants.GRAY, for: .normal)
-        case .amber:
+        case "amber":
             self.selectionIndicator.layer.backgroundColor = Constants.AMBER.cgColor
             self.selectionIndicatorTrailingConstraint.constant = 130
             self.greenButton.setTitleColor(Constants.GRAY, for: .normal)
             self.amberButton.setTitleColor(.white, for: .normal)
             self.redButton.setTitleColor(Constants.GRAY, for: .normal)
             self.naButton.setTitleColor(Constants.GRAY, for: .normal)
-        case .red:
+        case "red":
             self.selectionIndicator.layer.backgroundColor = Constants.RED.cgColor
             self.selectionIndicatorTrailingConstraint.constant = 245
             self.greenButton.setTitleColor(Constants.GRAY, for: .normal)
             self.amberButton.setTitleColor(Constants.GRAY, for: .normal)
             self.redButton.setTitleColor(.white, for: .normal)
             self.naButton.setTitleColor(Constants.GRAY, for: .normal)
-        case .na:
+        case "na":
             self.selectionIndicator.layer.backgroundColor = Constants.GRAY_DARK.cgColor
             self.selectionIndicatorTrailingConstraint.constant = 360
             self.greenButton.setTitleColor(Constants.GRAY, for: .normal)
             self.amberButton.setTitleColor(Constants.GRAY, for: .normal)
             self.redButton.setTitleColor(Constants.GRAY, for: .normal)
             self.naButton.setTitleColor(.white, for: .normal)
-        case .none:
+        case "none":
             self.selectionIndicator.layer.backgroundColor = UIColor.clear.cgColor
             self.greenButton.setTitleColor(Constants.GRAY, for: .normal)
             self.amberButton.setTitleColor(Constants.GRAY, for: .normal)
             self.redButton.setTitleColor(Constants.GRAY, for: .normal)
             self.naButton.setTitleColor(Constants.GRAY, for: .normal)
+        default: break
         }
     }
     
@@ -79,8 +80,8 @@ class RAGAssessmentCell: UITableViewCell {
         self.naButton.setTitleColor(Constants.GRAY, for: .normal)
         self.redButton.setTitleColor(Constants.GRAY, for: .normal)
         self.amberButton.setTitleColor(Constants.GRAY, for: .normal)
-        selectionIndicatorPosition = .green
-        rAGSelectionDelegate.didSelectRAG(selection: .green, forCellWith: self.tag)
+        selectionIndicatorPosition = "green"
+        rAGSelectionDelegate.didSelectRAG(selection: "green", forCellWith: self.tag)
     }
 
     
@@ -94,8 +95,8 @@ class RAGAssessmentCell: UITableViewCell {
         self.naButton.setTitleColor(Constants.GRAY, for: .normal)
         self.redButton.setTitleColor(Constants.GRAY, for: .normal)
         self.greenButton.setTitleColor(Constants.GRAY, for: .normal)
-        selectionIndicatorPosition = .amber
-        rAGSelectionDelegate.didSelectRAG(selection: .amber, forCellWith: self.tag)
+        selectionIndicatorPosition = "amber"
+        rAGSelectionDelegate.didSelectRAG(selection: "amber", forCellWith: self.tag)
     }
 
     
@@ -110,8 +111,8 @@ class RAGAssessmentCell: UITableViewCell {
         self.naButton.setTitleColor(Constants.GRAY, for: .normal)
         self.amberButton.setTitleColor(Constants.GRAY, for: .normal)
         self.greenButton.setTitleColor(Constants.GRAY, for: .normal)
-        selectionIndicatorPosition = .red
-        rAGSelectionDelegate.didSelectRAG(selection: .red, forCellWith: self.tag)
+        selectionIndicatorPosition = "red"
+        rAGSelectionDelegate.didSelectRAG(selection: "red", forCellWith: self.tag)
     }
     
     
@@ -125,8 +126,8 @@ class RAGAssessmentCell: UITableViewCell {
         self.redButton.setTitleColor(Constants.GRAY, for: .normal)
         self.amberButton.setTitleColor(Constants.GRAY, for: .normal)
         self.greenButton.setTitleColor(Constants.GRAY, for: .normal)
-        selectionIndicatorPosition = .na
-        rAGSelectionDelegate.didSelectRAG(selection: .na, forCellWith: self.tag)
+        selectionIndicatorPosition = "na"
+        rAGSelectionDelegate.didSelectRAG(selection: "na", forCellWith: self.tag)
     }
     
     

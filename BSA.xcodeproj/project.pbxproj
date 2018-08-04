@@ -50,7 +50,7 @@
 		C194E13320EE3C8900414F41 /* PeriodButtonStatusLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C194E13220EE3C8900414F41 /* PeriodButtonStatusLabel.swift */; };
 		C194E13520EE77D000414F41 /* UserAccount.swift in Sources */ = {isa = PBXBuildFile; fileRef = C194E13420EE77D000414F41 /* UserAccount.swift */; };
 		C19AA0A921077971007E63E8 /* DataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19AA0A821077971007E63E8 /* DataService.swift */; };
-		C19AA0AB2107CBDC007E63E8 /* Analysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19AA0AA2107CBDC007E63E8 /* Analysis.swift */; };
+		C19AA0AB2107CBDC007E63E8 /* ClassReportAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19AA0AA2107CBDC007E63E8 /* ClassReportAnalysis.swift */; };
 		C19D526C20D27959006DB043 /* RAGVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19D526B20D27959006DB043 /* RAGVC.swift */; };
 		C19D526F20D28225006DB043 /* SubtitleBarArrowLeft.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19D526E20D28225006DB043 /* SubtitleBarArrowLeft.swift */; };
 		C19D527120D28245006DB043 /* SubtitleBarArrowRight.swift in Sources */ = {isa = PBXBuildFile; fileRef = C19D527020D28245006DB043 /* SubtitleBarArrowRight.swift */; };
@@ -111,6 +111,7 @@
 		C1D0882020E527CA0047D2E4 /* NotesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D0881F20E527CA0047D2E4 /* NotesVC.swift */; };
 		C1D0882320E535420047D2E4 /* IntensityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D0882220E535420047D2E4 /* IntensityIndicator.swift */; };
 		C1D0882520E53F490047D2E4 /* IndicatorArrow.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D0882420E53F490047D2E4 /* IndicatorArrow.swift */; };
+		C1EA1399210B126C0041C154 /* AdminReportAnalysis.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1EA1398210B126C0041C154 /* AdminReportAnalysis.swift */; };
 		C1EF33F820D94A3B009D07B9 /* SaveChangesButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1EF33F720D94A3B009D07B9 /* SaveChangesButton.swift */; };
 		C1EF33FB20D94BB5009D07B9 /* RAGAssessmentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1EF33FA20D94BB5009D07B9 /* RAGAssessmentCell.swift */; };
 		C1EF33FD20D94D06009D07B9 /* Student.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1EF33FC20D94D06009D07B9 /* Student.swift */; };
@@ -161,7 +162,7 @@
 		C194E13220EE3C8900414F41 /* PeriodButtonStatusLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodButtonStatusLabel.swift; sourceTree = "<group>"; };
 		C194E13420EE77D000414F41 /* UserAccount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAccount.swift; sourceTree = "<group>"; };
 		C19AA0A821077971007E63E8 /* DataService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataService.swift; sourceTree = "<group>"; };
-		C19AA0AA2107CBDC007E63E8 /* Analysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Analysis.swift; sourceTree = "<group>"; };
+		C19AA0AA2107CBDC007E63E8 /* ClassReportAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassReportAnalysis.swift; sourceTree = "<group>"; };
 		C19D526B20D27959006DB043 /* RAGVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGVC.swift; sourceTree = "<group>"; };
 		C19D526E20D28225006DB043 /* SubtitleBarArrowLeft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleBarArrowLeft.swift; sourceTree = "<group>"; };
 		C19D527020D28245006DB043 /* SubtitleBarArrowRight.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubtitleBarArrowRight.swift; sourceTree = "<group>"; };
@@ -224,6 +225,7 @@
 		C1D0881F20E527CA0047D2E4 /* NotesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesVC.swift; sourceTree = "<group>"; };
 		C1D0882220E535420047D2E4 /* IntensityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntensityIndicator.swift; sourceTree = "<group>"; };
 		C1D0882420E53F490047D2E4 /* IndicatorArrow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndicatorArrow.swift; sourceTree = "<group>"; };
+		C1EA1398210B126C0041C154 /* AdminReportAnalysis.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminReportAnalysis.swift; sourceTree = "<group>"; };
 		C1EF33F720D94A3B009D07B9 /* SaveChangesButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveChangesButton.swift; sourceTree = "<group>"; };
 		C1EF33FA20D94BB5009D07B9 /* RAGAssessmentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGAssessmentCell.swift; sourceTree = "<group>"; };
 		C1EF33FC20D94D06009D07B9 /* Student.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Student.swift; sourceTree = "<group>"; };
@@ -328,7 +330,6 @@
 				C1B3854B20F8B77300E332D0 /* EntityDetails_Screens */,
 				C1B3854C20F8B78D00E332D0 /* EntityClassSelection_Screen */,
 				C156E5A120FC985B00DDB698 /* AdminReports_Screen */,
-				C1BB5DD520D17545004E16C8 /* Controllers */,
 			);
 			path = Screen_Components;
 			sourceTree = "<group>";
@@ -519,6 +520,7 @@
 			children = (
 				C1BB5DD920D17546004E16C8 /* Model */,
 				C1374A8620D1A1BA0089E1F4 /* Views */,
+				C1BB5DD520D17545004E16C8 /* Controllers */,
 			);
 			path = BSA;
 			sourceTree = "<group>";
@@ -564,7 +566,8 @@
 				C1BB5DDA20D17546004E16C8 /* AnimationEngine.swift */,
 				C1374A8B20D1A53D0089E1F4 /* Data.swift */,
 				C19AA0A821077971007E63E8 /* DataService.swift */,
-				C19AA0AA2107CBDC007E63E8 /* Analysis.swift */,
+				C19AA0AA2107CBDC007E63E8 /* ClassReportAnalysis.swift */,
+				C1EA1398210B126C0041C154 /* AdminReportAnalysis.swift */,
 				C17751B12104F5220061FF5E /* DBSeed.swift */,
 				C194E13420EE77D000414F41 /* UserAccount.swift */,
 				C1C9401220EA3ED900962E41 /* SchoolClass.swift */,
@@ -787,13 +790,14 @@
 				C1BB5DD120D17539004E16C8 /* MaterialButton.swift in Sources */,
 				C1D0881C20E4D7E10047D2E4 /* Purpose.swift in Sources */,
 				C1A4896E2100F37D0099B67D /* LineLegendView.swift in Sources */,
+				C1EA1399210B126C0041C154 /* AdminReportAnalysis.swift in Sources */,
 				C10FCFFB20FF51F900A9F9D5 /* AdminReportsDataVC.swift in Sources */,
 				C19D527120D28245006DB043 /* SubtitleBarArrowRight.swift in Sources */,
 				C10FCFFF20FFA61300A9F9D5 /* RAGsAndIncidentsWeekViewReportContainerVC.swift in Sources */,
 				C1AA4DED20DA650F0033E9E9 /* IncidentFormVC.swift in Sources */,
 				C1BB5DDE20D17546004E16C8 /* AnimationEngine.swift in Sources */,
 				C112DB3620E8D24A009AC85B /* Incident.swift in Sources */,
-				C19AA0AB2107CBDC007E63E8 /* Analysis.swift in Sources */,
+				C19AA0AB2107CBDC007E63E8 /* ClassReportAnalysis.swift in Sources */,
 				C119041E20F7E216001FD166 /* PeopleStudentCell.swift in Sources */,
 				C1CF0AD021038996001E5744 /* AdminReportDataSet.swift in Sources */,
 				C1B3854E20F8B7E800E332D0 /* EntityDetailsTextFieldCell.swift in Sources */,
@@ -972,8 +976,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NBHGMCQ443;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SRCROOT)",
 					"$(inherited)/**",
+					"$(SRCROOT)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Charts\"/**",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/pop\"/**",
 				);
@@ -999,8 +1003,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = NBHGMCQ443;
 				FRAMEWORK_SEARCH_PATHS = (
-					"$(SRCROOT)",
 					"$(inherited)/**",
+					"$(SRCROOT)",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/Charts\"/**",
 					"\"${PODS_CONFIGURATION_BUILD_DIR}/pop\"/**",
 				);

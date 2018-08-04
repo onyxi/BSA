@@ -19,9 +19,9 @@ class RAGAssessmentsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     // Properties:
     var dateOffset: Int!
-    var selectedPeriod: SchoolDayPeriod!
+    var selectedPeriod: String!
     var students: [Student]!
-    var rAGSelections = [RAGStatus]()
+    var rAGSelections = [String]()
     var periodRAGAssessments: [RAGAssessment]?
     
     
@@ -49,7 +49,7 @@ class RAGAssessmentsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
 //        students = Data.getAllStudents()
         for student in students {
             
-            var assessment: RAGStatus = .none
+            var assessment: String = "none"
             
             if periodRAGAssessments != nil {
                 for rag in periodRAGAssessments! {
@@ -71,7 +71,17 @@ class RAGAssessmentsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     @IBAction func saveChangesButtonPressed(_ sender: Any) {
 
-            // check to make sure all students have been assessed
+        // check to make sure all students have been assessed
+        guard !rAGSelections.contains("none") else {
+            
+                // if not, show alert to inform all students must be assessed
+            let alert = UIAlertController(title: "Assessment Incomplete", message: "Please assess all students before saving changes", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                alert.dismiss(animated: true, completion: nil)
+            }))
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
         
             // pack RAG Assessments for saving
         var completedRAGAssessments = [RAGAssessment]()
@@ -84,6 +94,8 @@ class RAGAssessmentsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
                 assessment: rAGSelections[i])
             completedRAGAssessments.append(rag)
         }
+        
+       
 
         // save rag assessments here!!!
         
@@ -171,7 +183,7 @@ class RAGAssessmentsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     
     // Sets the RAG assessment selection for a given student
-    func didSelectRAG(selection: RAGStatus, forCellWith tag: Int) {
+    func didSelectRAG(selection: String, forCellWith tag: Int) {
         rAGSelections[tag - 1] = selection
     }
     

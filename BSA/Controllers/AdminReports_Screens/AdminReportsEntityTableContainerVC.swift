@@ -63,7 +63,11 @@ class AdminReportsEntityTableContainerVC: UIViewController, UITableViewDelegate,
     
     // Sets number of rows in the table of SchoolClasses and Students
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return allEntities.count + 1
+        if allEntities.isEmpty {
+            return 0
+        } else {
+            return allEntities.count + 1
+        }
     }
     
     // Configures cells in the table of SchoolClasses and Students

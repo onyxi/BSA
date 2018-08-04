@@ -1,226 +1,70 @@
 //
-//  Analysis.swift
+//  AdminReportAnalysis.swift
 //  BSA
 //
-//  Created by Pete Holdsworth on 24/07/2018.
+//  Created by Pete Holdsworth on 27/07/2018.
 //  Copyright © 2018 Onyx Interactive. All rights reserved.
 //
 
 import Foundation
 
-protocol ClassReportAnalysisDelegate{
-    func finishedAnalysingClassReportData(dataSet: ClassReportDataSet, for timePeriod: TimePeriod)
-}
-
-protocol AdminReportAnalysisDelegate{
+protocol AdminReportAnalysisDelegate {
     func finishedAnalysingAdminReportData(dataSet: AdminReportDataSet)
 }
 
-class Analysis: StudentFetchingDelegate, RAGAssessmentsFetchingDelegate, IncidentsFetchingDelegate {
+class AdminReportAnalysis: RAGAssessmentsFetchingDelegate, IncidentsFetchingDelegate {
     
-    
-    var classReportAnalysisDelegate: ClassReportAnalysisDelegate?
     var adminReportAnalysisDelegate: AdminReportAnalysisDelegate?
     
     var schoolClass: SchoolClass?
     var timePeriod: TimePeriod = .today
     
-    var students: [Student]?
-    var studentsError: Error?
-
+    var students: [Student]!
+//    var studentsError: Error?
+    
     var rAGAssessments = [RAGAssessment]()
-    var ragAssessmentsError: Error?
+//    var ragAssessmentsError: Error?
     
     var incidents = [Incident]()
-    var incidentsError: Error?
-
+//    var incidentsError: Error?
+    
     var dataService: DataService?
     
-    
-    
-    
-    // Returns from storage all report data for a given School-Class recorded in a given time period
-    func analyseClassReportData(for schoolClass: SchoolClass, from timePeriod: TimePeriod) {
-        self.schoolClass = schoolClass
-        self.timePeriod = timePeriod
-        
-        // get students for class
-        dataService = DataService()
-        dataService?.studentFetchingDelegate = self
-    }
-    
 
-    
-    
-//    func finishedFetching(students: [Student], error: Error) {
-    func finishedFetching(students: [Student]){
-        self.students = students
-//        self.studentsError = error
-
-        if self.studentsError != nil {
-            // handle students error
-        } else {
-            // get incidents and rag assessments
-            // dispatch group:
-                // do asynchronous tasks
-            
-            if self.incidentsError != nil {
-                // handle incidents error
-            } else if self.ragAssessmentsError != nil {
-                // handle rag assessments error
-            } else {
-                analyseClassReportData()
-            }
-        }
-    }
-    
-
-    func finishedFetching(incidents: [Incident]) {
-        self.incidents = incidents
-    }
-    
-    func finishedFetching(rAGAssessments: [RAGAssessment]) {
-        self.rAGAssessments = rAGAssessments
-    }
-    
-    
-    // ---------- Class Report Analysis
-    
-    func analyseClassReportData() {
-        
-        guard schoolClass != nil else {
-            // error
-            return
-        }
-        
-        guard rAGAssessments != nil else {
-            // error
-            return
-        }
-        
-        guard incidents != nil else {
-            // error
-            return
-        }
-        
-        var redsCount = 0
-        var ambersCount = 0
-        var greensCount = 0
-        
-        var incidentsCount = incidents.count
-        var totalIntensity: Float = 0.0
-        var schoolDayPeriodsCount = 0
-        
-        for rag in rAGAssessments {
-            switch rag.assessment {
-            case .red:
-                redsCount += 1
-            case .amber:
-                ambersCount += 1
-            case .green:
-                greensCount += 1
-            default: break
-            }
-        }
-        
-        switch timePeriod {
-        case .today:
-            schoolDayPeriodsCount = DataService.getNumberOfPeriodsAlreadyPastToday()
-        case .currentWeek:
-            switch DataService.getDayString(for: Date()) {
-            case "Monday":
-                schoolDayPeriodsCount = DataService.getNumberOfPeriodsAlreadyPastToday()
-            case "Tuesday":
-                schoolDayPeriodsCount = DataService.getNumberOfPeriodsAlreadyPastToday() + 7
-            case "Wednesday":
-                schoolDayPeriodsCount = DataService.getNumberOfPeriodsAlreadyPastToday() + 14
-            case "Thursday":
-                schoolDayPeriodsCount = DataService.getNumberOfPeriodsAlreadyPastToday() + 21
-            case "Friday":
-                schoolDayPeriodsCount = DataService.getNumberOfPeriodsAlreadyPastToday() + 28
-            case "Saturday":
-                schoolDayPeriodsCount = DataService.getNumberOfPeriodsAlreadyPastToday() + 35
-            case "Sunday":
-                schoolDayPeriodsCount = DataService.getNumberOfPeriodsAlreadyPastToday() + 42
-            default: break
-            }
-        case .lastWeek:
-            schoolDayPeriodsCount = 49
-        case .thisTerm:
-            schoolDayPeriodsCount = 588
-        case .lastTerm:
-            schoolDayPeriodsCount = 588
-        case .thisYear:
-            schoolDayPeriodsCount = 1365
-        case .lastYear:
-            schoolDayPeriodsCount = 1400
-        case .allTime:
-            schoolDayPeriodsCount = 2800
-        }
-        
-        for incident in incidents {
-            totalIntensity += incident.intensity!
-        }
-        
-        let ragsTotal = redsCount + ambersCount + greensCount
-        let redsPercentage: Double = ragsTotal == 0 ? 0.0 : round((Double(redsCount) / Double(ragsTotal) * 100) * 10) / 10
-        let ambersPercentage: Double = ragsTotal == 0 ? 0.0 : round((Double(ambersCount) / Double(ragsTotal) * 100) * 10) / 10
-        let greensPercentage: Double = ragsTotal == 0 ? 0.0 : round((Double(greensCount) / Double(ragsTotal) * 100) * 10) / 10
-        
-        let averageIntensity: Float = incidentsCount == 0 ? 0.0 : Float(totalIntensity) / Float(incidentsCount)
-        
-        let incidentLikelihood: Double = schoolDayPeriodsCount == 0 ? 0.0 : round((Double(incidentsCount) / Double(schoolDayPeriodsCount) * 100) * 10) / 10
-        print(incidentsCount)
-        print(schoolDayPeriodsCount)
-        
-            // Compile and return ClassReportDataSet object through callback method
-        classReportAnalysisDelegate?.finishedAnalysingClassReportData(dataSet: ClassReportDataSet(
-            entityName: schoolClass!.className,
-            timePeriod: timePeriod,
-            aveReds: redsPercentage,
-            aveAmbers: ambersPercentage,
-            aveGreens: greensPercentage,
-            aveIntensity: averageIntensity,
-            incidentLikelihood: incidentLikelihood), for: timePeriod)
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    // ---------- Admin Report Analysis
     
     
     
     // Returns from storage all report data for a given School-Class recorded in a given time period
     func analyseAdminReportData(for students: [Student]) {
         
-        // get incidents and rag assessments
-            // dispatch group:
-            // do asynchronous tasks
+        self.students = students
         
-        if self.incidentsError != nil {
-            // handle incidents error
-        } else if self.ragAssessmentsError != nil {
-            // handle rag assessments error
-        } else {
-            analyseClassReportData()
-        }
+        dataService = DataService()
+        dataService?.rAGAssessmentsFetchingDelegate = self
+        dataService?.incidentsFetchingDelegate = self
+        
+        dataService?.getAllRAGAssessments(for: students)
+        
     }
+    
+    
+    
+    
+    func finishedFetching(rAGAssessments: [RAGAssessment]) {
+        self.rAGAssessments = rAGAssessments
+        dataService?.getIncidents(for: self.students)
+    }
+    
+    
+    func finishedFetching(incidents: [Incident]) {
+        self.incidents = incidents
+        analyseAdminReportData()
+    }
+
+    
+    
+    
+    // ---------- Admin Report Analysis
     
     
     func analyseAdminReportData() {
@@ -314,23 +158,23 @@ class Analysis: StudentFetchingDelegate, RAGAssessmentsFetchingDelegate, Inciden
             
             // If RAG Assessment was marked as red..
             switch rag.assessment {
-            case .red:
+            case "red":
                 
                 // increment green-rag counter for appropriate school-day period
                 switch rag.period {
-                case .p1:
+                case "p1":
                     p1RedsCount += 1
-                case .p2:
+                case "p2":
                     p2RedsCount += 1
-                case .p3:
+                case "p3":
                     p3RedsCount += 1
-                case .p4:
+                case "p4":
                     p4RedsCount += 1
-                case .p5:
+                case "p5":
                     p5RedsCount += 1
-                case .p6:
+                case "p6":
                     p6RedsCount += 1
-                case .p7:
+                case "p7":
                     p7RedsCount += 1
                 default: break
                 }
@@ -351,23 +195,23 @@ class Analysis: StudentFetchingDelegate, RAGAssessmentsFetchingDelegate, Inciden
                 }
                 
             // If RAG Assessment was marked as amber..
-            case .amber:
+            case "amber":
                 
                 // increment green-rag counter for appropriate school-day period
                 switch rag.period {
-                case .p1:
+                case "p1":
                     p1AmbersCount += 1
-                case .p2:
+                case "p2":
                     p2AmbersCount += 1
-                case .p3:
+                case "p3":
                     p3AmbersCount += 1
-                case .p4:
+                case "p4":
                     p4AmbersCount += 1
-                case .p5:
+                case "p5":
                     p5AmbersCount += 1
-                case .p6:
+                case "p6":
                     p6AmbersCount += 1
-                case .p7:
+                case "p7":
                     p7AmbersCount += 1
                 default: break
                 }
@@ -388,23 +232,23 @@ class Analysis: StudentFetchingDelegate, RAGAssessmentsFetchingDelegate, Inciden
                 }
                 
             // If RAG Assessment was marked as green..
-            case .green:
+            case "green":
                 
                 // increment green-rag counter for appropriate school-day period
                 switch rag.period {
-                case .p1:
+                case "p1":
                     p1GreensCount += 1
-                case .p2:
+                case "p2":
                     p2GreensCount += 1
-                case .p3:
+                case "p3":
                     p3GreensCount += 1
-                case .p4:
+                case "p4":
                     p4GreensCount += 1
-                case .p5:
+                case "p5":
                     p5GreensCount += 1
-                case .p6:
+                case "p6":
                     p6GreensCount += 1
-                case .p7:
+                case "p7":
                     p7GreensCount += 1
                 default: break
                 }
@@ -424,7 +268,7 @@ class Analysis: StudentFetchingDelegate, RAGAssessmentsFetchingDelegate, Inciden
                 default: break
                 }
                 
-            case .na:
+            case "na":
                 break
             case .none:
                 break
@@ -482,21 +326,21 @@ class Analysis: StudentFetchingDelegate, RAGAssessmentsFetchingDelegate, Inciden
             // increment appropriate incident-behaviour counter for each occurrence in incidents
             for behaviour in incident.behaviours! {
                 switch behaviour {
-                case Constants.BEHAVIOURS[0]:
+                case Constants.BEHAVIOURS.kicking:
                     kickingCount += 1
-                case Constants.BEHAVIOURS[1]:
+                case Constants.BEHAVIOURS.headbutt:
                     headbuttCount += 1
-                case Constants.BEHAVIOURS[2]:
+                case Constants.BEHAVIOURS.hitting:
                     hittingCount += 1
-                case Constants.BEHAVIOURS[3]:
+                case Constants.BEHAVIOURS.biting:
                     bitingCount += 1
-                case Constants.BEHAVIOURS[4]:
+                case Constants.BEHAVIOURS.slapping:
                     slappingCount += 1
-                case Constants.BEHAVIOURS[5]:
+                case Constants.BEHAVIOURS.scratching:
                     scratchingCount += 1
-                case Constants.BEHAVIOURS[6]:
+                case Constants.BEHAVIOURS.clothesGrabbing:
                     clothesGrabbingCount += 1
-                case Constants.BEHAVIOURS[7]:
+                case Constants.BEHAVIOURS.hairPulling:
                     hairPullingCount += 1
                 default: break
                 }
@@ -505,19 +349,19 @@ class Analysis: StudentFetchingDelegate, RAGAssessmentsFetchingDelegate, Inciden
             // increment appropriate incident-purpose counter for each occurrence in incidents
             for purpose in incident.purposes! {
                 switch purpose {
-                case Constants.PURPOSES[0]:
+                case Constants.PURPOSES.socialAttention:
                     socialAttentionCount += 1
-                case Constants.PURPOSES[0]:
+                case Constants.PURPOSES.tangibles:
                     tangiblesCount += 1
-                case Constants.PURPOSES[0]:
+                case Constants.PURPOSES.escape:
                     escapeCount += 1
-                case Constants.PURPOSES[0]:
+                case Constants.PURPOSES.sensory:
                     sensoryCount += 1
-                case Constants.PURPOSES[0]:
+                case Constants.PURPOSES.health:
                     healthCount += 1
-                case Constants.PURPOSES[0]:
+                case Constants.PURPOSES.activityAvoidance:
                     activityAvoidanceCount += 1
-                case Constants.PURPOSES[0]:
+                case Constants.PURPOSES.unknown:
                     unknownCount += 1
                 default: break
                 }
@@ -650,100 +494,10 @@ class Analysis: StudentFetchingDelegate, RAGAssessmentsFetchingDelegate, Inciden
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-//
-//
-//
-//    // Returns from storage all report data for a given School-Class recorded in a given time period
-//    func getClassReportData(for schoolClass: SchoolClass, from timePeriod: TimePeriod) {
-//
-//        self.timePeriod = timePeriod
-//
-//        let dbService = DatabaseService()
-//        dbService.studentFetchingDelegate = self
-//
-//        dbService.getStudents(for: schoolClass)
-//
-//    }
-//
-//
-//
-//
-//    func finishedFetchingStudentsForClass(students: [Student]?, schoolClass: SchoolClass) {
-//
-//
-//
-//
-//
-//
-//
-//    }
-//
-//
-//
-//    func finishedFetchingAllStudents(students: [Student]?) {
-//        //
-//    }
-//
-//    func finishedFetchingSingleStudent(student: Student?) {
-//        //
-//    }
-//
-//
-//
-//
-//
-//
-//    // Returns from storage all report data for a given School-Class recorded in a given time period
-//    func getClassReportData(for schoolClass: SchoolClass, from timePeriod: TimePeriod) {
-//
-//        guard let students = getStudents(for: schoolClass) else {
-//            // problem getting class students
-//            print ("error getting school-class students")
-//            return nil
-//        }
-//
-//        guard let ragAssessments = getRAGAssessments(for: students, fromTimePeriod: timePeriod) else {
-//            print ("error getting rag assessments for class report")
-//            return nil
-//        }
-//
-//        guard let incidents = getIncidents(for: students, fromTimePeriod: timePeriod) else {
-//            print("error getting incidents for class report")
-//            return nil
-//        }
-//
-//        var redsCount = 0
-//        var ambersCount = 0
-//        var greensCount = 0
-//
-//        var incidentsCount = incidents.count
-//        var totalIntensity: Float = 0.0
-//        var schoolDayPeriodsCount = 0
-//
-    
     func finishedFetching(classesWithStudents: [(schoolClass: SchoolClass, students: [Student])]) {
         // no implementation needed
     }
-        
-        
-        
+    
+    
+    
 }

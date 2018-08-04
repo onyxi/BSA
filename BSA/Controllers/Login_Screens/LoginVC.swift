@@ -77,7 +77,6 @@ class LoginVC: UIViewController, UITableViewDelegate, UITableViewDataSource, Use
     
     
     func finishedFetching(userAccounts: [UserAccount]) {
-        print ("fetched: \(userAccounts)")
         allAccounts = userAccounts
         tableView.reloadData()
     }

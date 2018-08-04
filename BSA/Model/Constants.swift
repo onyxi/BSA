@@ -12,19 +12,24 @@ class Constants {
     
     
     /// Data values:
-    
     static let LOGGED_IN_ACCOUNT_ID = "loggedInAccountID"
     static let LOGGED_IN_ACCOUNT_NAME = "loggedInAccountName"
     static let LOGGED_IN_ACCOUNT_SECURITY_LEVEL = "loggedInAccountSecurityLevel"
     static let LOGGED_IN_ACCOUNT_CLASS_ID = "loggedInAccountClassNumber"
     
-    static let BEHAVIOURS = ["kicking", "headbutt", "hitting", "biting", "slapping", "scratching", "clothesGrabbing", "hairPulling"]
-    static let PURPOSES = ["socialAttention", "tangibles", "escape", "sensory", "health", "activityAvoidance", "unknown"]
-    static let RESTRAINT = ["nonRPI", "unplannedRPI", "RPI"]
-    static let RAG_STATUSES = ["green", "amber", "red", "na", "none"]
+    static let BEHAVIOURS = (kicking: "kicking", headbutt: "headbutt", hitting: "hitting", biting: "biting", slapping: "slapping", scratching: "scratching", clothesGrabbing: "clothesGrabbing", hairPulling: "hairPulling")
+    static let PURPOSES = (socialAttention: "socialAttention", tangibles: "tangibles", escape: "escape", sensory: "sensory", health: "health", activityAvoidance: "activityAvoidance", unknown: "unknown")
+    static let RESTRAINTS = (nonRPI: "nonRPI", unplannedRPI: "unplannedRPI", RPI: "RPI")
+    static let RAG_STATUSES = (red: "red", amber: "amber", green: "green", na: "na", none: "none")
+    static let SCHOOL_DAY_PERIODS = (p1: "p1", p2: "p2", p3: "p3", l1: "l1", l2: "l2", p4: "p4", p5: "p5", p6: "p6", p7: "p7")
+    
+    // Returns a unique value - for database id's
+    static func getUniqueId() -> String {
+        return NSUUID().uuidString
+    }
+    
     
     /// Animation values:
-    
     static let ANIMATION_DELAY = 0
     static let SPRING_BOUNCINESS: CGFloat = 0
     static let SPRING_SPEED: CGFloat = 12
@@ -32,7 +37,6 @@ class Constants {
     static let REPORT_ANIMATION_SPEED = 1.0
     static let ADMIN_RAGSANDINCIDENTS_REPORT_ANIMATION_SPEED = 0.6
     static let RAG_SELECTION_SPEED = 0.1
-    
     
     
     /// Color scheme values:
@@ -65,7 +69,6 @@ class Constants {
     
 
     // Font values:
-    
     static let CHART_AXIS_LABEL_FONT = UIFont.systemFont(ofSize: 15, weight: .regular)
     static let CHART_VALUE_LABEL_FONT = UIFont.systemFont(ofSize: 13, weight: .regular)
     
@@ -113,9 +116,6 @@ class Constants {
     
     
     static let TODAY_START_TIME = Date().dateAt(hours: 0, minutes: 0)
-//    static let CURRENT_WEEK_START_TIME = Date().withOffset(dateOffset: -6)
-//    static let LAST_WEEK_START_TIME = Date().withOffset(dateOffset: -13)
-//    static let LAST_WEEK_END_TIME = Date().withOffset(dateOffset: -6)
     static let THIS_TERM_START_TIME = Date().dateFor(day: 9, month: 4, year: 2018)!
     static let LAST_TERM_START_TIME = Date().dateFor(day: 8, month: 1, year: 2018)!
     static let LAST_TERM_END_TIME = Date().dateFor(day: 30, month: 3, year: 2018)!
@@ -127,39 +127,25 @@ class Constants {
 
     /// Firebase Database values:
     static let FIREBASE_USER_ACCOUNTS = "user_accounts"
-    static let FIREBASE_USER_ACCOUNTS_NUMBER = "account_number"
     static let FIREBASE_USER_ACCOUNTS_NAME = "account_name"
     static let FIREBASE_USER_ACCOUNTS_SECURITY_LEVEL = "account_security_level"
-    static let FIREBASE_USER_ACCOUNTS_CLASS_ID = "account_class_number"
+    static let FIREBASE_USER_ACCOUNTS_CLASS_ID = "account_class_Id"
     
     static let FIREBASE_SCHOOL_CLASSES = "school_classes"
-    static let FIREBASE_SCHOOL_CLASS_NUMBER = "cass_number"
     static let FIREBASE_SCHOOL_CLASS_NAME = "class_name"
-    static let FIREBASE_SCHOOL_CLASS_STUDENTS = "class_students"
     
     static let FIREBASE_STAFF = "staff_members"
     static let FIREBASE_STAFF_NUMBER = "staff_number"
     static let FIREBASE_STAFF_FIRST_NAME = "staff_first_name"
     static let FIREBASE_STAFF_LAST_NAME = "staff_last_name"
-    static let FIREBASE_STAFF_CLASS_NUMBER = "staff_class_number"
     
-    static let FIREBASE_STUDENTS = "student_members"
+    static let FIREBASE_STUDENTS = "students"
     static let FIREBASE_STUDENT_NUMBER = "student_number"
     static let FIREBASE_STUDENT_FIRST_NAME = "student_first_name"
     static let FIREBASE_STUDENT_LAST_NAME = "student_last_name"
-//    static let FIREBASE_STUDENT_CLASS_NUMBER = "student_class_number"
     static let FIREBASE_STUDENT_CLASS_ID = "student_class_id"
     
-    static let FIREBASE_BEHAVIOURS = "behaviours"
-    static let FIREBASE_BEHAVIOUR_NUMBER = "behaviour_number"
-    static let FIREBASE_BEHAVIOUR_TYPE = "behaviour_type"
-    
-    static let FIREBASE_PURPOSES = "purposes"
-    static let FIREBASE_PURPOSE_NUMBER = "purpose_number"
-    static let FIREBASE_PURPOSE_TYPE = "purpose_type"
-    
     static let FIREBASE_INCIDENTS = "incidents"
-    static let FIREBASE_INCIDENT_NUMBER = "incident_number"
     static let FIREBASE_INCIDENT_DATE = "incident_date"
     static let FIREBASE_INCIDENT_DURATION = "incident_duration"
     static let FIREBASE_INCIDENT_STUDENT = "incident_student"

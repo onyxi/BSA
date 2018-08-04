@@ -31,37 +31,37 @@ import Foundation
 //
 //}
 
-
-
-enum Behaviour: CustomStringConvertible {
-    case kicking
-    case headbutt
-    case hitting
-    case biting
-    case slapping
-    case scratching
-    case clothesGrabbing
-    case hairPulling
-    
-    var description: String {
-        switch self {
-        case .kicking:
-            return "Kicking"
-        case .headbutt:
-            return "Headbutt"
-        case .hitting:
-            return "Hitting"
-        case .biting:
-            return "Biting"
-        case .slapping:
-            return "Slapping"
-        case .scratching:
-            return "Scratching"
-        case .clothesGrabbing:
-            return "Clothes Grabbing"
-        case .hairPulling:
-            return "Hair Pulling"
-        }
-    }
-}
+//
+//
+//enum Behaviour: CustomStringConvertible {
+//    case kicking
+//    case headbutt
+//    case hitting
+//    case biting
+//    case slapping
+//    case scratching
+//    case clothesGrabbing
+//    case hairPulling
+//    
+//    var description: String {
+//        switch self {
+//        case .kicking:
+//            return "Kicking"
+//        case .headbutt:
+//            return "Headbutt"
+//        case .hitting:
+//            return "Hitting"
+//        case .biting:
+//            return "Biting"
+//        case .slapping:
+//            return "Slapping"
+//        case .scratching:
+//            return "Scratching"
+//        case .clothesGrabbing:
+//            return "Clothes Grabbing"
+//        case .hairPulling:
+//            return "Hair Pulling"
+//        }
+//    }
+//}
 

@@ -12,11 +12,11 @@ class RAGAssessment {
     
     var id : String!
     var date: Date!
-    var period: SchoolDayPeriod!
+    var period: String!
     var studentNumber: Int!
-    var assessment: RAGStatus!
+    var assessment: String!
     
-    init(id: String, date: Date, period: SchoolDayPeriod, studentNumber: Int, assessment: RAGStatus) {
+    init(id: String, date: Date, period: String, studentNumber: Int, assessment: String) {
         self.id = id
         self.date = date
         self.period = period
@@ -27,22 +27,22 @@ class RAGAssessment {
 }
 
 
-// Provide constrained values for different available Selection/Indicator positions
-enum RAGStatus {
-    case green
-    case amber
-    case red
-    case na
-    case none
-}
-
-// Provide constrained values for different available school-day periods
-enum SchoolDayPeriod {
-    case p1
-    case p2
-    case p3
-    case p4
-    case p5
-    case p6
-    case p7
-}
+//// Provide constrained values for different available Selection/Indicator positions
+//enum RAGStatus {
+//    case green
+//    case amber
+//    case red
+//    case na
+//    case none
+//}
+//
+//// Provide constrained values for different available school-day periods
+//enum SchoolDayPeriod {
+//    case p1
+//    case p2
+//    case p3
+//    case p4
+//    case p5
+//    case p6
+//    case p7
+//}

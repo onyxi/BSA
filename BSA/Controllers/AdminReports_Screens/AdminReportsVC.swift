@@ -22,7 +22,7 @@ class AdminReportsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     var entityTableContainerVC: AdminReportsEntityTableContainerVC!
     
     var dataService: DataService?
-    var analysis: Analysis?
+//    var analysis: AdminReportAnalysis?
     
     // Configure view when loaded
     override func viewDidLoad() {
@@ -37,10 +37,14 @@ class AdminReportsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.delegate = self
         tableView.dataSource = self
         tableView.backgroundColor = .clear
+        tableView.tableFooterView = UIView()
         
             // get all Class objects (and the Students associated with that class) from storage, and reload table
         dataService = DataService()
+        dataService?.schoolClassFetchingDelegate = self
+        dataService?.studentFetchingDelegate = self
         
+        dataService?.getAllSchoolClasses()
         
 //        analysis = Analysis()
 //        analysis?.adminReportAnalysisDelegate = self
@@ -50,7 +54,7 @@ class AdminReportsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
 //        tableView.reloadData()
         
             // send the retrieved Class (and associated Students) objects to the container view for unpacking and representation in its table of students
-        entityTableContainerVC.unpackClassesWithStudents(classesWithStudents: classesWithStudents)
+//        entityTableContainerVC.unpackClassesWithStudents(classesWithStudents: classesWithStudents)
     }
     
     
@@ -65,6 +69,7 @@ class AdminReportsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func finishedFetching(classesWithStudents: [(schoolClass: SchoolClass, students: [Student])]) {
         self.classesWithStudents = classesWithStudents
+        entityTableContainerVC.unpackClassesWithStudents(classesWithStudents: classesWithStudents)
         tableView.reloadData()
     }
     

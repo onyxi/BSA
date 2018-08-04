@@ -61,13 +61,13 @@ class RAGVC: UIViewController, SchoolClassFetchingDelegate, StudentFetchingDeleg
     
     var dataService: DataService?
     
-    var day1RAGs = [(period: SchoolDayPeriod, rAGAssessments: [RAGAssessment])]()
-    var day2RAGs = [(period: SchoolDayPeriod, rAGAssessments: [RAGAssessment])]()
-    var day3RAGs = [(period: SchoolDayPeriod, rAGAssessments: [RAGAssessment])]()
-    var day4RAGs = [(period: SchoolDayPeriod, rAGAssessments: [RAGAssessment])]()
-    var day5RAGs = [(period: SchoolDayPeriod, rAGAssessments: [RAGAssessment])]()
-    var day6RAGs = [(period: SchoolDayPeriod, rAGAssessments: [RAGAssessment])]()
-    var day7RAGs = [(period: SchoolDayPeriod, rAGAssessments: [RAGAssessment])]()
+    var day1RAGs = [(period: String, rAGAssessments: [RAGAssessment])]()
+    var day2RAGs = [(period: String, rAGAssessments: [RAGAssessment])]()
+    var day3RAGs = [(period: String, rAGAssessments: [RAGAssessment])]()
+    var day4RAGs = [(period: String, rAGAssessments: [RAGAssessment])]()
+    var day5RAGs = [(period: String, rAGAssessments: [RAGAssessment])]()
+    var day6RAGs = [(period: String, rAGAssessments: [RAGAssessment])]()
+    var day7RAGs = [(period: String, rAGAssessments: [RAGAssessment])]()
     
     
     // Configure view when loaded
@@ -140,61 +140,61 @@ class RAGVC: UIViewController, SchoolClassFetchingDelegate, StudentFetchingDeleg
     
     func setupRAGAssessmentArrays() {
         day1RAGs = [
-            (period: .p1, rAGAssessments: [RAGAssessment]()),
-            (period: .p2, rAGAssessments: [RAGAssessment]()),
-            (period: .p3, rAGAssessments: [RAGAssessment]()),
-            (period: .p4, rAGAssessments: [RAGAssessment]()),
-            (period: .p5, rAGAssessments: [RAGAssessment]()),
-            (period: .p6, rAGAssessments: [RAGAssessment]()),
-            (period: .p7, rAGAssessments: [RAGAssessment]())]
+            (period: Constants.SCHOOL_DAY_PERIODS.p1, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p2, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p3, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p4, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p5, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p6, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p7, rAGAssessments: [RAGAssessment]())]
         day2RAGs = [
-            (period: .p1, rAGAssessments: [RAGAssessment]()),
-            (period: .p2, rAGAssessments: [RAGAssessment]()),
-            (period: .p3, rAGAssessments: [RAGAssessment]()),
-            (period: .p4, rAGAssessments: [RAGAssessment]()),
-            (period: .p5, rAGAssessments: [RAGAssessment]()),
-            (period: .p6, rAGAssessments: [RAGAssessment]()),
-            (period: .p7, rAGAssessments: [RAGAssessment]())]
+            (period: Constants.SCHOOL_DAY_PERIODS.p1, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p2, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p3, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p4, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p5, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p6, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p7, rAGAssessments: [RAGAssessment]())]
         day3RAGs = [
-            (period: .p1, rAGAssessments: [RAGAssessment]()),
-            (period: .p2, rAGAssessments: [RAGAssessment]()),
-            (period: .p3, rAGAssessments: [RAGAssessment]()),
-            (period: .p4, rAGAssessments: [RAGAssessment]()),
-            (period: .p5, rAGAssessments: [RAGAssessment]()),
-            (period: .p6, rAGAssessments: [RAGAssessment]()),
-            (period: .p7, rAGAssessments: [RAGAssessment]())]
+            (period: Constants.SCHOOL_DAY_PERIODS.p1, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p2, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p3, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p4, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p5, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p6, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p7, rAGAssessments: [RAGAssessment]())]
         day4RAGs = [
-            (period: .p1, rAGAssessments: [RAGAssessment]()),
-            (period: .p2, rAGAssessments: [RAGAssessment]()),
-            (period: .p3, rAGAssessments: [RAGAssessment]()),
-            (period: .p4, rAGAssessments: [RAGAssessment]()),
-            (period: .p5, rAGAssessments: [RAGAssessment]()),
-            (period: .p6, rAGAssessments: [RAGAssessment]()),
-            (period: .p7, rAGAssessments: [RAGAssessment]())]
+            (period: Constants.SCHOOL_DAY_PERIODS.p1, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p2, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p3, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p4, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p5, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p6, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p7, rAGAssessments: [RAGAssessment]())]
         day5RAGs = [
-            (period: .p1, rAGAssessments: [RAGAssessment]()),
-            (period: .p2, rAGAssessments: [RAGAssessment]()),
-            (period: .p3, rAGAssessments: [RAGAssessment]()),
-            (period: .p4, rAGAssessments: [RAGAssessment]()),
-            (period: .p5, rAGAssessments: [RAGAssessment]()),
-            (period: .p6, rAGAssessments: [RAGAssessment]()),
-            (period: .p7, rAGAssessments: [RAGAssessment]())]
+            (period: Constants.SCHOOL_DAY_PERIODS.p1, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p2, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p3, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p4, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p5, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p6, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p7, rAGAssessments: [RAGAssessment]())]
         day6RAGs = [
-            (period: .p1, rAGAssessments: [RAGAssessment]()),
-            (period: .p2, rAGAssessments: [RAGAssessment]()),
-            (period: .p3, rAGAssessments: [RAGAssessment]()),
-            (period: .p4, rAGAssessments: [RAGAssessment]()),
-            (period: .p5, rAGAssessments: [RAGAssessment]()),
-            (period: .p6, rAGAssessments: [RAGAssessment]()),
-            (period: .p7, rAGAssessments: [RAGAssessment]())]
+            (period: Constants.SCHOOL_DAY_PERIODS.p1, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p2, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p3, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p4, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p5, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p6, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p7, rAGAssessments: [RAGAssessment]())]
         day7RAGs = [
-            (period: .p1, rAGAssessments: [RAGAssessment]()),
-            (period: .p2, rAGAssessments: [RAGAssessment]()),
-            (period: .p3, rAGAssessments: [RAGAssessment]()),
-            (period: .p4, rAGAssessments: [RAGAssessment]()),
-            (period: .p5, rAGAssessments: [RAGAssessment]()),
-            (period: .p6, rAGAssessments: [RAGAssessment]()),
-            (period: .p7, rAGAssessments: [RAGAssessment]())]
+            (period: Constants.SCHOOL_DAY_PERIODS.p1, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p2, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p3, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p4, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p5, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p6, rAGAssessments: [RAGAssessment]()),
+            (period: Constants.SCHOOL_DAY_PERIODS.p7, rAGAssessments: [RAGAssessment]())]
     }
     
     func retrieveAndUnpackRAGAssessments() {
@@ -229,133 +229,133 @@ class RAGVC: UIViewController, SchoolClassFetchingDelegate, StudentFetchingDeleg
             switch rag.date {
             case Date().withOffset(dateOffset: 0):
                 switch rag.period {
-                case .p1 :
+                case Constants.SCHOOL_DAY_PERIODS.p1 :
                     day1RAGs[0].rAGAssessments.append(rag)
-                case .p2:
+                case Constants.SCHOOL_DAY_PERIODS.p2:
                     day1RAGs[1].rAGAssessments.append(rag)
-                case .p3:
+                case Constants.SCHOOL_DAY_PERIODS.p3:
                     day1RAGs[2].rAGAssessments.append(rag)
-                case .p4:
+                case Constants.SCHOOL_DAY_PERIODS.p4:
                     day1RAGs[3].rAGAssessments.append(rag)
-                case .p5:
+                case Constants.SCHOOL_DAY_PERIODS.p5:
                     day1RAGs[4].rAGAssessments.append(rag)
-                case .p6:
+                case Constants.SCHOOL_DAY_PERIODS.p6:
                     day1RAGs[5].rAGAssessments.append(rag)
-                case .p7:
+                case Constants.SCHOOL_DAY_PERIODS.p7:
                     day1RAGs[6].rAGAssessments.append(rag)
                 default:
                     break
                 }
             case Date().withOffset(dateOffset: -1):
                 switch rag.period {
-                case .p1 :
+                case Constants.SCHOOL_DAY_PERIODS.p1 :
                     day2RAGs[0].rAGAssessments.append(rag)
-                case .p2:
+                case Constants.SCHOOL_DAY_PERIODS.p2:
                     day2RAGs[1].rAGAssessments.append(rag)
-                case .p3:
+                case Constants.SCHOOL_DAY_PERIODS.p3:
                     day2RAGs[2].rAGAssessments.append(rag)
-                case .p4:
+                case Constants.SCHOOL_DAY_PERIODS.p4:
                     day2RAGs[3].rAGAssessments.append(rag)
-                case .p5:
+                case Constants.SCHOOL_DAY_PERIODS.p5:
                     day2RAGs[4].rAGAssessments.append(rag)
-                case .p6:
+                case Constants.SCHOOL_DAY_PERIODS.p6:
                     day2RAGs[5].rAGAssessments.append(rag)
-                case .p7:
+                case Constants.SCHOOL_DAY_PERIODS.p7:
                     day2RAGs[6].rAGAssessments.append(rag)
                 default:
                     break
                 }
             case Date().withOffset(dateOffset: -2):
                 switch rag.period {
-                case .p1 :
+                case Constants.SCHOOL_DAY_PERIODS.p1 :
                     day3RAGs[0].rAGAssessments.append(rag)
-                case .p2:
+                case Constants.SCHOOL_DAY_PERIODS.p2:
                     day3RAGs[1].rAGAssessments.append(rag)
-                case .p3:
+                case Constants.SCHOOL_DAY_PERIODS.p3:
                     day3RAGs[2].rAGAssessments.append(rag)
-                case .p4:
+                case Constants.SCHOOL_DAY_PERIODS.p4:
                     day3RAGs[3].rAGAssessments.append(rag)
-                case .p5:
+                case Constants.SCHOOL_DAY_PERIODS.p5:
                     day3RAGs[4].rAGAssessments.append(rag)
-                case .p6:
+                case Constants.SCHOOL_DAY_PERIODS.p6:
                     day3RAGs[5].rAGAssessments.append(rag)
-                case .p7:
+                case Constants.SCHOOL_DAY_PERIODS.p7:
                     day3RAGs[6].rAGAssessments.append(rag)
                 default:
                     break
                 }
             case Date().withOffset(dateOffset: -3):
                 switch rag.period {
-                case .p1 :
+                case Constants.SCHOOL_DAY_PERIODS.p1 :
                     day4RAGs[0].rAGAssessments.append(rag)
-                case .p2:
+                case Constants.SCHOOL_DAY_PERIODS.p2:
                     day4RAGs[1].rAGAssessments.append(rag)
-                case .p3:
+                case Constants.SCHOOL_DAY_PERIODS.p3:
                     day4RAGs[2].rAGAssessments.append(rag)
-                case .p4:
+                case Constants.SCHOOL_DAY_PERIODS.p4:
                     day4RAGs[3].rAGAssessments.append(rag)
-                case .p5:
+                case Constants.SCHOOL_DAY_PERIODS.p5:
                     day4RAGs[4].rAGAssessments.append(rag)
-                case .p6:
+                case Constants.SCHOOL_DAY_PERIODS.p6:
                     day4RAGs[5].rAGAssessments.append(rag)
-                case .p7:
+                case Constants.SCHOOL_DAY_PERIODS.p7:
                     day4RAGs[6].rAGAssessments.append(rag)
                 default:
                     break
                 }
             case Date().withOffset(dateOffset: -4):
                 switch rag.period {
-                case .p1 :
+                case Constants.SCHOOL_DAY_PERIODS.p1 :
                     day5RAGs[0].rAGAssessments.append(rag)
-                case .p2:
+                case Constants.SCHOOL_DAY_PERIODS.p2:
                     day5RAGs[1].rAGAssessments.append(rag)
-                case .p3:
+                case Constants.SCHOOL_DAY_PERIODS.p3:
                     day5RAGs[2].rAGAssessments.append(rag)
-                case .p4:
+                case Constants.SCHOOL_DAY_PERIODS.p4:
                     day5RAGs[3].rAGAssessments.append(rag)
-                case .p5:
+                case Constants.SCHOOL_DAY_PERIODS.p5:
                     day5RAGs[4].rAGAssessments.append(rag)
-                case .p6:
+                case Constants.SCHOOL_DAY_PERIODS.p6:
                     day5RAGs[5].rAGAssessments.append(rag)
-                case .p7:
+                case Constants.SCHOOL_DAY_PERIODS.p7:
                     day5RAGs[6].rAGAssessments.append(rag)
                 default:
                     break
                 }
             case Date().withOffset(dateOffset: -5):
                 switch rag.period {
-                case .p1 :
+                case Constants.SCHOOL_DAY_PERIODS.p1 :
                     day6RAGs[0].rAGAssessments.append(rag)
-                case .p2:
+                case Constants.SCHOOL_DAY_PERIODS.p2:
                     day6RAGs[1].rAGAssessments.append(rag)
-                case .p3:
+                case Constants.SCHOOL_DAY_PERIODS.p3:
                     day6RAGs[2].rAGAssessments.append(rag)
-                case .p4:
+                case Constants.SCHOOL_DAY_PERIODS.p4:
                     day6RAGs[3].rAGAssessments.append(rag)
-                case .p5:
+                case Constants.SCHOOL_DAY_PERIODS.p5:
                     day6RAGs[4].rAGAssessments.append(rag)
-                case .p6:
+                case Constants.SCHOOL_DAY_PERIODS.p6:
                     day6RAGs[5].rAGAssessments.append(rag)
-                case .p7:
+                case Constants.SCHOOL_DAY_PERIODS.p7:
                     day6RAGs[6].rAGAssessments.append(rag)
                 default:
                     break
                 }
             case Date().withOffset(dateOffset: -6):
                 switch rag.period {
-                case .p1 :
+                case Constants.SCHOOL_DAY_PERIODS.p1:
                     day7RAGs[0].rAGAssessments.append(rag)
-                case .p2:
+                case Constants.SCHOOL_DAY_PERIODS.p2:
                     day7RAGs[1].rAGAssessments.append(rag)
-                case .p3:
+                case Constants.SCHOOL_DAY_PERIODS.p3:
                     day7RAGs[2].rAGAssessments.append(rag)
-                case .p4:
+                case Constants.SCHOOL_DAY_PERIODS.p4:
                     day7RAGs[3].rAGAssessments.append(rag)
-                case .p5:
+                case Constants.SCHOOL_DAY_PERIODS.p5:
                     day7RAGs[4].rAGAssessments.append(rag)
-                case .p6:
+                case Constants.SCHOOL_DAY_PERIODS.p6:
                     day7RAGs[5].rAGAssessments.append(rag)
-                case .p7:
+                case Constants.SCHOOL_DAY_PERIODS.p7:
                     day7RAGs[6].rAGAssessments.append(rag)
                 default:
                     break
@@ -467,23 +467,23 @@ class RAGVC: UIViewController, SchoolClassFetchingDelegate, StudentFetchingDeleg
     @IBAction func periodButtonPressed(_ sender: PeriodButton) {
         
             // record the user's selection
-        var selectedPeriod: SchoolDayPeriod!
+        var selectedPeriod: String!
 
         switch sender.tag {
         case 1:
-            selectedPeriod = .p1
+            selectedPeriod = Constants.SCHOOL_DAY_PERIODS.p1
         case 2:
-            selectedPeriod = .p2
+            selectedPeriod = Constants.SCHOOL_DAY_PERIODS.p2
         case 3:
-            selectedPeriod = .p3
+            selectedPeriod = Constants.SCHOOL_DAY_PERIODS.p3
         case 4:
-            selectedPeriod = .p4
+            selectedPeriod = Constants.SCHOOL_DAY_PERIODS.p4
         case 5:
-            selectedPeriod = .p5
+            selectedPeriod = Constants.SCHOOL_DAY_PERIODS.p5
         case 6:
-            selectedPeriod = .p6
+            selectedPeriod = Constants.SCHOOL_DAY_PERIODS.p6
         case 7:
-            selectedPeriod = .p7
+            selectedPeriod = Constants.SCHOOL_DAY_PERIODS.p7
         default: break
         }
         
@@ -491,127 +491,127 @@ class RAGVC: UIViewController, SchoolClassFetchingDelegate, StudentFetchingDeleg
         switch dateOffset {
         case 0:
             switch selectedPeriod {
-            case .p1:
+            case Constants.SCHOOL_DAY_PERIODS.p1:
                 periodRAGAssessments = day1RAGs[0].rAGAssessments
-            case .p2:
+            case Constants.SCHOOL_DAY_PERIODS.p2:
                 periodRAGAssessments = day1RAGs[1].rAGAssessments
-            case .p3:
+            case Constants.SCHOOL_DAY_PERIODS.p3:
                 periodRAGAssessments = day1RAGs[2].rAGAssessments
-            case .p4:
+            case Constants.SCHOOL_DAY_PERIODS.p4:
                 periodRAGAssessments = day1RAGs[3].rAGAssessments
-            case .p5:
+            case Constants.SCHOOL_DAY_PERIODS.p5:
                 periodRAGAssessments = day1RAGs[4].rAGAssessments
-            case .p6:
+            case Constants.SCHOOL_DAY_PERIODS.p6:
                 periodRAGAssessments = day1RAGs[5].rAGAssessments
-            case .p7:
+            case Constants.SCHOOL_DAY_PERIODS.p7:
                 periodRAGAssessments = day1RAGs[6].rAGAssessments
             default: break
             }
         case -1:
             switch selectedPeriod {
-            case .p1:
+            case Constants.SCHOOL_DAY_PERIODS.p1:
                 periodRAGAssessments = day2RAGs[0].rAGAssessments
-            case .p2:
+            case Constants.SCHOOL_DAY_PERIODS.p2:
                 periodRAGAssessments = day2RAGs[1].rAGAssessments
-            case .p3:
+            case Constants.SCHOOL_DAY_PERIODS.p3:
                 periodRAGAssessments = day2RAGs[2].rAGAssessments
-            case .p4:
+            case Constants.SCHOOL_DAY_PERIODS.p4:
                 periodRAGAssessments = day2RAGs[3].rAGAssessments
-            case .p5:
+            case Constants.SCHOOL_DAY_PERIODS.p5:
                 periodRAGAssessments = day2RAGs[4].rAGAssessments
-            case .p6:
+            case Constants.SCHOOL_DAY_PERIODS.p6:
                 periodRAGAssessments = day2RAGs[5].rAGAssessments
-            case .p7:
+            case Constants.SCHOOL_DAY_PERIODS.p7:
                 periodRAGAssessments = day2RAGs[6].rAGAssessments
             default: break
             }
         case -2:
             switch selectedPeriod {
-            case .p1:
+            case Constants.SCHOOL_DAY_PERIODS.p1:
                 periodRAGAssessments = day3RAGs[0].rAGAssessments
-            case .p2:
+            case Constants.SCHOOL_DAY_PERIODS.p2:
                 periodRAGAssessments = day3RAGs[1].rAGAssessments
-            case .p3:
+            case Constants.SCHOOL_DAY_PERIODS.p3:
                 periodRAGAssessments = day3RAGs[2].rAGAssessments
-            case .p4:
+            case Constants.SCHOOL_DAY_PERIODS.p4:
                 periodRAGAssessments = day3RAGs[3].rAGAssessments
-            case .p5:
+            case Constants.SCHOOL_DAY_PERIODS.p5:
                 periodRAGAssessments = day3RAGs[4].rAGAssessments
-            case .p6:
+            case Constants.SCHOOL_DAY_PERIODS.p6:
                 periodRAGAssessments = day3RAGs[5].rAGAssessments
-            case .p7:
+            case Constants.SCHOOL_DAY_PERIODS.p7:
                 periodRAGAssessments = day3RAGs[6].rAGAssessments
             default: break
             }
         case -3:
             switch selectedPeriod {
-            case .p1:
+            case Constants.SCHOOL_DAY_PERIODS.p1:
                 periodRAGAssessments = day4RAGs[0].rAGAssessments
-            case .p2:
+            case Constants.SCHOOL_DAY_PERIODS.p2:
                 periodRAGAssessments = day4RAGs[1].rAGAssessments
-            case .p3:
+            case Constants.SCHOOL_DAY_PERIODS.p3:
                 periodRAGAssessments = day4RAGs[2].rAGAssessments
-            case .p4:
+            case Constants.SCHOOL_DAY_PERIODS.p4:
                 periodRAGAssessments = day4RAGs[3].rAGAssessments
-            case .p5:
+            case Constants.SCHOOL_DAY_PERIODS.p5:
                 periodRAGAssessments = day4RAGs[4].rAGAssessments
-            case .p6:
+            case Constants.SCHOOL_DAY_PERIODS.p6:
                 periodRAGAssessments = day4RAGs[5].rAGAssessments
-            case .p7:
+            case Constants.SCHOOL_DAY_PERIODS.p7:
                 periodRAGAssessments = day4RAGs[6].rAGAssessments
             default: break
             }
         case -4:
             switch selectedPeriod {
-            case .p1:
+            case Constants.SCHOOL_DAY_PERIODS.p1:
                 periodRAGAssessments = day5RAGs[0].rAGAssessments
-            case .p2:
+            case Constants.SCHOOL_DAY_PERIODS.p2:
                 periodRAGAssessments = day5RAGs[1].rAGAssessments
-            case .p3:
+            case Constants.SCHOOL_DAY_PERIODS.p3:
                 periodRAGAssessments = day5RAGs[2].rAGAssessments
-            case .p4:
+            case Constants.SCHOOL_DAY_PERIODS.p4:
                 periodRAGAssessments = day5RAGs[3].rAGAssessments
-            case .p5:
+            case Constants.SCHOOL_DAY_PERIODS.p5:
                 periodRAGAssessments = day5RAGs[4].rAGAssessments
-            case .p6:
+            case Constants.SCHOOL_DAY_PERIODS.p6:
                 periodRAGAssessments = day5RAGs[5].rAGAssessments
-            case .p7:
+            case Constants.SCHOOL_DAY_PERIODS.p7:
                 periodRAGAssessments = day5RAGs[6].rAGAssessments
             default: break
             }
         case -5:
             switch selectedPeriod {
-            case .p1:
+            case Constants.SCHOOL_DAY_PERIODS.p1:
                 periodRAGAssessments = day6RAGs[0].rAGAssessments
-            case .p2:
+            case Constants.SCHOOL_DAY_PERIODS.p2:
                 periodRAGAssessments = day6RAGs[1].rAGAssessments
-            case .p3:
+            case Constants.SCHOOL_DAY_PERIODS.p3:
                 periodRAGAssessments = day6RAGs[2].rAGAssessments
-            case .p4:
+            case Constants.SCHOOL_DAY_PERIODS.p4:
                 periodRAGAssessments = day6RAGs[3].rAGAssessments
-            case .p5:
+            case Constants.SCHOOL_DAY_PERIODS.p5:
                 periodRAGAssessments = day6RAGs[4].rAGAssessments
-            case .p6:
+            case Constants.SCHOOL_DAY_PERIODS.p6:
                 periodRAGAssessments = day6RAGs[5].rAGAssessments
-            case .p7:
+            case Constants.SCHOOL_DAY_PERIODS.p7:
                 periodRAGAssessments = day6RAGs[6].rAGAssessments
             default: break
             }
         case -6:
             switch selectedPeriod {
-            case .p1:
+            case Constants.SCHOOL_DAY_PERIODS.p1:
                 periodRAGAssessments = day7RAGs[0].rAGAssessments
-            case .p2:
+            case Constants.SCHOOL_DAY_PERIODS.p2:
                 periodRAGAssessments = day7RAGs[1].rAGAssessments
-            case .p3:
+            case Constants.SCHOOL_DAY_PERIODS.p3:
                 periodRAGAssessments = day7RAGs[2].rAGAssessments
-            case .p4:
+            case Constants.SCHOOL_DAY_PERIODS.p4:
                 periodRAGAssessments = day7RAGs[3].rAGAssessments
-            case .p5:
+            case Constants.SCHOOL_DAY_PERIODS.p5:
                 periodRAGAssessments = day7RAGs[4].rAGAssessments
-            case .p6:
+            case Constants.SCHOOL_DAY_PERIODS.p6:
                 periodRAGAssessments = day7RAGs[5].rAGAssessments
-            case .p7:
+            case Constants.SCHOOL_DAY_PERIODS.p7:
                 periodRAGAssessments = day7RAGs[6].rAGAssessments
             default: break
             }
@@ -713,34 +713,35 @@ class RAGVC: UIViewController, SchoolClassFetchingDelegate, StudentFetchingDeleg
             
             for period in day1RAGs {
                 switch period.period {
-                case .p1 :
+                case Constants.SCHOOL_DAY_PERIODS.p1 :
                     if !period.rAGAssessments.isEmpty {
                         set[0].setStatusComplete()
                     }
-                case .p2:
+                case Constants.SCHOOL_DAY_PERIODS.p2:
                     if !period.rAGAssessments.isEmpty {
                         set[1].setStatusComplete()
                     }
-                case .p3:
+                case Constants.SCHOOL_DAY_PERIODS.p3:
                     if !period.rAGAssessments.isEmpty {
                         set[2].setStatusComplete()
                     }
-                case .p4:
+                case Constants.SCHOOL_DAY_PERIODS.p4:
                     if !period.rAGAssessments.isEmpty {
                         set[3].setStatusComplete()
                     }
-                case .p5:
+                case Constants.SCHOOL_DAY_PERIODS.p5:
                     if !period.rAGAssessments.isEmpty {
                         set[4].setStatusComplete()
                     }
-                case .p6:
+                case Constants.SCHOOL_DAY_PERIODS.p6:
                     if !period.rAGAssessments.isEmpty {
                         set[5].setStatusComplete()
                     }
-                case .p7:
+                case Constants.SCHOOL_DAY_PERIODS.p7:
                     if !period.rAGAssessments.isEmpty {
                         set[6].setStatusComplete()
                     }
+                default: break
                 }
             }
         case -1:
@@ -749,34 +750,35 @@ class RAGVC: UIViewController, SchoolClassFetchingDelegate, StudentFetchingDeleg
             }
             for period in day2RAGs {
                 switch period.period {
-                case .p1 :
+                case Constants.SCHOOL_DAY_PERIODS.p1 :
                     if !period.rAGAssessments.isEmpty {
                         set[0].setStatusComplete()
                     }
-                case .p2:
+                case Constants.SCHOOL_DAY_PERIODS.p2:
                     if !period.rAGAssessments.isEmpty {
                         set[1].setStatusComplete()
                     }
-                case .p3:
+                case Constants.SCHOOL_DAY_PERIODS.p3:
                     if !period.rAGAssessments.isEmpty {
                         set[2].setStatusComplete()
                     }
-                case .p4:
+                case Constants.SCHOOL_DAY_PERIODS.p4:
                     if !period.rAGAssessments.isEmpty {
                         set[3].setStatusComplete()
                     }
-                case .p5:
+                case Constants.SCHOOL_DAY_PERIODS.p5:
                     if !period.rAGAssessments.isEmpty {
                         set[4].setStatusComplete()
                     }
-                case .p6:
+                case Constants.SCHOOL_DAY_PERIODS.p6:
                     if !period.rAGAssessments.isEmpty {
                         set[5].setStatusComplete()
                     }
-                case .p7:
+                case Constants.SCHOOL_DAY_PERIODS.p7:
                     if !period.rAGAssessments.isEmpty {
                         set[6].setStatusComplete()
                     }
+                default: break
                 }
             }
         case -2:
@@ -785,34 +787,35 @@ class RAGVC: UIViewController, SchoolClassFetchingDelegate, StudentFetchingDeleg
             }
             for period in day3RAGs {
                 switch period.period {
-                case .p1 :
+                case Constants.SCHOOL_DAY_PERIODS.p1 :
                     if !period.rAGAssessments.isEmpty {
                         set[0].setStatusComplete()
                     }
-                case .p2:
+                case Constants.SCHOOL_DAY_PERIODS.p2:
                     if !period.rAGAssessments.isEmpty {
                         set[1].setStatusComplete()
                     }
-                case .p3:
+                case Constants.SCHOOL_DAY_PERIODS.p3:
                     if !period.rAGAssessments.isEmpty {
                         set[2].setStatusComplete()
                     }
-                case .p4:
+                case Constants.SCHOOL_DAY_PERIODS.p4:
                     if !period.rAGAssessments.isEmpty {
                         set[3].setStatusComplete()
                     }
-                case .p5:
+                case Constants.SCHOOL_DAY_PERIODS.p5:
                     if !period.rAGAssessments.isEmpty {
                         set[4].setStatusComplete()
                     }
-                case .p6:
+                case Constants.SCHOOL_DAY_PERIODS.p6:
                     if !period.rAGAssessments.isEmpty {
                         set[5].setStatusComplete()
                     }
-                case .p7:
+                case Constants.SCHOOL_DAY_PERIODS.p7:
                     if !period.rAGAssessments.isEmpty {
                         set[6].setStatusComplete()
                     }
+                default: break
                 }
             }
         case -3:
@@ -821,34 +824,35 @@ class RAGVC: UIViewController, SchoolClassFetchingDelegate, StudentFetchingDeleg
             }
             for period in day4RAGs {
                 switch period.period {
-                case .p1 :
+                case Constants.SCHOOL_DAY_PERIODS.p1 :
                     if !period.rAGAssessments.isEmpty {
                         set[0].setStatusComplete()
                     }
-                case .p2:
+                case Constants.SCHOOL_DAY_PERIODS.p2:
                     if !period.rAGAssessments.isEmpty {
                         set[1].setStatusComplete()
                     }
-                case .p3:
+                case Constants.SCHOOL_DAY_PERIODS.p3:
                     if !period.rAGAssessments.isEmpty {
                         set[2].setStatusComplete()
                     }
-                case .p4:
+                case Constants.SCHOOL_DAY_PERIODS.p4:
                     if !period.rAGAssessments.isEmpty {
                         set[3].setStatusComplete()
                     }
-                case .p5:
+                case Constants.SCHOOL_DAY_PERIODS.p5:
                     if !period.rAGAssessments.isEmpty {
                         set[4].setStatusComplete()
                     }
-                case .p6:
+                case Constants.SCHOOL_DAY_PERIODS.p6:
                     if !period.rAGAssessments.isEmpty {
                         set[5].setStatusComplete()
                     }
-                case .p7:
+                case Constants.SCHOOL_DAY_PERIODS.p7:
                     if !period.rAGAssessments.isEmpty {
                         set[6].setStatusComplete()
                     }
+                default: break
                 }
             }
         case -4:
@@ -857,34 +861,35 @@ class RAGVC: UIViewController, SchoolClassFetchingDelegate, StudentFetchingDeleg
             }
             for period in day5RAGs {
                 switch period.period {
-                case .p1 :
+                case Constants.SCHOOL_DAY_PERIODS.p1 :
                     if !period.rAGAssessments.isEmpty {
                         set[0].setStatusComplete()
                     }
-                case .p2:
+                case Constants.SCHOOL_DAY_PERIODS.p2:
                     if !period.rAGAssessments.isEmpty {
                         set[1].setStatusComplete()
                     }
-                case .p3:
+                case Constants.SCHOOL_DAY_PERIODS.p3:
                     if !period.rAGAssessments.isEmpty {
                         set[2].setStatusComplete()
                     }
-                case .p4:
+                case Constants.SCHOOL_DAY_PERIODS.p4:
                     if !period.rAGAssessments.isEmpty {
                         set[3].setStatusComplete()
                     }
-                case .p5:
+                case Constants.SCHOOL_DAY_PERIODS.p5:
                     if !period.rAGAssessments.isEmpty {
                         set[4].setStatusComplete()
                     }
-                case .p6:
+                case Constants.SCHOOL_DAY_PERIODS.p6:
                     if !period.rAGAssessments.isEmpty {
                         set[5].setStatusComplete()
                     }
-                case .p7:
+                case Constants.SCHOOL_DAY_PERIODS.p7:
                     if !period.rAGAssessments.isEmpty {
                         set[6].setStatusComplete()
                     }
+                default: break
                 }
             }
         case -5:
@@ -893,34 +898,35 @@ class RAGVC: UIViewController, SchoolClassFetchingDelegate, StudentFetchingDeleg
             }
             for period in day6RAGs {
                 switch period.period {
-                case .p1 :
+                case Constants.SCHOOL_DAY_PERIODS.p1 :
                     if !period.rAGAssessments.isEmpty {
                         set[0].setStatusComplete()
                     }
-                case .p2:
+                case Constants.SCHOOL_DAY_PERIODS.p2:
                     if !period.rAGAssessments.isEmpty {
                         set[1].setStatusComplete()
                     }
-                case .p3:
+                case Constants.SCHOOL_DAY_PERIODS.p3:
                     if !period.rAGAssessments.isEmpty {
                         set[2].setStatusComplete()
                     }
-                case .p4:
+                case Constants.SCHOOL_DAY_PERIODS.p4:
                     if !period.rAGAssessments.isEmpty {
                         set[3].setStatusComplete()
                     }
-                case .p5:
+                case Constants.SCHOOL_DAY_PERIODS.p5:
                     if !period.rAGAssessments.isEmpty {
                         set[4].setStatusComplete()
                     }
-                case .p6:
+                case Constants.SCHOOL_DAY_PERIODS.p6:
                     if !period.rAGAssessments.isEmpty {
                         set[5].setStatusComplete()
                     }
-                case .p7:
+                case Constants.SCHOOL_DAY_PERIODS.p7:
                     if !period.rAGAssessments.isEmpty {
                         set[6].setStatusComplete()
                     }
+                default: break
                 }
             }
         case -6:
@@ -929,34 +935,35 @@ class RAGVC: UIViewController, SchoolClassFetchingDelegate, StudentFetchingDeleg
             }
             for period in day7RAGs {
                 switch period.period {
-                case .p1 :
+                case Constants.SCHOOL_DAY_PERIODS.p1 :
                     if !period.rAGAssessments.isEmpty {
                         set[0].setStatusComplete()
                     }
-                case .p2:
+                case Constants.SCHOOL_DAY_PERIODS.p2:
                     if !period.rAGAssessments.isEmpty {
                         set[1].setStatusComplete()
                     }
-                case .p3:
+                case Constants.SCHOOL_DAY_PERIODS.p3:
                     if !period.rAGAssessments.isEmpty {
                         set[2].setStatusComplete()
                     }
-                case .p4:
+                case Constants.SCHOOL_DAY_PERIODS.p4:
                     if !period.rAGAssessments.isEmpty {
                         set[3].setStatusComplete()
                     }
-                case .p5:
+                case Constants.SCHOOL_DAY_PERIODS.p5:
                     if !period.rAGAssessments.isEmpty {
                         set[4].setStatusComplete()
                     }
-                case .p6:
+                case Constants.SCHOOL_DAY_PERIODS.p6:
                     if !period.rAGAssessments.isEmpty {
                         set[5].setStatusComplete()
                     }
-                case .p7:
+                case Constants.SCHOOL_DAY_PERIODS.p7:
                     if !period.rAGAssessments.isEmpty {
                         set[6].setStatusComplete()
                     }
+                default: break
                 }
             }
         default:

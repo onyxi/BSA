@@ -18,10 +18,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         
-        
-        
+            // set nav bar appearance throughout app
         let navigationBarAppearace = UINavigationBar.appearance()
-        
         navigationBarAppearace.tintColor = UIColor.white
         navigationBarAppearace.barTintColor = UIColor(red: 69/255, green: 165/255, blue: 207/255, alpha: 1.0)
         navigationBarAppearace.titleTextAttributes = [
@@ -30,10 +28,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ]
         
         
+            // configure Firebase connection
         FirebaseApp.configure()
         
-//        Data.saveUserAccount(id: nil, accountNumber: nil, name: "Test", schoolClassNumber: 4)
-//        Data.createAdminAccount()
+            // seed Firebase database
+//        DBSeed.createAdminAccount ()
+//        DBSeed.createSchoolClasses()
+//        DBSeed.createStaffMembers()
+//        DBSeed.createStudents()
+//        DBSeed.createRAGAssessments()
+//        DBSeed.createIncidents()
+        
         return true
     }
 

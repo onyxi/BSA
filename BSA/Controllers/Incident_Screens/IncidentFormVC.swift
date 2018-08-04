@@ -24,7 +24,7 @@ class IncidentFormVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     var incidentIntensity: Float?
     var incidentStaff: [Int]?
     var incidentAccidentFormCompleted = false
-    var incidentRestraint = Constants.RESTRAINT[0]
+    var incidentRestraint = Constants.RESTRAINTS.nonRPI
     var incidentAlarmPressed = false
     var incidentPurposes: [String]?
     var incidentNotes = ""

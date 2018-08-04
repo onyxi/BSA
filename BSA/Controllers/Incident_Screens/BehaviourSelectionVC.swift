@@ -20,7 +20,7 @@ class BehaviourSelectionVC: UIViewController, UITableViewDelegate, UITableViewDa
     
     // Properties:
     var behaviourSelectionDelegate: BehaviourSelectionDelegate?
-    var allBehaviours = Constants.BEHAVIOURS
+    var allBehaviours = [String]()
 //        [Behaviour]()
     var selectedBehaviours = [String]()
 
@@ -46,9 +46,20 @@ class BehaviourSelectionVC: UIViewController, UITableViewDelegate, UITableViewDa
 //            // problem getting data
 //            print ("error getting behaviours data")
 //        }
-        
+        getBehaviours()
+        tableView.reloadData()
     }
-
+    
+    func getBehaviours() {
+        allBehaviours.append(Constants.BEHAVIOURS.kicking)
+        allBehaviours.append(Constants.BEHAVIOURS.headbutt)
+        allBehaviours.append(Constants.BEHAVIOURS.hitting)
+        allBehaviours.append(Constants.BEHAVIOURS.biting)
+        allBehaviours.append(Constants.BEHAVIOURS.slapping)
+        allBehaviours.append(Constants.BEHAVIOURS.scratching)
+        allBehaviours.append(Constants.BEHAVIOURS.clothesGrabbing)
+        allBehaviours.append(Constants.BEHAVIOURS.hairPulling)
+    }
 
     // Sets number of rows in the table of Behaviours
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

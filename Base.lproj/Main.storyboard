@@ -24,7 +24,7 @@
                                 <rect key="frame" x="102.5" y="134" width="819" height="1232"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AccountTopPaddingCell" rowHeight="20" id="Ayu-EE-X61" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AccountTopPaddingCell" rowHeight="20" id="Ayu-EE-X61" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="819" height="20"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ayu-EE-X61" id="mov-fo-iWt">
@@ -33,7 +33,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.41592654635716009" green="0.6424609375" blue="0.53934271792410671" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AccountCell" rowHeight="80" id="SkE-M5-dAq" customClass="AccountCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AccountCell" rowHeight="80" id="SkE-M5-dAq" customClass="AccountCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="48" width="819" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SkE-M5-dAq" id="1ZC-CA-E4H">
@@ -41,7 +41,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Account Name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZSe-yh-rHB">
-                                                    <rect key="frame" x="40" y="5" width="817" height="70"/>
+                                                    <rect key="frame" x="40" y="5" width="779" height="70"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="24"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
@@ -58,7 +58,7 @@
                                             <outlet property="nameLabel" destination="ZSe-yh-rHB" id="Ha2-RJ-NLJ"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AccountLoginButtonCell" rowHeight="125" id="wa1-Wk-36Q" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AccountLoginButtonCell" rowHeight="125" id="wa1-Wk-36Q" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="128" width="819" height="125"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="wa1-Wk-36Q" id="fF7-ZA-hqa">
@@ -66,7 +66,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WLZ-WS-J84" userLabel="OK Button" customClass="OKButton" customModule="BSA" customModuleProvider="target">
-                                                    <rect key="frame" x="328.5" y="35" width="200" height="77"/>
+                                                    <rect key="frame" x="309.5" y="35" width="200" height="77"/>
                                                     <color key="backgroundColor" red="0.81593302892098274" green="1" blue="0.69303628127703898" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="200" id="Rxn-Yg-0F3"/>
@@ -193,7 +193,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="z8Q-Ie-kwq" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1071" y="922"/>
+            <point key="canvasLocation" x="1842" y="923"/>
         </scene>
         <!--RAGs-->
         <scene sceneID="3jS-QL-Yc5">
@@ -2001,7 +2001,7 @@
                                 <rect key="frame" x="20" y="94" width="984" height="1223"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StudentTopPaddingCell" rowHeight="20" id="3bW-da-7sN" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StudentTopPaddingCell" rowHeight="20" id="3bW-da-7sN" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="984" height="20"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="3bW-da-7sN" id="tzd-9b-xAp">
@@ -2010,7 +2010,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.47325338803578354" green="0.72187500000000004" blue="0.60984506242719372" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StudentCell" rowHeight="80" id="exH-xK-e5W" customClass="StudentCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StudentCell" rowHeight="80" id="exH-xK-e5W" customClass="StudentCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="48" width="984" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="exH-xK-e5W" id="Yf8-YF-eqq">
@@ -2047,7 +2047,7 @@
                                             <outlet property="studentNameLabel" destination="47L-Zr-e0l" id="Qxf-Qk-aMg"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StudentOKButtonCell" rowHeight="125" id="PDZ-0p-bV4" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StudentOKButtonCell" rowHeight="125" id="PDZ-0p-bV4" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="128" width="984" height="125"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PDZ-0p-bV4" id="TLY-49-iBW">
@@ -2141,7 +2141,7 @@
                                 <rect key="frame" x="20" y="74" width="984" height="1243"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="BehaviourTopPaddingCell" rowHeight="20" id="Efk-MR-Pea" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="BehaviourTopPaddingCell" rowHeight="20" id="Efk-MR-Pea" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="984" height="20"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Efk-MR-Pea" id="2Do-jM-tu8">
@@ -2150,7 +2150,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.40963641906509468" green="0.69906249999999992" blue="0.56854119527587188" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="BehaviourCell" rowHeight="80" id="6bp-Va-OmN" customClass="BehaviourCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="BehaviourCell" rowHeight="80" id="6bp-Va-OmN" customClass="BehaviourCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="48" width="984" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6bp-Va-OmN" id="Z5i-k2-b5r">
@@ -2187,7 +2187,7 @@
                                             <outlet property="checkboxImage" destination="e7C-wz-9Fp" id="qTv-60-zGn"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="BehaviourOKButtonCell" rowHeight="125" id="82L-T1-DDu" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="BehaviourOKButtonCell" rowHeight="125" id="82L-T1-DDu" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="128" width="984" height="125"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="82L-T1-DDu" id="Hwa-Wm-wb0">
@@ -2287,7 +2287,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="TTO-fh-LCe" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2194" y="74"/>
+            <point key="canvasLocation" x="2670" y="74"/>
         </scene>
         <!--Title-->
         <scene sceneID="hq2-oU-85U">
@@ -3018,7 +3018,7 @@
                                 <rect key="frame" x="20" y="74" width="984" height="1243"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StaffTopPaddingCell" rowHeight="20" id="W25-Si-E2H" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StaffTopPaddingCell" rowHeight="20" id="W25-Si-E2H" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="984" height="20"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="W25-Si-E2H" id="gmC-zJ-zyI">
@@ -3027,7 +3027,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.44846560833325483" green="0.62328125000000001" blue="0.57592367261291399" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StaffCell" rowHeight="80" id="TEb-py-PXr" customClass="StaffCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StaffCell" rowHeight="80" id="TEb-py-PXr" customClass="StaffCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="48" width="984" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="TEb-py-PXr" id="t3r-Ad-Wod">
@@ -3064,7 +3064,7 @@
                                             <outlet property="staffNameLabel" destination="lia-td-oJx" id="9XS-vV-em5"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StaffOKButtonCell" rowHeight="125" id="KwI-CY-3KQ" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StaffOKButtonCell" rowHeight="125" id="KwI-CY-3KQ" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="128" width="984" height="125"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KwI-CY-3KQ" id="0QW-WX-58G">
@@ -3158,7 +3158,7 @@
                                 <rect key="frame" x="20" y="74" width="984" height="1243"/>
                                 <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PurposeTopPaddingCell" rowHeight="20" id="62p-Xd-yve" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PurposeTopPaddingCell" rowHeight="20" id="62p-Xd-yve" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="984" height="20"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="62p-Xd-yve" id="om1-5f-kGL">
@@ -3167,7 +3167,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.54083605001257096" green="0.76017578124999996" blue="0.66449111350732115" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PurposeCell" rowHeight="80" id="ZSE-j2-hH7" customClass="PurposeCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PurposeCell" rowHeight="80" id="ZSE-j2-hH7" customClass="PurposeCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="48" width="984" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ZSE-j2-hH7" id="j39-WC-sEo">
@@ -3204,7 +3204,7 @@
                                             <outlet property="purposeTypeLabel" destination="45K-dW-e5a" id="6gO-jM-2cl"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PurposeOKButtonCell" rowHeight="125" id="PpF-io-SvA" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="PurposeOKButtonCell" rowHeight="125" id="PpF-io-SvA" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="128" width="984" height="125"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PpF-io-SvA" id="fSv-Vt-b6n">
@@ -3527,7 +3527,7 @@
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="DGq-zW-ScF" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2194" y="1781"/>
+            <point key="canvasLocation" x="2670" y="1781"/>
         </scene>
         <!--Reports-->
         <scene sceneID="Nuo-7y-vxl">
@@ -3568,7 +3568,7 @@
                                     <constraint firstAttribute="height" constant="80" id="3qc-Uq-gTF"/>
                                 </constraints>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AdminReportsTopPaddingCell" rowHeight="10" id="SU6-S0-Yw5" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AdminReportsTopPaddingCell" rowHeight="10" id="SU6-S0-Yw5" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="984" height="10"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SU6-S0-Yw5" id="ah1-dL-vaR">
@@ -3577,7 +3577,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.4114051666930077" green="0.60453124999999996" blue="0.52073796507103109" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AdminReportsWholeSchoolCell" rowHeight="70" id="dB8-em-mW4" customClass="AdminReportsEntityGroupCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="AdminReportsWholeSchoolCell" rowHeight="70" id="dB8-em-mW4" customClass="AdminReportsEntityGroupCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="38" width="984" height="70"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="dB8-em-mW4" id="y3q-2b-sMu">
@@ -3847,7 +3847,7 @@
                                 <rect key="frame" x="20" y="64" width="984" height="1253"/>
                                 <color key="backgroundColor" red="1" green="0.85144355920323822" blue="0.67917639278370689" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ClassDetailsTopPaddingCell" rowHeight="10" id="91k-YX-mB6" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ClassDetailsTopPaddingCell" rowHeight="10" id="91k-YX-mB6" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="984" height="10"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="91k-YX-mB6" id="dqk-Ji-eg5">
@@ -3856,7 +3856,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.4682134655873561" green="0.59185412082444488" blue="0.65119140624999994" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ClassDetailsTextFieldCell" rowHeight="80" id="9tH-8q-zxZ" customClass="EntityDetailsTextFieldCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ClassDetailsTextFieldCell" rowHeight="80" id="9tH-8q-zxZ" customClass="EntityDetailsTextFieldCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="38" width="984" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="9tH-8q-zxZ" id="BGZ-wz-xF9">
@@ -3896,7 +3896,7 @@
                                             <outlet property="valueTextField" destination="gXL-Ai-Adv" id="Ebm-7T-CZX"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ClassDetailsSaveChangesButtonCell" rowHeight="125" id="o95-Tl-b0O" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ClassDetailsSaveChangesButtonCell" rowHeight="125" id="o95-Tl-b0O" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="118" width="984" height="125"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="o95-Tl-b0O" id="8hC-8s-g6w">
@@ -3956,7 +3956,7 @@
                                 <rect key="frame" x="20" y="64" width="984" height="1253"/>
                                 <color key="backgroundColor" red="0.88998747679282664" green="0.82216576220584114" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EntityClassTopPaddingCell" rowHeight="10" id="OP6-mP-Gfb" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EntityClassTopPaddingCell" rowHeight="10" id="OP6-mP-Gfb" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="984" height="10"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="OP6-mP-Gfb" id="gyF-rd-lry">
@@ -3965,7 +3965,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.44373621323983325" green="0.56091318526171419" blue="0.61714843750000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EntityClassSelectionCell" rowHeight="80" id="Fn2-Gd-Qgx" customClass="EntityClassSelectionCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EntityClassSelectionCell" rowHeight="80" id="Fn2-Gd-Qgx" customClass="EntityClassSelectionCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="38" width="984" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Fn2-Gd-Qgx" id="X0r-ho-S3n">
@@ -3992,7 +3992,7 @@
                                             <outlet property="titleLabel" destination="sm8-yF-lEf" id="8yX-hx-zNj"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EntityClassOKButtonCell" rowHeight="125" id="41M-Tw-WJI" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EntityClassOKButtonCell" rowHeight="125" id="41M-Tw-WJI" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="118" width="984" height="125"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="41M-Tw-WJI" id="oSB-L5-tqh">
@@ -4052,7 +4052,7 @@
                                 <rect key="frame" x="20" y="64" width="984" height="1253"/>
                                 <color key="backgroundColor" red="1" green="0.85144355920000003" blue="0.67917639279999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StaffDetailsTopPaddingCell" rowHeight="10" id="9aZ-L1-P4l" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StaffDetailsTopPaddingCell" rowHeight="10" id="9aZ-L1-P4l" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="984" height="10"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="9aZ-L1-P4l" id="4LS-gS-nOC">
@@ -4061,7 +4061,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.46821346559999999" green="0.59185412079999999" blue="0.65119140620000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StaffDetailsTextFieldCell" rowHeight="80" id="6re-u6-YVg" customClass="EntityDetailsTextFieldCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StaffDetailsTextFieldCell" rowHeight="80" id="6re-u6-YVg" customClass="EntityDetailsTextFieldCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="38" width="984" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6re-u6-YVg" id="Hmu-7B-hd5">
@@ -4101,7 +4101,7 @@
                                             <outlet property="valueTextField" destination="9G8-jZ-emf" id="zox-ul-pkf"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StaffDetailsSelectionCell" rowHeight="80" id="5vU-Sm-ULF" customClass="EntityDetailsSelectionCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StaffDetailsSelectionCell" rowHeight="80" id="5vU-Sm-ULF" customClass="EntityDetailsSelectionCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="118" width="984" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="5vU-Sm-ULF" id="L69-C2-5yp">
@@ -4161,7 +4161,7 @@
                                             <outlet property="valueLabel" destination="FXV-X1-mPE" id="ak0-bW-0KB"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StaffDetailsSaveChangesButtonCell" rowHeight="125" id="H71-gb-Gtq" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StaffDetailsSaveChangesButtonCell" rowHeight="125" id="H71-gb-Gtq" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="198" width="984" height="125"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="H71-gb-Gtq" id="IYi-JP-Mif">
@@ -4222,7 +4222,7 @@
                                 <rect key="frame" x="20" y="64" width="984" height="1253"/>
                                 <color key="backgroundColor" red="1" green="0.85144355920000003" blue="0.67917639279999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StudentDetailsTopPaddingCell" rowHeight="10" id="E7Q-sC-AFN" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StudentDetailsTopPaddingCell" rowHeight="10" id="E7Q-sC-AFN" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="984" height="10"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="E7Q-sC-AFN" id="1s3-Gj-gd4">
@@ -4231,7 +4231,7 @@
                                         </tableViewCellContentView>
                                         <color key="backgroundColor" red="0.46821346559999999" green="0.59185412079999999" blue="0.65119140620000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StudentDetailsTextFieldCell" rowHeight="80" id="ZWs-yj-Ycf" customClass="EntityDetailsTextFieldCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StudentDetailsTextFieldCell" rowHeight="80" id="ZWs-yj-Ycf" customClass="EntityDetailsTextFieldCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="38" width="984" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ZWs-yj-Ycf" id="gGp-L7-odH">
@@ -4271,7 +4271,7 @@
                                             <outlet property="valueTextField" destination="lJ0-qy-hgq" id="D6t-gt-hnB"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StudentDetailsSelectionCell" rowHeight="80" id="eOF-D4-oUr" customClass="EntityDetailsSelectionCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StudentDetailsSelectionCell" rowHeight="80" id="eOF-D4-oUr" customClass="EntityDetailsSelectionCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="118" width="984" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eOF-D4-oUr" id="MhK-B0-MHj">
@@ -4331,7 +4331,7 @@
                                             <outlet property="valueLabel" destination="mNA-TS-EGR" id="Bj5-LX-8kx"/>
                                         </connections>
                                     </tableViewCell>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StudentDetailsSaveChangesButtonCell" rowHeight="125" id="kFp-JS-Lje" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="StudentDetailsSaveChangesButtonCell" rowHeight="125" id="kFp-JS-Lje" customClass="TransparentCell" customModule="BSA" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="198" width="984" height="125"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="kFp-JS-Lje" id="Qyj-mn-uNo">
@@ -4407,7 +4407,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aVI-u0-vTF">
-                                                    <rect key="frame" x="910" y="19" width="51" height="31"/>
+                                                    <rect key="frame" x="870" y="19" width="51" height="31"/>
                                                     <connections>
                                                         <action selector="selectionSwitchValueChanged:" destination="1je-mq-6NV" eventType="valueChanged" id="kj2-8m-Yfh"/>
                                                     </connections>
@@ -4446,7 +4446,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7d3-fl-n6y">
-                                                    <rect key="frame" x="910" y="19" width="51" height="31"/>
+                                                    <rect key="frame" x="870" y="19" width="51" height="31"/>
                                                     <connections>
                                                         <action selector="selectionSwitchValueChanged:" destination="kq6-Sv-aWh" eventType="valueChanged" id="ZLA-Ry-In5"/>
                                                     </connections>
@@ -4483,7 +4483,7 @@
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tVb-Rw-5fz" customClass="ViewReportsButton" customModule="BSA" customModuleProvider="target">
-                                                    <rect key="frame" x="342" y="20" width="300" height="85"/>
+                                                    <rect key="frame" x="322" y="20" width="300" height="85"/>
                                                     <color key="backgroundColor" red="0.97092965460000002" green="1" blue="0.75038797989999995" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="300" id="PFF-df-e1L"/>

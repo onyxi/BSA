@@ -20,7 +20,7 @@ class PurposeSelectionVC: UIViewController, UITableViewDelegate, UITableViewData
     
     // Properties:
     var purposeSelectionDelegate: PurposeSelectionDelegate!
-    var allPurposes = Constants.PURPOSES
+    var allPurposes = [String]()
     var selectedPurposes = [String]()
 
     // Configure view when loaded
@@ -46,9 +46,21 @@ class PurposeSelectionVC: UIViewController, UITableViewDelegate, UITableViewData
 //            print("error getting purposes for purpose selection vc")
 //        }
         
-    }
     
+    
+        getPurposes()
+        tableView.reloadData()
+    }
 
+    func getPurposes() {
+        allPurposes.append(Constants.PURPOSES.socialAttention)
+        allPurposes.append(Constants.PURPOSES.tangibles)
+        allPurposes.append(Constants.PURPOSES.escape)
+        allPurposes.append(Constants.PURPOSES.sensory)
+        allPurposes.append(Constants.PURPOSES.health)
+        allPurposes.append(Constants.PURPOSES.activityAvoidance)
+        allPurposes.append(Constants.PURPOSES.unknown)
+    }
 
     // Sets number of rows in the table of Purposes
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

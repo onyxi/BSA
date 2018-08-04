@@ -42,11 +42,11 @@ class ClassReportsVC: UIViewController, SchoolClassFetchingDelegate, ClassReport
     var topChartsData: ClassReportDataSet?
     var bottomChartsData: ClassReportDataSet?
     
-    var topChartTimePeriod = TimePeriod.today
-    var bottomChartTimePeriod = TimePeriod.lastWeek
+    var topChartTimePeriod = TimePeriod.currentWeek
+    var bottomChartTimePeriod = TimePeriod.allTime
     
     var dataService: DataService?
-    var analysis: Analysis?
+//    var analysis: Analysis?
     
     // Configure view when loaded
     override func viewDidLoad() {
@@ -62,10 +62,9 @@ class ClassReportsVC: UIViewController, SchoolClassFetchingDelegate, ClassReport
         
         dataService = DataService()
         dataService?.schoolClassFetchingDelegate = self
-        dataService?.getSchoolClass(withId: UserDefaults.standard.string(forKey: Constants.LOGGED_IN_ACCOUNT_CLASS_ID)!)
         
-        analysis = Analysis()
-        analysis?.classReportAnalysisDelegate = self
+        
+        dataService?.getSchoolClass(withId: UserDefaults.standard.string(forKey: Constants.LOGGED_IN_ACCOUNT_CLASS_ID)!)
         
             // retrieve data for charts from storage
 //        getClass()
@@ -88,22 +87,35 @@ class ClassReportsVC: UIViewController, SchoolClassFetchingDelegate, ClassReport
     func finishedFetching(schoolClasses: [SchoolClass]) {
         
         // dispatch group...
-        analysis?.analyseClassReportData(for: schoolClasses[0], from: .today)
-        analysis?.analyseClassReportData(for: schoolClasses[0], from: .lastWeek)
+        let topChartsAnalysis = ClassReportAnalysis()
+        topChartsAnalysis.classReportAnalysisDelegate = self
+        topChartsAnalysis.analyseClassReportData(for: schoolClasses[0], from: topChartTimePeriod)
+        
+        let bottomChartsAnalysis = ClassReportAnalysis()
+        bottomChartsAnalysis.classReportAnalysisDelegate = self
+        bottomChartsAnalysis.analyseClassReportData(for: schoolClasses[0], from: bottomChartTimePeriod)
         /// resume...
         //  setupTopCharts()
         //  setupBottomCharts()
     }
     
     func finishedAnalysingClassReportData(dataSet: ClassReportDataSet, for timePeriod: TimePeriod) {
-        switch timePeriod{
-        case .today:
+        if timePeriod == topChartTimePeriod {
             topChartsData = dataSet
             setupTopCharts()
-        default:
+        } else {
             bottomChartsData = dataSet
             setupBottomCharts()
         }
+        
+//        switch timePeriod{
+//        case .today:
+//            topChartsData = dataSet
+//            setupTopCharts()
+//        default:
+//            bottomChartsData = dataSet
+//            setupBottomCharts()
+//        }
     }
     
     
@@ -183,17 +195,21 @@ class ClassReportsVC: UIViewController, SchoolClassFetchingDelegate, ClassReport
         topChart1Reds.animateColumn()
         topChart1Ambers.animateColumn()
         topChart1Greens.animateColumn()
-//        print(topChartsData!.averageIntensity)
-            // top chart 2
-        topChart2IntensityChart.animateIntensity(to: topChartsData!.averageIntensity)
 
+            // top chart 2
+        if topChartsData != nil {
+            topChart2IntensityChart.animateIntensity(to: topChartsData!.averageIntensity)
+        }
+        
             // bottom chart 1
         bottomChart1Reds.animateColumn()
         bottomChart1Ambers.animateColumn()
         bottomChart1Greens.animateColumn()
 //        print(bottomChartsData!.averageIntensity)
             // bottom chart 2
-        bottomChart2IntensityChart.animateIntensity(to: bottomChartsData!.averageIntensity)
+        if bottomChartsData != nil {
+            bottomChart2IntensityChart.animateIntensity(to: bottomChartsData!.averageIntensity)
+        }
 
     }
     
@@ -239,6 +255,7 @@ class ClassReportsVC: UIViewController, SchoolClassFetchingDelegate, ClassReport
         
             // set chart 2 legends and data
         topChart2Legend1.text = "Average Intensity of Incidents"
+        topChart2IntensityChart.animateIntensity(to: topChartsData!.averageIntensity)
         topChart2Legend2.text = "Likelihood of an Incident Occurring in Any Period"
         topChart2IncidentLikelihoodItem.setType(to: .incidents)
         topChart2IncidentLikelihoodItem.setValue(to: topChartsData!.likelihoodOfIncident)
@@ -270,6 +287,7 @@ class ClassReportsVC: UIViewController, SchoolClassFetchingDelegate, ClassReport
         
             // set chart 2 legends and data
         bottomChart2Legend1.text = "Average Intensity of Incidents"
+        bottomChart2IntensityChart.animateIntensity(to: bottomChartsData!.averageIntensity)
         bottomChart2Legend2.text = "Likelihood of an Incident Occurring in Any Period"
         bottomChart2IncidentLikelihoodItem.setType(to: ReportItemType.incidents)
         bottomChart2IncidentLikelihoodItem.setValue(to: bottomChartsData!.likelihoodOfIncident)

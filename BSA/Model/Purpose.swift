@@ -31,32 +31,32 @@ import Foundation
 //
 //}
 
-
-enum Purpose: CustomStringConvertible {
-    case socialAttention
-    case tangibles
-    case escape
-    case sensory
-    case health
-    case activityAvoidance
-    case unknown
-    
-    var description: String {
-        switch self {
-        case .socialAttention:
-            return "Social Attention"
-        case .tangibles:
-            return "Tangibles"
-        case .escape:
-            return "Escape"
-        case .sensory:
-            return "Sensory"
-        case .health:
-            return "Health"
-        case .activityAvoidance:
-            return "Activity Avoidance"
-        case .unknown:
-            return "Unknown"
-        }
-    }
-}
+//
+//enum Purpose: CustomStringConvertible {
+//    case socialAttention
+//    case tangibles
+//    case escape
+//    case sensory
+//    case health
+//    case activityAvoidance
+//    case unknown
+//    
+//    var description: String {
+//        switch self {
+//        case .socialAttention:
+//            return "Social Attention"
+//        case .tangibles:
+//            return "Tangibles"
+//        case .escape:
+//            return "Escape"
+//        case .sensory:
+//            return "Sensory"
+//        case .health:
+//            return "Health"
+//        case .activityAvoidance:
+//            return "Activity Avoidance"
+//        case .unknown:
+//            return "Unknown"
+//        }
+//    }
+//}

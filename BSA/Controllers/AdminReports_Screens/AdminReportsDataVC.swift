@@ -39,7 +39,7 @@ class AdminReportsDataVC: UIViewController, AdminReportAnalysisDelegate {
     var incidentCharacteristicsChartData: (totalIncidents: Int, averageIntensity: Float, behaviourPercentages: [Double], purposePercentages: [Double])?
     
     var dataService: DataService?
-    var analysis: Analysis?
+    var analysis: AdminReportAnalysis?
     
     var data: AdminReportDataSet?
     
@@ -60,7 +60,7 @@ class AdminReportsDataVC: UIViewController, AdminReportAnalysisDelegate {
         dataService = DataService()
         
         
-        analysis = Analysis()
+        analysis = AdminReportAnalysis()
         analysis?.adminReportAnalysisDelegate = self
         analysis?.analyseAdminReportData(for: studentSelection)
         
