@@ -17,6 +17,10 @@ class EntityClassSelectionVC: UIViewController, UITableViewDelegate, UITableView
     // UI handles:
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var activityIndicatorBackground: UIView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    var blurEffectView: UIView?
+    
     // Properties:
     var allClasses = [SchoolClass]()
     var selectedClass: SchoolClass?
@@ -32,21 +36,69 @@ class EntityClassSelectionVC: UIViewController, UITableViewDelegate, UITableView
         tableView.backgroundColor = .clear
         tableView.tableFooterView = UIView()
         
+            // initialise DataService and request all School-Class objects
         let dataService = DataService()
         dataService.schoolClassFetchingDelegate = self
         dataService.getAllSchoolClasses()
+    
+            // add swipe-gesture recognisers to main view
+        addGestureRecognisers()
         
-            // get School Class objects from storage and reload table
-//        if let classes = Data.getAllSchoolClasses() {
-//            allClasses = classes
-//            tableView.reloadData()
-//        } else {
-//            // problem getting data
-//            print ("error getting classes data for entity selection")
-//        }
+            // add blur while data loads
+        setupActivityIndicator()
     }
     
+    // Adds screen-blur and activity indicator while data is loading
+    func setupActivityIndicator() {
+        activityIndicatorBackground.backgroundColor = .clear
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.extraLight)
+        blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView!.frame = activityIndicatorBackground.bounds
+        blurEffectView!.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        activityIndicatorBackground.addSubview(blurEffectView!)
+        
+        activityIndicatorBackground.bringSubview(toFront: activityIndicator)
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.startAnimating()
+    }
+    
+    // Adds right swipe-gesture recogniser to the main view
+    func addGestureRecognisers() {
+        
+        // add right-swipe recogniser
+        var swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(processGesture))
+        swipeRight.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(swipeRight)
+    }
+    
+    
+    // Processes recognised right swipe recognisers
+    @objc func processGesture(gesture: UIGestureRecognizer) {
+        if let gesture = gesture as? UISwipeGestureRecognizer {
+            switch gesture.direction {
+                
+            // navigate back to previous screen
+            case UISwipeGestureRecognizerDirection.right:
+                self.navigationController?.popViewController(animated: true)
+                
+            default:
+                break
+            }
+        }
+    }
+    
+    // Assign fetched School-Class objects to class-level scope and reload table - to be poulated with fetched data
     func finishedFetching(schoolClasses: [SchoolClass]) {
+        
+        // hide activity indicator ow that data has loaded
+        activityIndicator.stopAnimating()
+        UIView.animate(withDuration: 0.2, animations: {
+            self.blurEffectView!.alpha = 0.0
+        }) { (nil) in
+            self.activityIndicatorBackground.isHidden = true
+            self.activityIndicator.isHidden = true
+        }
+        
         allClasses = schoolClasses
         tableView.reloadData()
     }

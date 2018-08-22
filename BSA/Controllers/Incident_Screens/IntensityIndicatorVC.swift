@@ -34,6 +34,34 @@ class IntensityIndicatorVC: UIViewController {
             // set up chart's initial appearance
         intensityChartCard.backgroundColor = .white
         intensityIndicator.intensity = self.intensity
+    
+            // add swipe-gesture recognisers to main view
+        addGestureRecognisers()
+    }
+    
+    // Adds right swipe-gesture recogniser to the main view
+    func addGestureRecognisers() {
+        
+        // add right-swipe recogniser
+        var swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(processGesture))
+        swipeRight.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(swipeRight)
+    }
+    
+    
+    // Processes recognised right swipe recognisers
+    @objc func processGesture(gesture: UIGestureRecognizer) {
+        if let gesture = gesture as? UISwipeGestureRecognizer {
+            switch gesture.direction {
+                
+            // navigate back to previous screen
+            case UISwipeGestureRecognizerDirection.right:
+                self.navigationController?.popViewController(animated: true)
+                
+            default:
+                break
+            }
+        }
     }
 
     // Updates intensity value to reflect a change in the slider's value

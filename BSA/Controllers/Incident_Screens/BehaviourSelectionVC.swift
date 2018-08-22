@@ -21,7 +21,6 @@ class BehaviourSelectionVC: UIViewController, UITableViewDelegate, UITableViewDa
     // Properties:
     var behaviourSelectionDelegate: BehaviourSelectionDelegate?
     var allBehaviours = [String]()
-//        [Behaviour]()
     var selectedBehaviours = [String]()
 
     // Configure view when loaded
@@ -38,18 +37,40 @@ class BehaviourSelectionVC: UIViewController, UITableViewDelegate, UITableViewDa
         tableView.backgroundColor = UIColor.clear
         tableView.tableFooterView = UIView()
         
-//            // retrieve Behaviour objects from storage and reload table
-//        if let behaviours = Data.getAllBehaviours() {
-//            allBehaviours = behaviours
-//            tableView.reloadData()
-//        } else {
-//            // problem getting data
-//            print ("error getting behaviours data")
-//        }
+            // load behaviour-type values from Constants and reload table
         getBehaviours()
         tableView.reloadData()
+    
+            // add swipe-gesture recognisers to main view
+        addGestureRecognisers()
     }
     
+    // Adds right swipe-gesture recogniser to the main view
+    func addGestureRecognisers() {
+        
+        // add right-swipe recogniser
+        var swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(processGesture))
+        swipeRight.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(swipeRight)
+    }
+    
+    
+    // Processes recognised right swipe recognisers
+    @objc func processGesture(gesture: UIGestureRecognizer) {
+        if let gesture = gesture as? UISwipeGestureRecognizer {
+            switch gesture.direction {
+                
+            // navigate back to previous screen
+            case UISwipeGestureRecognizerDirection.right:
+                self.navigationController?.popViewController(animated: true)
+                
+            default:
+                break
+            }
+        }
+    }
+    
+    // Loads behaviour-type values from Constants
     func getBehaviours() {
         allBehaviours.append(Constants.BEHAVIOURS.kicking)
         allBehaviours.append(Constants.BEHAVIOURS.headbutt)

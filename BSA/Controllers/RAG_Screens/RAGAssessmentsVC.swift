@@ -17,13 +17,17 @@ class RAGAssessmentsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     @IBOutlet weak var periodLabel: UILabel!
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var activityIndicatorBackground: UIView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    var blurEffectView: UIView?
+    
     // Properties:
     var dateOffset: Int!
     var selectedPeriod: String!
-    var students: [Student]!
+    var students: [Student]?
     var rAGSelections = [String]()
     var periodRAGAssessments: [RAGAssessment]?
-    
+    var dataService: DataService!
     
     // Configure view when loaded
     override func viewDidLoad() {
@@ -40,14 +44,81 @@ class RAGAssessmentsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         tableView.backgroundColor = UIColor.clear
         tableView.tableFooterView = UIView()
         
-            // get students' data from storage and reload table
-        configureStudentAssessments()
+            // initialise DataService
+        dataService = DataService()
         
+            // add swipe-gesture recognisers to main view
+        addGestureRecognisers()
+    
+            // add blur while data loads
+        setupActivityIndicator()
+        
+        // get students' data from selection and reload table
+        configureStudentAssessments()
     }
     
+    // Adds screen-blur and activity indicator while data is loading
+    func setupActivityIndicator() {
+        activityIndicatorBackground.backgroundColor = .clear
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.extraLight)
+        blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView!.frame = activityIndicatorBackground.bounds
+        blurEffectView!.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        activityIndicatorBackground.addSubview(blurEffectView!)
+        
+        activityIndicatorBackground.bringSubview(toFront: activityIndicator)
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.startAnimating()
+    }
+    
+    
+    // Adds right swipe-gesture recogniser to the main view
+    func addGestureRecognisers() {
+        
+        // add right-swipe recogniser
+        var swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(processGesture))
+        swipeRight.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(swipeRight)
+    }
+    
+    
+    // Processes recognised right swipe recognisers
+    @objc func processGesture(gesture: UIGestureRecognizer) {
+        if let gesture = gesture as? UISwipeGestureRecognizer {
+            switch gesture.direction {
+                
+            // navigate back to previous screen
+            case UISwipeGestureRecognizerDirection.right:
+                self.navigationController?.popViewController(animated: true)
+
+            default:
+                break
+            }
+        }
+    }
+    
+    
+    
+    
+    // Assigns initial value of 'none' for RAG Assessment of each Student. If previously completed assessments have been passed in from parent, update student's RAG statuses accordingly
     func configureStudentAssessments() {
-//        students = Data.getAllStudents()
-        for student in students {
+        
+        // check to make sure students have been fetched
+        guard students != nil else {
+            print ("unable to fetch students")
+            return
+        }
+        
+        // hide activity indicator ow that data is loaded
+        activityIndicator.stopAnimating()
+        UIView.animate(withDuration: 0.2, animations: {
+            self.blurEffectView!.alpha = 0.0
+        }) { (nil) in
+            self.activityIndicatorBackground.isHidden = true
+            self.activityIndicator.isHidden = true
+        }
+        
+        for student in students! {
             
             var assessment: String = "none"
             
@@ -60,16 +131,21 @@ class RAGAssessmentsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
             }
             rAGSelections.append(assessment)
         }
-        
-        
     }
     
+    // Reloads table when view appears
     override func viewDidAppear(_ animated: Bool) {
         tableView.reloadData()
     }
     
-    
+    // Creates new RAG assessments in database from user's input
     @IBAction func saveChangesButtonPressed(_ sender: Any) {
+        
+        // check to make sure students have been fetched
+        guard students != nil else {
+            print ("unable to fetch students")
+            return
+        }
 
         // check to make sure all students have been assessed
         guard !rAGSelections.contains("none") else {
@@ -83,25 +159,48 @@ class RAGAssessmentsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
             return
         }
         
+        let dispatchGroup = DispatchGroup()
+        var uploadError = false
+        
             // pack RAG Assessments for saving
-        var completedRAGAssessments = [RAGAssessment]()
-        for i in 0...students.count - 1 {
+        for i in 0...students!.count - 1 {
+            dispatchGroup.enter()
             let rag = RAGAssessment(
                 id: NSUUID().uuidString,
                 date: Date().withOffset(dateOffset: dateOffset),
                 period: selectedPeriod,
-                studentNumber: students[i].studentNumber,
+                studentNumber: students![i].studentNumber,
                 assessment: rAGSelections[i])
-            completedRAGAssessments.append(rag)
+            
+            dataService.createRAGAssessment(rAGAssessment: rag) { (ragID, message) in
+                if ragID != nil {
+                    print ("Created RAG: \(message)")
+                    
+                    // alert user if problem with upload
+                } else {
+                    uploadError = true
+                }
+                dispatchGroup.leave()
+            }
+            
+        }
+        dispatchGroup.notify(queue: .main) {
+            if uploadError {
+                let alert = UIAlertController(title: "Error Saving RAG Assessment", message: "Please check your connection and try again", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+                self.present(alert, animated: true, completion: nil)
+            } else {
+                let alert = UIAlertController(title: "RAG Assessments Saved", message: nil, preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                    alert.dismiss(animated: true, completion: nil)
+                    self.navigationController?.popViewController(animated: true)
+                }))
+                self.present(alert, animated: true, completion: nil)
+            }
         }
         
-       
-
-        // save rag assessments here!!!
-        
-//        Data.saveRAGAssessments(ragAssessments: completedRAGAssessments)
-        
-        self.navigationController?.popViewController(animated: true)
     }
 
     
@@ -117,7 +216,25 @@ class RAGAssessmentsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         dayDateLabel.text = DataService.getDateString(for: dateOffset!)
         
             // set period label
-        periodLabel.text = "Period \(selectedPeriod!)"
+        var periodStr = "Period "
+        switch selectedPeriod {
+        case "p1":
+            periodStr += "1"
+        case "p2":
+            periodStr += "2"
+        case "p3":
+            periodStr += "3"
+        case "p4":
+            periodStr += "4"
+        case "p5":
+            periodStr += "5"
+        case "p6":
+            periodStr += "6"
+        case "p7":
+            periodStr += "7"
+        default: break
+        }
+        periodLabel.text = periodStr
         periodLabel.backgroundColor = Constants.BLUE
         periodLabel.textColor = .white
         periodLabel.layer.cornerRadius = 8
@@ -127,10 +244,11 @@ class RAGAssessmentsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     
     // Sets number of rows in the table of RAG Assessment cells
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if students.isEmpty {
+        
+        if students == nil || students!.isEmpty {
             return 0
         } else {
-            return students.count + 2
+            return students!.count + 2
         }
     }
     
@@ -145,7 +263,7 @@ class RAGAssessmentsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
             return cell
             
             // transparent cell containing the 'Save Changes' button as the last row in the table
-        } else if indexPath.row == students.count + 1 {
+        } else if indexPath.row == students!.count + 1 {
             let cell = tableView.dequeueReusableCell(withIdentifier: "RAGAssessmentsSaveChangesButtonCell", for: indexPath) as! TransparentCell
             cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
             cell.selectionStyle = .none
@@ -157,7 +275,7 @@ class RAGAssessmentsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
             let cell = tableView.dequeueReusableCell(withIdentifier: "RAGAssessmentCell", for: indexPath) as! RAGAssessmentCell
             cell.tag = indexPath.row
             
-            let student = students[indexPath.row - 1]
+            let student = students![indexPath.row - 1]
             cell.studentNameLabel.text = "\(student.firstName!) \(student.lastName!)"
             
             let selection = rAGSelections[indexPath.row - 1]
@@ -174,7 +292,7 @@ class RAGAssessmentsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {
             return 20
-        } else if indexPath.row == students.count + 1 {
+        } else if students != nil && indexPath.row == students!.count + 1 {
             return 125
         } else {
             return 80

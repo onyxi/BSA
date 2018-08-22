@@ -7,9 +7,9 @@
 //
 
 import UIKit
+import UserNotifications
 
-class RAGVC: UIViewController, SchoolClassFetchingDelegate, StudentFetchingDelegate, RAGAssessmentsFetchingDelegate {
-    
+class RAGVC: UIViewController, UNUserNotificationCenterDelegate, SchoolClassFetchingDelegate, StudentFetchingDelegate, RAGAssessmentsFetchingDelegate {
     
     // UI handles:
     @IBOutlet weak var todayDay: UILabel!
@@ -31,7 +31,6 @@ class RAGVC: UIViewController, SchoolClassFetchingDelegate, StudentFetchingDeleg
     var periodSet1Statuses: [PeriodButtonStatusLabel]!
     
     @IBOutlet weak var set1PeriodsXAlign: NSLayoutConstraint!
-//    @IBOutlet weak var set1PeriodsWidth: NSLayoutConstraint!
     
     @IBOutlet weak var set2Period1Status: PeriodButtonStatusLabel!
     @IBOutlet weak var set2Period2Status: PeriodButtonStatusLabel!
@@ -43,20 +42,20 @@ class RAGVC: UIViewController, SchoolClassFetchingDelegate, StudentFetchingDeleg
     var periodSet2Statuses: [PeriodButtonStatusLabel]!
     
     @IBOutlet weak var set2PeriodsXAlign: NSLayoutConstraint!
-//    @IBOutlet weak var set2PeriodsWidth: NSLayoutConstraint!
     
     @IBOutlet weak var yesterdayButton: SubtitleBarButton!
     @IBOutlet weak var tomorrowButton: SubtitleBarButton!
     
+    @IBOutlet weak var activityIndicatorBackground: UIView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    var blurEffectView: UIView?
     
     // Properties:
     var set1PeriodsAnimation: AnimationEngine?
     var set2PeriodsAnimation: AnimationEngine?
     var dateOffset = 0
     var loadPeriodsForSet1 = true
-//    var schoolClass: SchoolClass?
     var classStudents: [Student]?
-//    var selectedPeriod: Int?
     var rAGAssessments: [RAGAssessment]?
     
     var dataService: DataService?
@@ -69,6 +68,7 @@ class RAGVC: UIViewController, SchoolClassFetchingDelegate, StudentFetchingDeleg
     var day6RAGs = [(period: String, rAGAssessments: [RAGAssessment])]()
     var day7RAGs = [(period: String, rAGAssessments: [RAGAssessment])]()
     
+
     
     // Configure view when loaded
     override func viewDidLoad() {
@@ -94,50 +94,98 @@ class RAGVC: UIViewController, SchoolClassFetchingDelegate, StudentFetchingDeleg
         set2PeriodsAnimation = AnimationEngine(layoutConstraints: [set2PeriodsXAlign])
         set2PeriodsAnimation?.setOffScreenLeft()
         
-        
+            // initialise DataService and request from storage the School Class object for logged-in user
         dataService = DataService()
         dataService?.schoolClassFetchingDelegate = self
         dataService?.studentFetchingDelegate = self
         dataService?.rAGAssessmentsFetchingDelegate = self
         dataService?.getSchoolClass(withId: UserDefaults.standard.string(forKey: Constants.LOGGED_IN_ACCOUNT_CLASS_ID)!)
         
-//        getClassStudents()
+            // initialse arrays to hold retrieved RAG Assessment data
         setupRAGAssessmentArrays()
-//        retrieveAndUnpackRAGAssessments()
+        
+            // add swipe-gesture recognisers to main view
+        addGestureRecognisers()
        
+            // add blur while data loads
+        setupActivityIndicator()
+        
+    }
+    
+    // Adds screen-blur and activity indicator while data is loading
+    func setupActivityIndicator() {
+        activityIndicatorBackground.backgroundColor = .clear
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.extraLight)
+        blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView!.frame = activityIndicatorBackground.bounds
+        blurEffectView!.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        activityIndicatorBackground.addSubview(blurEffectView!)
+        
+        activityIndicatorBackground.bringSubview(toFront: activityIndicator)
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.startAnimating()
+    }
+    
+    
+    // Adds left / right swipe-gesture recognisers to the main view
+    func addGestureRecognisers() {
+        
+        // add left-swipe recogniser
+        var swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(processGesture))
+        swipeLeft.direction = UISwipeGestureRecognizerDirection.left
+        self.view.addGestureRecognizer(swipeLeft)
+        
+        // add right-swipe recogniser
+        var swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(processGesture))
+        swipeRight.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(swipeRight)
+    }
+    
+    
+    // Processes recognised left/right swipe recognisers
+    @objc func processGesture(gesture: UIGestureRecognizer) {
+        if let gesture = gesture as? UISwipeGestureRecognizer {
+            switch gesture.direction {
+                
+            // triggers navigation back to login screen (which first checks to make sure selection has been made)
+            case UISwipeGestureRecognizerDirection.right:
+                yesterdayButtonPressed(gesture)
+                
+            // navigates to account-selection screen
+            case UISwipeGestureRecognizerDirection.left:
+                tomorrowButtonPressed(gesture)
+            default:
+                break
+            }
+        }
+    }
+    
+    
+    
+    // Requests all School Class objects every time the view is displayed
+    override func viewDidAppear(_ animated: Bool) {
+        dataService?.getSchoolClass(withId: UserDefaults.standard.string(forKey: Constants.LOGGED_IN_ACCOUNT_CLASS_ID)!)
     }
 
+    // Requests Students associated with fetched School Class object
     func finishedFetching(schoolClasses: [SchoolClass]) {
         dataService?.getStudents(for: schoolClasses[0])
     }
     
+    // Assigns fetched Students to class-level scope and requests RAG Assessment objects associated with them
     func finishedFetching(students: [Student]) {
         classStudents = students
         dataService?.getRAGAssessments(for: students, fromTimePeriod: .allTime)
     }
     
+    // Assigns fetched RAG Assessments to class-level scope and calls method to unpack fetched data for display in views
     func finishedFetching(rAGAssessments: [RAGAssessment]) {
         self.rAGAssessments = rAGAssessments
         retrieveAndUnpackRAGAssessments()
     }
     
     
-    
-    func finishedFetching(classesWithStudents: [(schoolClass: SchoolClass, students: [Student])]) {
-        // no implementation needed in this class
-    }
-    
-//    func getClassStudents() {
-//
-//        if let schoolClass = Data.getSchoolClass(numbered: UserDefaults.standard.integer(forKey: Constants.LOGGED_IN_ACCOUNT_NUMBER_KEY)) {
-//                classStudents = Data.getStudents(for: schoolClass)
-//        }
-//    }
-
-
-    
-    
-    
+    // Initialises arrays to hold RAG Assessment data
     func setupRAGAssessmentArrays() {
         day1RAGs = [
             (period: Constants.SCHOOL_DAY_PERIODS.p1, rAGAssessments: [RAGAssessment]()),
@@ -197,34 +245,34 @@ class RAGVC: UIViewController, SchoolClassFetchingDelegate, StudentFetchingDeleg
             (period: Constants.SCHOOL_DAY_PERIODS.p7, rAGAssessments: [RAGAssessment]())]
     }
     
+    
+    // Unpacks fetched data for display in views
     func retrieveAndUnpackRAGAssessments() {
-
-//        guard classStudents != nil else {
-//            // failed to get class students
-//            print ("failed to get class students")
-//            return
-//        }
-//
-//        guard let rAGAssessments = Data.getRAGAssessments(for: classStudents!, fromTimePeriod: .allTime) else {
-//            // failed to get RAG Assessments
-//            print ("failed to get RAG Assessments")
-//            return
-//        }
         
+            // check that required Students data has been retrieved
         guard classStudents != nil else {
             // failed to get class students
             print ("failed to get class students")
             return
         }
         
+            // check that required RAG Assessments data has been retrieved
         guard rAGAssessments != nil else {
             // failed to get RAG Assessments
             print ("failed to get RAG Assessments")
             return
         }
-    
         
-        
+        // hide activity indicator ow that data is loaded
+        activityIndicator.stopAnimating()
+        UIView.animate(withDuration: 0.2, animations: {
+            self.blurEffectView!.alpha = 0.0
+        }) { (nil) in
+            self.activityIndicatorBackground.isHidden = true
+            self.activityIndicator.isHidden = true
+        }
+ 
+            // sort RAG Assessments into their respective days and periods
         for rag in rAGAssessments! {
             switch rag.date {
             case Date().withOffset(dateOffset: 0):
@@ -373,16 +421,14 @@ class RAGVC: UIViewController, SchoolClassFetchingDelegate, StudentFetchingDeleg
     }
     
     
+    
+    
     // Scrolls the period buttons to the right to show period-status data for previous day.
     @IBAction func yesterdayButtonPressed(_ sender: Any) {
         
             // disable the 'yesterday' button momentarily to stop multiple repeat presses
         yesterdayButton.isEnabled = false
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2, execute: { self.yesterdayButton.isEnabled = true })
-        
-            // check to make sure that desired period status data has been retrieved from storage
-//        guard days != nil else { return }
-//        guard dateOffset < (days?.count)! - 1 else { return }
         
         guard dateOffset > -6 else { return }
         
@@ -650,15 +696,15 @@ class RAGVC: UIViewController, SchoolClassFetchingDelegate, StudentFetchingDeleg
             alert.dismiss(animated: true, completion: nil)
         } ))
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {action in
-                // remove record of logged in account and segue to login screen
-//            UserDefaults.standard.removeObject(forKey: Constants.LOGGED_IN_ACCOUNT_NUMBER_KEY)
-            // remove record of logged in account and segue to login screen
-            //            UserDefaults.standard.removeObject(forKey: Constants.LOGGED_IN_ACCOUNT_NUMBER_KEY)
+            let notifsCenter = UNUserNotificationCenter.current()
+            notifsCenter.removeAllPendingNotificationRequests()
+            
             UserDefaults.standard.removeObject(forKey: Constants.LOGGED_IN_ACCOUNT_ID)
             UserDefaults.standard.removeObject(forKey: Constants.LOGGED_IN_ACCOUNT_NAME)
             UserDefaults.standard.removeObject(forKey: Constants.LOGGED_IN_ACCOUNT_SECURITY_LEVEL)
             UserDefaults.standard.removeObject(forKey: Constants.LOGGED_IN_ACCOUNT_CLASS_ID)
             self.performSegue(withIdentifier: "unwindRAGVCToLoginVCSegue", sender: self)
+            
         }))
         self.present(alert, animated: true, completion: nil)
     }
@@ -683,10 +729,14 @@ class RAGVC: UIViewController, SchoolClassFetchingDelegate, StudentFetchingDeleg
     // Updates the statuses for a given set of Period Buttons - to reflect whether or not the RAG assessment has been completed yet for that period on the day indicated by the currently set dateOffset value. If a particular period has been completed, it is marked as such. If the current time is after a particular period's expected completion time, it is marked as 'Not Complete'. All others are left blank.
     func updateStatus(for set: [PeriodButtonStatusLabel]) {
         
-            // make sure data has been retreived from storage, and get current Date
-//        guard days != nil else { return }
+        // clear status labels before setting
+        for label in set {
+            label.clearStatusLabel()
+        }
+            // get current Date
         let now = Date()
         
+            // check status of school-day periods
         switch dateOffset {
         case 0:
             if now > now.dateAt(hours: Constants.P1_END_HOURS + Constants.LATE_COMPLETION_HOURS, minutes: Constants.P1_END_MINS) {
@@ -969,59 +1019,11 @@ class RAGVC: UIViewController, SchoolClassFetchingDelegate, StudentFetchingDeleg
         default:
             break
         }
-        
-        
-        
-//            // Period Button 1
-//        if days![-dateOffset].p1 == 1 {
-//            set[0].setStatusComplete()
-//        } else if dateOffset < 0 || now > now.dateAt(hours: Constants.P1_END_HOURS + Constants.LATE_COMPLETION_HOURS, minutes: Constants.P1_END_MINS) {
-//            set[0].setStatusNotComplete()
-//        }
-//
-//            // Period Button 2
-//        if days![-dateOffset].p2 == 1 {
-//            set[1].setStatusComplete()
-//        } else if dateOffset < 0 || now > now.dateAt(hours: Constants.P2_END_HOURS + Constants.LATE_COMPLETION_HOURS, minutes: Constants.P2_END_MINS) {
-//            set[1].setStatusNotComplete()
-//        }
-//
-//            // Period Button 3
-//        if days![-dateOffset].p3 == 1 {
-//            set[2].setStatusComplete()
-//        } else if dateOffset < 0 || now > now.dateAt(hours: Constants.P3_END_HOURS + Constants.LATE_COMPLETION_HOURS, minutes: Constants.P3_END_MINS) {
-//            set[2].setStatusNotComplete()
-//        }
-//
-//            // Period Button 4
-//        if days![-dateOffset].p4 == 1 {
-//            set[3].setStatusComplete()
-//        } else if dateOffset < 0 || now > now.dateAt(hours: Constants.P4_END_HOURS + Constants.LATE_COMPLETION_HOURS, minutes: Constants.P4_END_MINS) {
-//            set[3].setStatusNotComplete()
-//        }
-//
-//            // Period Button 5
-//        if days![-dateOffset].p5 == 1 {
-//            set[4].setStatusComplete()
-//        } else if dateOffset < 0 || now > now.dateAt(hours: Constants.P5_END_HOURS + Constants.LATE_COMPLETION_HOURS, minutes: Constants.P5_END_MINS) {
-//            set[4].setStatusNotComplete()
-//        }
-//
-//            // Period Button 6
-//        if days![-dateOffset].p6 == 1 {
-//            set[5].setStatusComplete()
-//        } else if dateOffset < 0 || now > now.dateAt(hours: Constants.P6_END_HOURS + Constants.LATE_COMPLETION_HOURS, minutes: Constants.P6_END_MINS) {
-//            set[5].setStatusNotComplete()
-//        }
-//
-//            // Period Button 7
-//        if days![-dateOffset].p7 == 1 {
-//            set[6].setStatusComplete()
-//        } else if dateOffset < 0 || now > now.dateAt(hours: Constants.P7_END_HOURS + Constants.LATE_COMPLETION_HOURS, minutes: Constants.P7_END_MINS) {
-//            set[6].setStatusNotComplete()
-//        }
     }
     
-    
+    func finishedFetching(classesWithStudents: [(schoolClass: SchoolClass, students: [Student])]) {
+        // needed to conform to protocol - no implementation needed in this class
+    }
+
     
 }

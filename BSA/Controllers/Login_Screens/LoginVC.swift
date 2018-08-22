@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 class LoginVC: UIViewController, UITableViewDelegate, UITableViewDataSource, UserAccountFetchingDelegate {
     
@@ -24,7 +25,10 @@ class LoginVC: UIViewController, UITableViewDelegate, UITableViewDataSource, Use
     @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
     @IBOutlet weak var accountTableXAlign: NSLayoutConstraint!
     
-
+    @IBOutlet weak var passwordTextField: UITextField!
+    @IBOutlet weak var passwordTextFieldXAlign: NSLayoutConstraint!
+    
+    
     // Properties:
     var loginAnimation: AnimationEngine?
     var selectAccountAnimation: AnimationEngine?
@@ -40,10 +44,10 @@ class LoginVC: UIViewController, UITableViewDelegate, UITableViewDataSource, Use
         // set VC color and title
         view.layer.backgroundColor = UIColor(red: 74/255, green: 74/255, blue: 74/255, alpha: 1.0).cgColor
         titleBar.layer.backgroundColor = Constants.BLUE.cgColor
-        titleBarTitle.text = "Behaviour Support - CRP"
+        titleBarTitle.text = "Behaviour Support App"
         titleBarTitle.font = UIFont.systemFont(ofSize: 25, weight: .heavy)
         titleBarTitle.textColor = .white
-        navigationItem.title = "Behaviour Support - CRP"
+        navigationItem.title = "Behaviour Support App"
         subtitle.text = "Please Log In"
         
             // configure table view
@@ -52,30 +56,61 @@ class LoginVC: UIViewController, UITableViewDelegate, UITableViewDataSource, Use
         tableView.backgroundColor = UIColor.clear
         tableView.tableFooterView = UIView()
         
-        dataService = DataService()
-        dataService?.userAccountFetchingDelegate = self
-        dataService?.getAllUserAccounts()
-        
             // initialise animation engines for sub-screens and set initial positions
-        loginAnimation = AnimationEngine(layoutConstraints: [usernameButtonXAlign, loginButtonXAlign])
+        loginAnimation = AnimationEngine(layoutConstraints: [usernameButtonXAlign, passwordTextFieldXAlign, loginButtonXAlign])
         selectAccountAnimation = AnimationEngine(layoutConstraints: [accountTableXAlign])
         selectAccountAnimation?.setOffScreenRight()
         loginButton.isHidden = true
     
-            // retrieve account names and display in table
-//        if let accounts = Data.getAllUserAccounts() {
-//            allAccounts = accounts
-//            tableView.reloadData()
-//        } else {
-//            // problem getting data
-//            print ("error getting user accounts data for Login vc")
-//        }
+            // initiate DataService and request User Accounts from storage
+        dataService = DataService()
+        dataService?.userAccountFetchingDelegate = self
+        dataService?.getAllUserAccounts()
         
-        
+            // add swipe-gesture recognisers to main view
+        addGestureRecognisers()
         
     }
     
+    // Adds left / right swipe-gesture recognisers to the main view
+    func addGestureRecognisers() {
+        
+            // add left-swipe recogniser
+        let swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(processGesture))
+        swipeLeft.direction = UISwipeGestureRecognizerDirection.left
+        self.view.addGestureRecognizer(swipeLeft)
+        
+            // add right-swipe recogniser
+        let swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(processGesture))
+        swipeRight.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(swipeRight)
+    }
     
+    // Processes recognised left/right swipe recognisers
+    @objc func processGesture(gesture: UIGestureRecognizer) {
+        if let gesture = gesture as? UISwipeGestureRecognizer {
+            switch gesture.direction {
+                
+                // triggers navigation back to login screen (which first checks to make sure selection has been made)
+            case UISwipeGestureRecognizerDirection.right:
+                returnToLoginScreen()
+                
+                // navigates to account-selection screen
+            case UISwipeGestureRecognizerDirection.left:
+                setScreenAlignment(to: "selectAccount")
+            default:
+                break
+            }
+        }
+    }
+    
+    
+    // Requests all user accounts from storage every time view appears
+    override func viewWillAppear(_ animated: Bool) {
+        dataService?.getAllUserAccounts()
+    }
+    
+    // Assigns fetched user accounts to class-level scope and reloads table
     func finishedFetching(userAccounts: [UserAccount]) {
         allAccounts = userAccounts
         tableView.reloadData()
@@ -87,8 +122,13 @@ class LoginVC: UIViewController, UITableViewDelegate, UITableViewDataSource, Use
         setScreenAlignment(to: "selectAccount")
     }
 
-    // Updates the username button's title to reflect the selection before animating the view back to the 'login' screen (First checks to make sure an account has been selected)
+    // Triggers navigation back to login screen (which first checks to make sure selection has been made)
     @IBAction func accountButtonTapped(_ sender: Any) {
+        returnToLoginScreen()
+    }
+    
+    // Updates the username button's title to reflect the selection before animating the view back to the 'login' screen (First checks to make sure an account has been selected)
+    func returnToLoginScreen() {
         if selectedAccount == nil {
             let alert = UIAlertController(title: "No Selection", message: "Please select an account to log into", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
@@ -107,6 +147,15 @@ class LoginVC: UIViewController, UITableViewDelegate, UITableViewDataSource, Use
     @IBAction func loginButtonTapped(_ sender: Any) {
         guard selectedAccount != nil else { return }
         
+        guard selectedAccount?.password == passwordTextField.text else {
+            let alert = UIAlertController(title: "Incorrect Password", message: "Please enter the correct password for the selected account", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                alert.dismiss(animated: true, completion: nil)
+            }))
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
+        
             // record account details
         UserDefaults.standard.set(selectedAccount?.id, forKey: Constants.LOGGED_IN_ACCOUNT_ID)
         UserDefaults.standard.set(selectedAccount?.accountName, forKey: Constants.LOGGED_IN_ACCOUNT_NAME)
@@ -114,16 +163,160 @@ class LoginVC: UIViewController, UITableViewDelegate, UITableViewDataSource, Use
         UserDefaults.standard.set(selectedAccount?.schoolClassId, forKey: Constants.LOGGED_IN_ACCOUNT_CLASS_ID)
         
         switch selectedAccount!.accountName {
-        case "Admin" :
-            // go to Admin Tab Bar Controller)
-            performSegue(withIdentifier: "showAdminAccountTabBarVC", sender: nil)
-        default :
+            case "Admin" :
+                // go to Admin Tab Bar Controller)
+                performSegue(withIdentifier: "showAdminAccountTabBarVC", sender: nil)
+            default :
+                
+                // set notification reminders
+            addRAGAssessmentReminders()
+            
             // go to Class Tab Bar Controller
             performSegue(withIdentifier: "showClassAccountTabBarVC", sender: nil)
         }
         
     }
     
+    // Sets notification reminders for logged-in class-user to complete RAG assessments on time
+    func addRAGAssessmentReminders() {
+        let notifsCenter = UNUserNotificationCenter.current()
+
+            // period 1 reminder notification
+        let p1Reminder = UNMutableNotificationContent()
+        p1Reminder.title = "Period 1 RAG Assessment"
+        p1Reminder.body = "Remember to complete the RAG Assessment for Period 1!"
+        p1Reminder.sound = UNNotificationSound.default()
+        
+        let p1Date = Date().dateAt(hours: Constants.P1_END_HOURS + Constants.LATE_COMPLETION_HOURS, minutes: Constants.P1_END_MINS)
+        let p1TriggerDate = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second,], from: p1Date)
+        let p1Trigger = UNCalendarNotificationTrigger(dateMatching: p1TriggerDate, repeats: true)
+        
+        let p1Identifier = "p1LocalNotification"
+        let p1Request = UNNotificationRequest(identifier: p1Identifier, content: p1Reminder, trigger: p1Trigger)
+        notifsCenter.add(p1Request, withCompletionHandler: { (error) in
+            if let error = error {
+                print (error)
+                // Something went wrong
+            }
+        })
+        
+            // period 2 reminder notification
+        let p2Reminder = UNMutableNotificationContent()
+        p2Reminder.title = "Period 2 RAG Assessment"
+        p2Reminder.body = "Remember to complete the RAG Assessment for Period 2!"
+        p2Reminder.sound = UNNotificationSound.default()
+        
+        let p2Date = Date().dateAt(hours: Constants.P2_END_HOURS + Constants.LATE_COMPLETION_HOURS, minutes: Constants.P2_END_MINS)
+        let p2TriggerDate = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second,], from: p2Date)
+        let p2Trigger = UNCalendarNotificationTrigger(dateMatching: p2TriggerDate, repeats: true)
+        
+        let p2Identifier = "p2LocalNotification"
+        let p2Request = UNNotificationRequest(identifier: p2Identifier, content: p2Reminder, trigger: p2Trigger)
+        notifsCenter.add(p2Request, withCompletionHandler: { (error) in
+            if let error = error {
+                print (error)
+                // Something went wrong
+            }
+        })
+        
+            // period 3 reminder notification
+        let p3Reminder = UNMutableNotificationContent()
+        p3Reminder.title = "Period 3 RAG Assessment"
+        p3Reminder.body = "Remember to complete the RAG Assessment for Period 3!"
+        p3Reminder.sound = UNNotificationSound.default()
+        
+        let p3Date = Date().dateAt(hours: Constants.P3_END_HOURS + Constants.LATE_COMPLETION_HOURS, minutes: Constants.P3_END_MINS)
+        let p3TriggerDate = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second,], from: p3Date)
+        let p3Trigger = UNCalendarNotificationTrigger(dateMatching: p3TriggerDate, repeats: true)
+        
+        let p3Identifier = "p3LocalNotification"
+        let p3Request = UNNotificationRequest(identifier: p3Identifier, content: p3Reminder, trigger: p3Trigger)
+        notifsCenter.add(p3Request, withCompletionHandler: { (error) in
+            if let error = error {
+                print (error)
+                // Something went wrong
+            }
+        })
+        
+            // period 4 reminder notification
+        let p4Reminder = UNMutableNotificationContent()
+        p4Reminder.title = "Period 4 RAG Assessment"
+        p4Reminder.body = "Remember to complete the RAG Assessment for Period 4!"
+        p4Reminder.sound = UNNotificationSound.default()
+        
+        let p4Date = Date().dateAt(hours: Constants.P4_END_HOURS + Constants.LATE_COMPLETION_HOURS, minutes: Constants.P4_END_MINS)
+        let p4TriggerDate = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second,], from: p4Date)
+        let p4Trigger = UNCalendarNotificationTrigger(dateMatching: p4TriggerDate, repeats: true)
+        
+        let p4Identifier = "p4LocalNotification"
+        let p4Request = UNNotificationRequest(identifier: p4Identifier, content: p4Reminder, trigger: p4Trigger)
+        notifsCenter.add(p4Request, withCompletionHandler: { (error) in
+            if let error = error {
+                print (error)
+                // Something went wrong
+            }
+        })
+        
+        
+            // period 5 reminder notification
+        let p5Reminder = UNMutableNotificationContent()
+        p5Reminder.title = "Period 5 RAG Assessment"
+        p5Reminder.body = "Remember to complete the RAG Assessment for Period 5!"
+        p5Reminder.sound = UNNotificationSound.default()
+        
+        let p5Date = Date().dateAt(hours: Constants.P5_END_HOURS + Constants.LATE_COMPLETION_HOURS, minutes: Constants.P5_END_MINS)
+        let p5TriggerDate = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second,], from: p5Date)
+        let p5Trigger = UNCalendarNotificationTrigger(dateMatching: p5TriggerDate, repeats: true)
+        
+        let p5Identifier = "p5LocalNotification"
+        let p5Request = UNNotificationRequest(identifier: p5Identifier, content: p5Reminder, trigger: p5Trigger)
+        notifsCenter.add(p5Request, withCompletionHandler: { (error) in
+            if let error = error {
+                print (error)
+                // Something went wrong
+            }
+        })
+        
+            // period 6 reminder notification
+        let p6Reminder = UNMutableNotificationContent()
+        p6Reminder.title = "Period 6 RAG Assessment"
+        p6Reminder.body = "Remember to complete the RAG Assessment for Period 6!"
+        p6Reminder.sound = UNNotificationSound.default()
+        
+        let p6Date = Date().dateAt(hours: Constants.P6_END_HOURS + Constants.LATE_COMPLETION_HOURS, minutes: Constants.P6_END_MINS)
+        let p6TriggerDate = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second,], from: p6Date)
+        let p6Trigger = UNCalendarNotificationTrigger(dateMatching: p6TriggerDate, repeats: true)
+        
+        let p6Identifier = "p6LocalNotification"
+        let p6Request = UNNotificationRequest(identifier: p6Identifier, content: p6Reminder, trigger: p6Trigger)
+        notifsCenter.add(p6Request, withCompletionHandler: { (error) in
+            if let error = error {
+                print (error)
+                // Something went wrong
+            }
+        })
+        
+            // period 7 reminder notification
+        let p7Reminder = UNMutableNotificationContent()
+        p7Reminder.title = "Period 7 RAG Assessment"
+        p7Reminder.body = "Remember to complete the RAG Assessment for Period 7!"
+        p7Reminder.sound = UNNotificationSound.default()
+        
+        let p7Date = Date().dateAt(hours: Constants.P7_END_HOURS + Constants.LATE_COMPLETION_HOURS, minutes: Constants.P7_END_MINS)
+        let p7TriggerDate = Calendar.current.dateComponents([.year,.month,.day,.hour,.minute,.second,], from: p7Date)
+        let p7Trigger = UNCalendarNotificationTrigger(dateMatching: p7TriggerDate, repeats: true)
+        
+        let p7Identifier = "p7LocalNotification"
+        let p7Request = UNNotificationRequest(identifier: p7Identifier, content: p7Reminder, trigger: p7Trigger)
+        notifsCenter.add(p7Request, withCompletionHandler: { (error) in
+            if let error = error {
+                print (error)
+                // Something went wrong
+            }
+        })
+        
+    }
+
 
     // Sets number of rows in the table of account names
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -198,11 +391,6 @@ class LoginVC: UIViewController, UITableViewDelegate, UITableViewDataSource, Use
     }
 
 
-    // Allow child VC's to unwind to the login screen when the user logs out
-    @IBAction func prepareForUnwind(segue: UIStoryboardSegue) {
-        // no preparation yet needed when the user logs out
-    }
-
     // Animates the sub-screen views to simulate 2 separate view containers sliding left and right
     func setScreenAlignment(to screen: String) {
         switch screen {
@@ -222,6 +410,11 @@ class LoginVC: UIViewController, UITableViewDelegate, UITableViewDataSource, Use
         default :
             print ("unknown screen-alignment requested")
         }
+    }
+    
+    // Allow child VC's to unwind to the login screen when the user logs out
+    @IBAction func prepareForUnwind(segue: UIStoryboardSegue) {
+        // no preparation yet needed when the user logs out
     }
 
 }

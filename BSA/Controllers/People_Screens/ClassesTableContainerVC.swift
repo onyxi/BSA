@@ -10,6 +10,7 @@ import UIKit
 
 // Allows a selected SchoolClass object to be sent to the delegate
 protocol ClassEntitySelectionDelegate {
+    func didFetchAll(schoolClasses: [SchoolClass])
     func selectAndShowDetailsFor(schoolClass: SchoolClass)
 }
 
@@ -18,6 +19,7 @@ class ClassesTableContainerVC: UITableViewController, EntitySelectionDelegate, S
     // Properties:
     var allClasses = [SchoolClass]()
     var classEntitySelectionDelegate: ClassEntitySelectionDelegate!
+    var dataService: DataService!
     
     // Configure view when loaded
     override func viewDidLoad() {
@@ -27,23 +29,21 @@ class ClassesTableContainerVC: UITableViewController, EntitySelectionDelegate, S
         tableView.backgroundColor = .clear
         tableView.tableFooterView = UIView()
 
-            // get Class data from storage and reload table
-        let dataService = DataService()
+            // initialise DataService and request all School Class objects
+        dataService = DataService()
         dataService.schoolClassFetchingDelegate = self
         dataService.getAllSchoolClasses()
-        
-//        if let schoolClasses = DataService.getAllSchoolClasses() {
-//
-//        } else {
-//            // problem getting data
-//            print ("error getting school classes")
-//        }
-        
     }
     
+    // Requests all School Class objects every time the view is displayed
+    override func viewDidAppear(_ animated: Bool) {
+        dataService.getAllSchoolClasses()
+    }
     
+    // Assigns fetched School Class objects to class-level scope and reload table to be populated with fetched data
     func finishedFetching(schoolClasses: [SchoolClass]) {
         allClasses = schoolClasses
+        classEntitySelectionDelegate.didFetchAll(schoolClasses: schoolClasses)
         tableView.reloadData()
     }
 

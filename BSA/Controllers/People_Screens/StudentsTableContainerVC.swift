@@ -10,6 +10,7 @@ import UIKit
 
 // Allows a selected Student object to be sent to the delegate
 protocol StudentEntitySelectionDelegate {
+    func didFetchAll(students: [Student])
     func selectAndShowDetailsFor(student: Student)
 }
 
@@ -18,6 +19,7 @@ class StudentsTableContainerVC: UITableViewController, EntitySelectionDelegate, 
     // Properties:
     var allStudents = [Student]()
     var studentEntitySelectionDelegate: StudentEntitySelectionDelegate!
+    var dataService: DataService!
     
     // Configure view when loaded
     override func viewDidLoad() {
@@ -27,30 +29,25 @@ class StudentsTableContainerVC: UITableViewController, EntitySelectionDelegate, 
         tableView.backgroundColor = .clear
         tableView.tableFooterView = UIView()
         
-            // get Student data from storage and reload table
-        let dataService = DataService()
+        
+            // initialise DataService and request all Student objects
+        dataService = DataService()
         dataService.studentFetchingDelegate = self
         dataService.getAllStudents()
         
-//        if let students = Data.getAllStudents() {
-//            allStudents = students
-//            tableView.reloadData()
-//        } else {
-//            // problem getting data
-//            print("error getting student data for student table container")
-//        }
     }
     
+    // Requests all Student objects every time the view is displayed
+    override func viewDidAppear(_ animated: Bool) {
+        dataService?.getAllStudents()
+    }
+    
+    // Assigns fetched Student objects to class-level scope and reload table to be populated with fetched data
     func finishedFetching(students: [Student]) {
         allStudents = students
+        studentEntitySelectionDelegate.didFetchAll(students: students)
         tableView.reloadData()
     }
-    
-    func finishedFetching(classesWithStudents: [(schoolClass: SchoolClass, students: [Student])]) {
-        // no implementation needed in this class
-    }
-    
-    
     
 
     // Sends a Student object to the delegate - from the array of all Student objects and corresponding to the cell that the user has pressed
@@ -104,6 +101,8 @@ class StudentsTableContainerVC: UITableViewController, EntitySelectionDelegate, 
     }
 
 
-  
-
+    func finishedFetching(classesWithStudents: [(schoolClass: SchoolClass, students: [Student])]) {
+        // needed to confrom to protocol - no implementation needed in this class
+    }
+    
 }

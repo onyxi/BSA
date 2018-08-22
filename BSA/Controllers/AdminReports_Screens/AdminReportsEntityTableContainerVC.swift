@@ -18,6 +18,7 @@ protocol ViewReportsForSelectionDelegate {
     func viewReportsFor(selection: [Student])
 }
 
+
 class AdminReportsEntityTableContainerVC: UIViewController, UITableViewDelegate, UITableViewDataSource, EntityGroupSwitchDelegate, IndividualEntitySwitchDelegate {
  
     
@@ -179,7 +180,6 @@ class AdminReportsEntityTableContainerVC: UIViewController, UITableViewDelegate,
             // Identify all Students associated with the SchoolClass and add/remove them from selection array
             for entity in allEntities {
                 guard let student = entity as? Student else { continue }
-//                guard student.schoolClassNumber == schoolClass.classNumber else { continue }// {
             guard student.schoolClassId == schoolClass.id else { continue }// {
                 if !selectedStudents.contains(student) && value == true {
                     selectedStudents.append(student)
@@ -201,7 +201,6 @@ class AdminReportsEntityTableContainerVC: UIViewController, UITableViewDelegate,
                 let studentIndex = selectedStudents.index(of: student)
                 selectedStudents.remove(at: studentIndex!)
                 for schoolClass in selectedSchoolClasses {
-//                    if schoolClass.classNumber == student.schoolClassNumber {
                     if schoolClass.id == student.schoolClassId {
                         let index = selectedSchoolClasses.index(of: schoolClass)!
                         selectedSchoolClasses.remove(at: index)

@@ -8,33 +8,24 @@
 
 import Foundation
 
+
 protocol AdminReportAnalysisDelegate {
     func finishedAnalysingAdminReportData(dataSet: AdminReportDataSet)
 }
 
 class AdminReportAnalysis: RAGAssessmentsFetchingDelegate, IncidentsFetchingDelegate {
     
+    // Properties:
     var adminReportAnalysisDelegate: AdminReportAnalysisDelegate?
-    
     var schoolClass: SchoolClass?
     var timePeriod: TimePeriod = .today
-    
     var students: [Student]!
-//    var studentsError: Error?
-    
     var rAGAssessments = [RAGAssessment]()
-//    var ragAssessmentsError: Error?
-    
     var incidents = [Incident]()
-//    var incidentsError: Error?
-    
     var dataService: DataService?
     
-
     
-    
-    
-    // Returns from storage all report data for a given School-Class recorded in a given time period
+    // Initialises class properties and requests all RAG Assessments for a given set of Students
     func analyseAdminReportData(for students: [Student]) {
         
         self.students = students
@@ -42,31 +33,26 @@ class AdminReportAnalysis: RAGAssessmentsFetchingDelegate, IncidentsFetchingDele
         dataService = DataService()
         dataService?.rAGAssessmentsFetchingDelegate = self
         dataService?.incidentsFetchingDelegate = self
-        
+
         dataService?.getAllRAGAssessments(for: students)
-        
     }
     
-    
-    
-    
+    // Assigns retireved RAG Assessments to class-level scope and requests Incidents for same set of Students
     func finishedFetching(rAGAssessments: [RAGAssessment]) {
         self.rAGAssessments = rAGAssessments
         dataService?.getIncidents(for: self.students)
     }
     
-    
+    // Assigns retreived Incidents to class-level scope and call analysis method
     func finishedFetching(incidents: [Incident]) {
         self.incidents = incidents
         analyseAdminReportData()
     }
 
     
-    
-    
     // ---------- Admin Report Analysis
     
-    
+    // Analyses retrieved RAG Assessments and Incidents for given set of students in the given time-period. An AdminReportDataSet object is then passed to   the delegate
     func analyseAdminReportData() {
         
         var p1RedsCount = 0
@@ -493,9 +479,8 @@ class AdminReportAnalysis: RAGAssessmentsFetchingDelegate, IncidentsFetchingDele
     }
     
     
-    
     func finishedFetching(classesWithStudents: [(schoolClass: SchoolClass, students: [Student])]) {
-        // no implementation needed
+        // needed to conform to protocol - no implementation needed
     }
     
     

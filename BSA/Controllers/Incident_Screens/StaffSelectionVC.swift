@@ -18,12 +18,15 @@ class StaffSelectionVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     // UI handles:
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var activityIndicatorBackground: UIView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    var blurEffectView: UIView?
+    
     // Properties:
     var staffSelectionDelegate: StaffSelectionDelegate!
     var allStaff = [Staff]()
     var selectedStaff = [Staff]()
     var selectedStaffNumbers: [Int]?
-    
     var dataService: DataService?
     
     // Configure view when loaded
@@ -40,22 +43,69 @@ class StaffSelectionVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         tableView.backgroundColor = UIColor.clear
         tableView.tableFooterView = UIView()
         
+            // initialise DataService and request Staff objects from storage
         dataService = DataService()
         dataService?.staffFetchingDelegate = self
         dataService?.getAllStaffMembers()
         
-            // retrieve Staff objects from storage and reload table
-//        if let staff = Data.getAllStaffMembers() {
-//            allStaff = staff
-//            tableView.reloadData()
-//        } else {
-//            // problem getting data
-//            print ("error getting staff data for staff selection VC")
-//        }
-        
+            // add swipe-gesture recognisers to main view
+        addGestureRecognisers()
+
+            // add blur while data loads
+        setupActivityIndicator()
     }
     
+    // Adds screen-blur and activity indicator while data is loading
+    func setupActivityIndicator() {
+        activityIndicatorBackground.backgroundColor = .clear
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.extraLight)
+        blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView!.frame = activityIndicatorBackground.bounds
+        blurEffectView!.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        activityIndicatorBackground.addSubview(blurEffectView!)
+        
+        activityIndicatorBackground.bringSubview(toFront: activityIndicator)
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.startAnimating()
+    }
+    
+    // Adds right swipe-gesture recogniser to the main view
+    func addGestureRecognisers() {
+        
+        // add right-swipe recogniser
+        var swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(processGesture))
+        swipeRight.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(swipeRight)
+    }
+    
+    
+    // Processes recognised right swipe recognisers
+    @objc func processGesture(gesture: UIGestureRecognizer) {
+        if let gesture = gesture as? UISwipeGestureRecognizer {
+            switch gesture.direction {
+                
+            // navigate back to previous screen
+            case UISwipeGestureRecognizerDirection.right:
+                self.navigationController?.popViewController(animated: true)
+                
+            default:
+                break
+            }
+        }
+    }
+    
+    // Assigns fetched Staff objects to class-level scope and searches fetched Staff members to find the selected Staff passed from parent VC (if any), before reloading table - to be populated with fetched data
     func finishedFetching(staffMembers: [Staff]) {
+        
+            // hide activity indicator ow that data has loaded
+        activityIndicator.stopAnimating()
+        UIView.animate(withDuration: 0.2, animations: {
+            self.blurEffectView!.alpha = 0.0
+        }) { (nil) in
+            self.activityIndicatorBackground.isHidden = true
+            self.activityIndicator.isHidden = true
+        }
+        
         allStaff = staffMembers
         if selectedStaffNumbers != nil {
             var selectedStaff = [Staff]()

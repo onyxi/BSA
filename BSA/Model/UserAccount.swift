@@ -12,19 +12,18 @@ class UserAccount: Equatable {
     
     // Properties:
     let id: String!
-//    let accountNumber: Int!
     let accountName: String!
     var securityLevel: Int!
     var schoolClassId: String?
+    var password: String!
     
     // Custom initialiser
-    init(id: String, accountName: String, securityLevel: Int, schoolClassId: String?) {
-//         accountNumber: Int, accountName: String, securityLevel: Int, schoolClassNumber: Int?) {
+    init(id: String, accountName: String, securityLevel: Int, schoolClassId: String?, password: String) {
         self.id = id
-//        self.accountNumber = accountNumber
         self.accountName = accountName
         self.securityLevel = securityLevel
         self.schoolClassId = schoolClassId
+        self.password = password
     }
     
     // Conform to 'Equatable' protocol by comparing instances on their unique 'id' attribute

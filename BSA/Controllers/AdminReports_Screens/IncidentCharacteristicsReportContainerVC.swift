@@ -75,6 +75,7 @@ class IncidentCharacteristicsReportContainerVC: UIViewController {
         behavioursHorizontalBarChart.leftAxis.axisMinimum = 0
         behavioursHorizontalBarChart.chartDescription?.text = ""
         behavioursHorizontalBarChart.legend.enabled = false
+        behavioursHorizontalBarChart.isUserInteractionEnabled = false
         
             // setup 'purposes percentages' chart
         purposesChartTitleLabel.text = "Percentage of Purpose-Types involved in Incidents"
@@ -89,6 +90,7 @@ class IncidentCharacteristicsReportContainerVC: UIViewController {
         purposesHorizontalBarChart.leftAxis.axisMinimum = 0
         purposesHorizontalBarChart.chartDescription?.text = ""
         purposesHorizontalBarChart.legend.enabled = false
+        purposesHorizontalBarChart.isUserInteractionEnabled = false
     }
     
     
@@ -159,14 +161,14 @@ class IncidentCharacteristicsReportContainerVC: UIViewController {
         
         behavioursDataSet.valueFormatter = PercentFormatter()
         behavioursDataSet.setColors([
-            UIColor(red: 174/255, green: 199/255, blue: 232/255, alpha: 1.0),
-            UIColor(red: 238/255, green: 125/255, blue: 51/255, alpha: 1.0),
-            UIColor(red: 246/255, green: 186/255, blue: 119/255, alpha: 1.0),
-            UIColor(red: 82/255, green: 160/255, blue: 46/255, alpha: 1.0),
-            UIColor(red: 152/255, green: 223/255, blue: 139/255, alpha: 1.0),
-            UIColor(red: 215/255, green: 57/255, blue: 46/255, alpha: 1.0),
-            UIColor(red: 239/255, green: 150/255, blue: 148/255, alpha: 1.0),
-            UIColor(red: 148/255, green: 103/255, blue: 189/255, alpha: 1.0)
+            UIColor(red: 174/255, green: 183/255, blue: 232/255, alpha: 1.0),
+            UIColor(red: 113/255, green: 126/255, blue: 184/255, alpha: 1.0),
+            UIColor(red: 82/255, green: 148/255, blue: 235/255, alpha: 1.0),
+            UIColor(red: 142/255, green: 147/255, blue: 171/255, alpha: 1.0),
+            UIColor(red: 172/255, green: 168/255, blue: 196/255, alpha: 1.0),
+            UIColor(red: 108/255, green: 171/255, blue: 231/255, alpha: 1.0),
+            UIColor(red: 141/255, green: 163/255, blue: 192/255, alpha: 1.0),
+            UIColor(red: 115/255, green: 122/255, blue: 149/255, alpha: 1.0)
             ], alpha: 1.0)
         
         let behavioursData = BarChartData(dataSet: behavioursDataSet)
@@ -190,13 +192,13 @@ class IncidentCharacteristicsReportContainerVC: UIViewController {
 
         purposesDataSet.valueFormatter = PercentFormatter()
         purposesDataSet.setColors([
-            UIColor(red: 174/255, green: 199/255, blue: 232/255, alpha: 1.0),
-            UIColor(red: 238/255, green: 125/255, blue: 51/255, alpha: 1.0),
-            UIColor(red: 246/255, green: 186/255, blue: 119/255, alpha: 1.0),
-            UIColor(red: 82/255, green: 160/255, blue: 46/255, alpha: 1.0),
-            UIColor(red: 152/255, green: 223/255, blue: 139/255, alpha: 1.0),
-            UIColor(red: 215/255, green: 57/255, blue: 46/255, alpha: 1.0),
-            UIColor(red: 239/255, green: 150/255, blue: 148/255, alpha: 1.0)
+            UIColor(red: 229/255, green: 174/255, blue: 232/255, alpha: 1.0),
+            UIColor(red: 218/255, green: 51/255, blue: 238/255, alpha: 1.0),
+            UIColor(red: 192/255, green: 130/255, blue: 188/255, alpha: 1.0),
+            UIColor(red: 147/255, green: 46/255, blue: 160/255, alpha: 1.0),
+            UIColor(red: 213/255, green: 152/255, blue: 225/255, alpha: 1.0),
+            UIColor(red: 199/255, green: 46/255, blue: 215/255, alpha: 1.0),
+            UIColor(red: 255/255, green: 166/255, blue: 243/255, alpha: 1.0)
             ], alpha: 1.0)
         
         

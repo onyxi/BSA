@@ -44,7 +44,11 @@ class RAGsAndIncidentsDayViewReportContainerVC: UIViewController {
         setupCharts()
         updateCharts()
     }
-    
+ 
+    // Hides the container view
+    func hide() {
+        self.view.isHidden = true
+    }
     
     // Configures charts' appearance and properties
     func setupCharts() {

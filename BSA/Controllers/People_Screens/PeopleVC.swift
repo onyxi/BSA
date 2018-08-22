@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PeopleVC: UIViewController, ClassEntitySelectionDelegate, StaffEntitySelectionDelegate, StudentEntitySelectionDelegate {
+class PeopleVC: UIViewController, UserAccountFetchingDelegate, ClassEntitySelectionDelegate, StaffEntitySelectionDelegate, StudentEntitySelectionDelegate {
     
     // UI handles:
     @IBOutlet weak var subtitleBarLabelMain: SubtitleLabel!
@@ -22,6 +22,9 @@ class PeopleVC: UIViewController, ClassEntitySelectionDelegate, StaffEntitySelec
     @IBOutlet weak var staffTableXAlign: NSLayoutConstraint!
     @IBOutlet weak var studentsTableXAlign: NSLayoutConstraint!
     
+    @IBOutlet weak var activityIndicatorBackground: UIView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    var blurEffectView: UIView?
     
     // Properties
     var classesTableAnimation: AnimationEngine!
@@ -31,10 +34,16 @@ class PeopleVC: UIViewController, ClassEntitySelectionDelegate, StaffEntitySelec
     var currentShowingEntitySet: EntitySet = .classes
     var entitySetToShowDetailsFor: EntitySet!
 
+    var dataService: DataService?
+    
+    var allSchoolClasses = [SchoolClass]()
     var selectedClass: SchoolClass?
+    var allStaff = [Staff]()
     var selectedStaff: Staff?
+    var allStudents = [Student]()
     var selectedStudent: Student?
     
+    var userAccounts: [UserAccount]?
     
     // Configures view when loaded
     override func viewDidLoad() {
@@ -49,6 +58,75 @@ class PeopleVC: UIViewController, ClassEntitySelectionDelegate, StaffEntitySelec
         
             // initialise Animation Engines for table view containers and set initial positions
         setupTableViews()
+    
+            // add swipe-gesture recognisers to main view
+        addGestureRecognisers()
+        
+            // add blur while data loads
+        setupActivityIndicator()
+        
+            // get all user-account objects from storage
+        dataService = DataService()
+        dataService?.userAccountFetchingDelegate = self
+        dataService?.getAllUserAccounts()
+    }
+    
+    // refresh data from storage
+    override func viewWillAppear(_ animated: Bool) {
+        dataService?.getAllUserAccounts()
+    }
+    
+    // Assigns local reference to user-account objects fetched from storage
+    func finishedFetching(userAccounts: [UserAccount]) {
+        self.userAccounts = userAccounts
+    }
+    
+    // Adds screen-blur and activity indicator while data is loading
+    func setupActivityIndicator() {
+        activityIndicatorBackground.backgroundColor = .clear
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.extraLight)
+        blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView!.frame = activityIndicatorBackground.bounds
+        blurEffectView!.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        activityIndicatorBackground.addSubview(blurEffectView!)
+        
+        activityIndicatorBackground.bringSubview(toFront: activityIndicator)
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.startAnimating()
+    }
+    
+    
+    // Adds left / right swipe-gesture recognisers to the main view
+    func addGestureRecognisers() {
+        
+        // add left-swipe recogniser
+        var swipeLeft = UISwipeGestureRecognizer(target: self, action: #selector(processGesture))
+        swipeLeft.direction = UISwipeGestureRecognizerDirection.left
+        self.view.addGestureRecognizer(swipeLeft)
+        
+        // add right-swipe recogniser
+        var swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(processGesture))
+        swipeRight.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(swipeRight)
+    }
+    
+    
+    // Processes recognised left/right swipe recognisers
+    @objc func processGesture(gesture: UIGestureRecognizer) {
+        if let gesture = gesture as? UISwipeGestureRecognizer {
+            switch gesture.direction {
+                
+            // triggers navigation back to login screen (which first checks to make sure selection has been made)
+            case UISwipeGestureRecognizerDirection.right:
+                leftSubtitleButtonPressed(gesture)
+                
+            // navigates to account-selection screen
+            case UISwipeGestureRecognizerDirection.left:
+                rightSubtitleButtonPressed(gesture)
+            default:
+                break
+            }
+        }
     }
     
     
@@ -62,10 +140,30 @@ class PeopleVC: UIViewController, ClassEntitySelectionDelegate, StaffEntitySelec
         studentsTableAnimation.setOffScreenRight()
     }
     
+    // Assigns local reference to all fetched School Class objects
+    func didFetchAll(schoolClasses: [SchoolClass]) {
+        
+        // hide activity indicator ow that data has loaded
+        activityIndicator.stopAnimating()
+        UIView.animate(withDuration: 0.2, animations: {
+            self.blurEffectView!.alpha = 0.0
+        }) { (nil) in
+            self.activityIndicatorBackground.isHidden = true
+            self.activityIndicator.isHidden = true
+        }
+        
+        allSchoolClasses = schoolClasses
+    }
+    
     // Sets the selection of SchoolClass object in response to user selecting a corresponding cell and prepares to show details for that SchoolClass object
     func selectAndShowDetailsFor(schoolClass: SchoolClass){
         selectedClass = schoolClass
         showDetails(for: schoolClass)
+    }
+    
+    // Assigns local reference to all fetched Staff objects
+    func didFetchAll(staff: [Staff]) {
+        allStaff = staff
     }
     
     // Sets the selection of Staff object in response to user selecting a corresponding cell and prepares to show details for that Staff object
@@ -74,6 +172,10 @@ class PeopleVC: UIViewController, ClassEntitySelectionDelegate, StaffEntitySelec
         showDetails(for: staff)
     }
     
+    // Assigns local reference to all fetched Student objects
+    func didFetchAll(students: [Student]) {
+        allStudents = students
+    }
     // Sets the selection of Student object in response to user selecting a corresponding cell and prepares to show details for that Student object
     func selectAndShowDetailsFor(student: Student){
         selectedStudent = student
@@ -93,7 +195,20 @@ class PeopleVC: UIViewController, ClassEntitySelectionDelegate, StaffEntitySelec
             
                 // if showing details for existing entity, pass object to destination VC, otherwise show empty form
             if entity != nil {
-                classDetailsVC.schoolClass = entity as? SchoolClass
+                let schoolClass = entity as? SchoolClass
+              
+                classDetailsVC.schoolClass = schoolClass
+                
+                if userAccounts != nil {
+                    for account in userAccounts! {
+                        if account.schoolClassId == schoolClass?.id {
+                            classDetailsVC.userAccount = account
+                        }
+                    }
+                } else {
+                    // no accounts fetched
+                }
+                
             }
             
             classDetailsVC.hidesBottomBarWhenPushed = true
@@ -107,6 +222,8 @@ class PeopleVC: UIViewController, ClassEntitySelectionDelegate, StaffEntitySelec
             if entity != nil {
                 staffDetailsVC.staffMember = entity as? Staff
             }
+
+            staffDetailsVC.existingStaff = self.allStaff
             
             staffDetailsVC.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(staffDetailsVC, animated: true)
@@ -119,6 +236,8 @@ class PeopleVC: UIViewController, ClassEntitySelectionDelegate, StaffEntitySelec
             if entity != nil {
                 studentDetailsVC.student = entity as? Student
             }
+            
+            studentDetailsVC.existingStudents = allStudents
             
             studentDetailsVC.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(studentDetailsVC, animated: true)
@@ -220,6 +339,7 @@ class PeopleVC: UIViewController, ClassEntitySelectionDelegate, StaffEntitySelec
     func addNewEntityButton() {
         let newEntityButton = UIButton(type: .system)
         newEntityButton.setImage(UIImage(named: "plusIcon"), for: .normal)
+        newEntityButton.setTitle("  Add", for: .normal)
         newEntityButton.sizeToFit()
         newEntityButton.addTarget(self, action: #selector(self.newEntityButtonPressed), for: .touchUpInside)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: newEntityButton)

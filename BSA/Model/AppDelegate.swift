@@ -8,9 +8,10 @@
 
 import UIKit
 import Firebase
+import UserNotifications
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
 
@@ -28,10 +29,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ]
         
         
-            // configure Firebase connection
-        FirebaseApp.configure()
+            // set up local notifications
+        let notifsCenter = UNUserNotificationCenter.current()
+        let notifsOptions: UNAuthorizationOptions = [.alert, .sound];
+        notifsCenter.requestAuthorization(options: notifsOptions) { (allowed, err) in
+            if !allowed {
+                print("User declined")
+            }
+        }
+        notifsCenter.delegate = self
         
-            // seed Firebase database
+        
+            // configure Firebase connection
+        FirebaseApp.configure() // Command provided by Firebase Documentation - https://firebase.google.com/docs/
+        
+        
+            // Code used for seeding the Firebase database
+            // Uncomment below to upload data...
 //        DBSeed.createAdminAccount ()
 //        DBSeed.createSchoolClasses()
 //        DBSeed.createStaffMembers()
@@ -41,6 +55,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         return true
     }
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void)
+    {
+        completionHandler(.alert)
+    }
+//
+//    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void)
+//    {
+//
+//    }
 
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

@@ -10,6 +10,7 @@ import UIKit
 
 // Allows a selected Staff object to be sent to the delegate
 protocol StaffEntitySelectionDelegate {
+    func didFetchAll(staff: [Staff])
     func selectAndShowDetailsFor(staff: Staff)
 }
 
@@ -31,23 +32,22 @@ class StaffTableContainerVC: UITableViewController, EntitySelectionDelegate, Sta
         tableView.backgroundColor = .clear
         tableView.tableFooterView = UIView()
         
+            // initialise DataService and request all Staff Member objects
         dataService = DataService()
         dataService?.staffFetchingDelegate = self
         dataService?.getAllStaffMembers()
-        
-            // get Staff data from storage and reload table
-//        if let staff = Data.getAllStaffMembers() {
-//            allStaff = staff
-//            tableView.reloadData()
-//        } else {
-//            // problem getting data
-//            print ("error getting staff data for staff selection VC")
-//        }
+    }
+    
+    // Requests all Staff objects every time the view is displayed
+    override func viewDidAppear(_ animated: Bool) {
+        dataService?.getAllStaffMembers()
     }
     
     
+    // Assigns fetched Staff Member objects to class-level scope and reload table to be populated with fetched data
     func finishedFetching(staffMembers: [Staff]) {
         allStaff = staffMembers
+        staffEntitySelectionDelegate.didFetchAll(staff: staffMembers)
         tableView.reloadData()
     }
     
@@ -102,6 +102,7 @@ class StaffTableContainerVC: UITableViewController, EntitySelectionDelegate, Sta
         }
         return 90
     }
+    
 
    
 

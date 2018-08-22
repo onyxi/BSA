@@ -15,14 +15,17 @@ class AdminReportsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var entityTableContainerView: UIView!
      @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var activityIndicatorBackground: UIView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    var blurEffectView: UIView?
+    
     // Properties:
     var classesWithStudents: [(SchoolClass, [Student])]?
     var allSchoolClasses: [SchoolClass]?
     var allStudents: [Student]?
     var entityTableContainerVC: AdminReportsEntityTableContainerVC!
-    
+
     var dataService: DataService?
-//    var analysis: AdminReportAnalysis?
     
     // Configure view when loaded
     override func viewDidLoad() {
@@ -39,47 +42,56 @@ class AdminReportsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.backgroundColor = .clear
         tableView.tableFooterView = UIView()
         
-            // get all Class objects (and the Students associated with that class) from storage, and reload table
+            // initialise DataService and request all School-Class objects from storage
         dataService = DataService()
         dataService?.schoolClassFetchingDelegate = self
         dataService?.studentFetchingDelegate = self
-        
         dataService?.getAllSchoolClasses()
-        
-//        analysis = Analysis()
-//        analysis?.adminReportAnalysisDelegate = self
-//        analysis?.analyseAdminReportData(for: )
-        
-//        classesWithStudents = Data.getAllClassesWithStudents()
-//        tableView.reloadData()
-        
-            // send the retrieved Class (and associated Students) objects to the container view for unpacking and representation in its table of students
-//        entityTableContainerVC.unpackClassesWithStudents(classesWithStudents: classesWithStudents)
+
+            // add blur while data loads
+        setupActivityIndicator()
     }
     
+    // Adds screen-blur and activity indicator while data is loading
+    func setupActivityIndicator() {
+        activityIndicatorBackground.backgroundColor = .clear
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.extraLight)
+        blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView!.frame = activityIndicatorBackground.bounds
+        blurEffectView!.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        activityIndicatorBackground.addSubview(blurEffectView!)
+        
+        activityIndicatorBackground.bringSubview(toFront: activityIndicator)
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.startAnimating()
+    }
     
-    
+    // Requests all Student objects associated with fetched School-Class objects
     func finishedFetching(schoolClasses: [SchoolClass]) {
         dataService?.getStudents(for: schoolClasses)
     }
     
-    func finishedFetching(students: [Student]) {
-        // no implementation needed in this class
-    }
-    
+    // Assigns fetched School Classes (with associated Students) to class-level scope and passes to main entity-table's View Controller for unpacking, before reloading this VC's simple table - with only the pinned 'Whole-School' cell
     func finishedFetching(classesWithStudents: [(schoolClass: SchoolClass, students: [Student])]) {
+        
+        // hide activity indicator ow that data has loaded
+        activityIndicator.stopAnimating()
+        UIView.animate(withDuration: 0.2, animations: {
+            self.blurEffectView!.alpha = 0.0
+        }) { (nil) in
+            self.activityIndicatorBackground.isHidden = true
+            self.activityIndicator.isHidden = true
+        }
+        
         self.classesWithStudents = classesWithStudents
         entityTableContainerVC.unpackClassesWithStudents(classesWithStudents: classesWithStudents)
         tableView.reloadData()
     }
     
 
-    
-
-    
     // Sets number of rows in the small header-table showing just the whole-school cell (or nothing if no Class/Student data was returned from storage)
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if classesWithStudents == nil {
+        if classesWithStudents == nil || classesWithStudents!.isEmpty {
             return 0
         } else {
             return 2
@@ -184,5 +196,8 @@ class AdminReportsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     }
     
     
+    func finishedFetching(students: [Student]) {
+        // needed to conform to protocol - no implementation needed in this class
+    }
 
 }

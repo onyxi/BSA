@@ -19,6 +19,10 @@ class StudentSelectionVC: UIViewController, UITableViewDelegate, UITableViewData
     // UI handles:
     @IBOutlet weak var tableView: UITableView!
     
+    @IBOutlet weak var activityIndicatorBackground: UIView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    var blurEffectView: UIView?
+    
     // Properties:
     var studentSelectionDelegate: StudentSelectionDelegate?
     var allStudents = [Student]()
@@ -42,41 +46,81 @@ class StudentSelectionVC: UIViewController, UITableViewDelegate, UITableViewData
         tableView.backgroundColor = UIColor.clear
         tableView.tableFooterView = UIView()
         
-            // retrieve Student objects from storage and reload table
+            // initialise DataService
         dataService = DataService()
         dataService.schoolClassFetchingDelegate = self
         dataService.studentFetchingDelegate = self
         
-       
-        
+            // Check logged-in user - if 'Admin', get all students, otherwise request associated School Class object
         if UserDefaults.standard.string(forKey: Constants.LOGGED_IN_ACCOUNT_NAME) == "Admin" {
             dataService.getAllStudents()
         } else {
             dataService.getSchoolClass(withId: UserDefaults.standard.string(forKey: Constants.LOGGED_IN_ACCOUNT_CLASS_ID)!)
         }
         
-//        getSchoolClass()
-        
-//        getStudentsForAccount()
-//        tableView.reloadData()
-        
+            // add swipe-gesture recognisers to main view
+        addGestureRecognisers()
+    
+            // add blur while data loads
+        setupActivityIndicator()
     }
     
-    func getSchoolClass() {
-//        if UserDefaults.standard.integer(forKey: Constants.LOGGED_IN_ACCOUNT_NUMBER_KEY) != 0 {
-//            schoolClass = schoolClass(
-//                id: String,
-//                classNumber: Int,
-//                className: String)
-//        }
+    // Adds screen-blur and activity indicator while data is loading
+    func setupActivityIndicator() {
+        activityIndicatorBackground.backgroundColor = .clear
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.extraLight)
+        blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView!.frame = activityIndicatorBackground.bounds
+        blurEffectView!.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        activityIndicatorBackground.addSubview(blurEffectView!)
+        
+        activityIndicatorBackground.bringSubview(toFront: activityIndicator)
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.startAnimating()
+    }
+    
+    // Adds right swipe-gesture recogniser to the main view
+    func addGestureRecognisers() {
+        
+        // add right-swipe recogniser
+        var swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(processGesture))
+        swipeRight.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(swipeRight)
     }
     
     
+    // Processes recognised right swipe recognisers
+    @objc func processGesture(gesture: UIGestureRecognizer) {
+        if let gesture = gesture as? UISwipeGestureRecognizer {
+            switch gesture.direction {
+                
+            // navigate back to previous screen
+            case UISwipeGestureRecognizerDirection.right:
+                self.navigationController?.popViewController(animated: true)
+                
+            default:
+                break
+            }
+        }
+    }
+    
+    // Requests Students associated with fetched School Class object
     func finishedFetching(schoolClasses: [SchoolClass]) {
         dataService.getStudents(for: schoolClasses[0])
     }
     
+    // Assigns fetched Student objects to class-level scope and searches fetched students to find the selected Student passed from parent VC (if any), before reloading table - to be populated with fetched data
     func finishedFetching(students: [Student]) {
+        
+        // hide activity indicator ow that data has loaded
+        activityIndicator.stopAnimating()
+        UIView.animate(withDuration: 0.2, animations: {
+            self.blurEffectView!.alpha = 0.0
+        }) { (nil) in
+            self.activityIndicatorBackground.isHidden = true
+            self.activityIndicator.isHidden = true
+        }
+        
         allStudents = students
         
         if selectedStudentNumber != nil {
@@ -90,31 +134,6 @@ class StudentSelectionVC: UIViewController, UITableViewDelegate, UITableViewData
         tableView.reloadData()
     }
     
-    func finishedFetching(classesWithStudents: [(schoolClass: SchoolClass, students: [Student])]) {
-        // no implementation needed in this class
-    }
-    
-    
-    
-    // getStudentsForAccount
-    func getStudentsForAccount() {
-//        let accountNo = UserDefaults.standard.integer(forKey: Constants.LOGGED_IN_ACCOUNT_NUMBER_KEY)
-//        if accountNo == 0 {
-//            dataService.getAllStudents()
-//        } else {
-//           dataService.getStudents(for: schoolClass)
-        
-            
-//            if let schoolClass = Data.getSchoolClass(numbered: UserDefaults.standard.integer(forKey: Constants.LOGGED_IN_ACCOUNT_NUMBER_KEY)) {
-//                if let students = Data.getStudents(for: schoolClass) {
-//                    allStudents = students
-//                } else {
-//                    // problem getting data
-//                    print ("error getting class students for student seleection vc")
-//                }
-//            }
-//        }
-    }
     
     // Sets number of rows in the table of Students
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -188,7 +207,7 @@ class StudentSelectionVC: UIViewController, UITableViewDelegate, UITableViewData
     // Sets the height for cells in table of Students
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {
-            return 0
+            return 20
         } else if indexPath.row == allStudents.count + 1 {
             return 125
         } else {
@@ -215,5 +234,8 @@ class StudentSelectionVC: UIViewController, UITableViewDelegate, UITableViewData
         self.navigationController?.popViewController(animated: true)
     }
 
+    func finishedFetching(classesWithStudents: [(schoolClass: SchoolClass, students: [Student])]) {
+        // needed to conform to protocol - no implementation needed in this class
+    }
 
 }

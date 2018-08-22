@@ -24,7 +24,6 @@ class PeopleClassCell: UITableViewCell {
     // Configure view appearance when loaded
     override func awakeFromNib() {
         super.awakeFromNib()
-       
     }
     
     // Send's the cell's identity (row number) to the delegate when the user presses it

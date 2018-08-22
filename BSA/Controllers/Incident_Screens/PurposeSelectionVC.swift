@@ -36,22 +36,41 @@ class PurposeSelectionVC: UIViewController, UITableViewDelegate, UITableViewData
         tableView.dataSource = self
         tableView.backgroundColor = UIColor.clear
         tableView.tableFooterView = UIView()
-        
-            // retrieve Purpose objects from storage and reload table
-//        if let purposes = Data.getAllPurposes() {
-//            allPurposes = purposes
-//            tableView.reloadData()
-//        } else {
-//            // problem getting data
-//            print("error getting purposes for purpose selection vc")
-//        }
-        
     
-    
+            // load purpose-type values from Constants and reload table
         getPurposes()
         tableView.reloadData()
+    
+            // add swipe-gesture recognisers to main view
+        addGestureRecognisers()
+    }
+    
+    // Adds right swipe-gesture recogniser to the main view
+    func addGestureRecognisers() {
+        
+        // add right-swipe recogniser
+        var swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(processGesture))
+        swipeRight.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(swipeRight)
+    }
+    
+    
+    // Processes recognised right swipe recognisers
+    @objc func processGesture(gesture: UIGestureRecognizer) {
+        if let gesture = gesture as? UISwipeGestureRecognizer {
+            switch gesture.direction {
+                
+            // navigate back to previous screen
+            case UISwipeGestureRecognizerDirection.right:
+                self.navigationController?.popViewController(animated: true)
+                
+            default:
+                break
+            }
+        }
     }
 
+    // Loads purpose-type values from Constants
     func getPurposes() {
         allPurposes.append(Constants.PURPOSES.socialAttention)
         allPurposes.append(Constants.PURPOSES.tangibles)
@@ -92,7 +111,6 @@ class PurposeSelectionVC: UIViewController, UITableViewDelegate, UITableViewData
             let purpose = allPurposes[indexPath.row - 1]
             let cell = tableView.dequeueReusableCell(withIdentifier: "PurposeCell", for: indexPath) as! PurposeCell
             cell.purposeTypeLabel.text = purpose
-//            "\(purpose.type!)"
             
                 // update cell appearance according to whether the current cell corresponds to a Purpose currently contained in the array of selected Purposes
             if selectedPurposes.contains(purpose) {

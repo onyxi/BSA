@@ -6,8 +6,6 @@
 //  Copyright © 2018 Onyx Interactive. All rights reserved.
 //
 
-//(album.availableDate.timeIntervalSince1970 * 1000).rounded() as AnyObject
-
 import Foundation
 
 import Firebase
@@ -18,38 +16,27 @@ protocol AdminCreationDelegate {
 }
 
 protocol UserAccountFetchingDelegate {
-//    func finishedFetchingAllUserAccounts(userAccounts: [UserAccount]?)
-//    func finishedFetchingSingleUserAccount(userAccount: UserAccount?)
     func finishedFetching(userAccounts: [UserAccount])
 }
 
 protocol SchoolClassFetchingDelegate {
-//    func finishedFetchingAllSchoolClasses(schoolClasses: [SchoolClass]?)
-//    func finishedFetchingSingleSchoolClass(schoolClass: SchoolClass?)
     func finishedFetching(schoolClasses: [SchoolClass])
 }
 
 protocol StaffFetchingDelegate {
-//    func finishedFetchingAllStaffMembers(staffMembers: [Staff]?)
-//    func finishedFetchingSingleStaffMember(staffMember: Staff?)
     func finishedFetching(staffMembers: [Staff])
 }
 
 protocol StudentFetchingDelegate {
-//    func finishedFetchingAllStudents(students: [Student]?)
-//    func finishedFetchingSingleStudent(student: Student?)
-//    func finishedFetchingStudentsForClass(students: [Student]?, schoolClass: SchoolClass)
     func finishedFetching(students: [Student])
     func finishedFetching(classesWithStudents: [(schoolClass: SchoolClass, students: [Student])])
 }
 
 protocol BehaviourFetchingDelegate {
-//    func finishedFetchingAllBehaviours(behaviours: [Behaviour]?)
     func finishedFetching(behaviours: [String])
 }
 
 protocol PurposeFetchingDelegate {
-//    func finishedFetchingAllPurposes(purposes: [Purpose]?)
     func finishedFetching(purposes: [String])
 }
 
@@ -62,8 +49,6 @@ protocol IncidentsFetchingDelegate {
 }
 
 
-//typealias Completion = (_ errMsg: String?, _ data: AnyObject?) -> Void
-
 class DataService {
     
     
@@ -72,8 +57,6 @@ class DataService {
     var schoolClassRef: DatabaseReference = Database.database().reference().child(Constants.FIREBASE_SCHOOL_CLASSES)
     var staffRef: DatabaseReference = Database.database().reference().child(Constants.FIREBASE_STAFF)
     var studentsRef: DatabaseReference = Database.database().reference().child(Constants.FIREBASE_STUDENTS)
-//    var behavioursRef: DatabaseReference = Database.database().reference().child(Constants.FIREBASE_BEHAVIOURS)
-//    var purposesRef: DatabaseReference = Database.database().reference().child(Constants.FIREBASE_PURPOSES)
     var rAGAssessmentsRef: DatabaseReference = Database.database().reference().child(Constants.FIREBASE_RAG_ASSESSMENTS)
     var incidentsRef: DatabaseReference = Database.database().reference().child(Constants.FIREBASE_INCIDENTS)
     
@@ -81,21 +64,20 @@ class DataService {
     var schoolClassFetchingDelegate: SchoolClassFetchingDelegate?
     var staffFetchingDelegate: StaffFetchingDelegate?
     var studentFetchingDelegate: StudentFetchingDelegate?
-//    var behaviourFetchingDelegate: BehaviourFetchingDelegate?
-//    var purposeFetchingDelegate: PurposeFetchingDelegate?
     var rAGAssessmentsFetchingDelegate: RAGAssessmentsFetchingDelegate?
     var incidentsFetchingDelegate: IncidentsFetchingDelegate?
     
     
+    // Admin account --------
     
-    // Upload Admin account --------
-    
+    // Creates the 'Admin' User Account object in the Firebase database
     func createAdminAccount(completion: @escaping (_ success: Bool, _ message: String?) -> Void) {
 
         let adminAccount: Dictionary<String, AnyObject> = [
-            Constants.FIREBASE_USER_ACCOUNTS_NAME : "Admin" as AnyObject,
-            Constants.FIREBASE_USER_ACCOUNTS_SECURITY_LEVEL : 0 as AnyObject,
-            Constants.FIREBASE_USER_ACCOUNTS_CLASS_ID : "" as AnyObject]
+            Constants.FIREBASE_USER_ACCOUNT_NAME : "Admin" as AnyObject,
+            Constants.FIREBASE_USER_ACCOUNT_SECURITY_LEVEL : 0 as AnyObject,
+            Constants.FIREBASE_USER_ACCOUNT_CLASS_ID : "" as AnyObject,
+            Constants.FIREBASE_USER_ACCOUNT_PASSWORD : "password" as AnyObject]
 
         mainRef.child(Constants.FIREBASE_USER_ACCOUNTS).child(NSUUID().uuidString).updateChildValues(adminAccount) { (error, ref) in
             if error != nil { // upload error occurred - provide feedback
@@ -107,14 +89,17 @@ class DataService {
     }
     
     
+    
     // ---------- User Accounts
     
+    // Creates a new User Account object in the Firebase database
     func createUserAccount(userAccount: UserAccount, completion: @escaping (_ success: Bool, _ message: String?) -> Void) {
 
         let account: Dictionary<String, AnyObject> = [
-            Constants.FIREBASE_USER_ACCOUNTS_NAME : userAccount.accountName as AnyObject,
-            Constants.FIREBASE_USER_ACCOUNTS_SECURITY_LEVEL : userAccount.securityLevel as AnyObject,
-            Constants.FIREBASE_USER_ACCOUNTS_CLASS_ID : userAccount.schoolClassId as AnyObject]
+            Constants.FIREBASE_USER_ACCOUNT_NAME : userAccount.accountName as AnyObject,
+            Constants.FIREBASE_USER_ACCOUNT_SECURITY_LEVEL : userAccount.securityLevel as AnyObject,
+            Constants.FIREBASE_USER_ACCOUNT_CLASS_ID : userAccount.schoolClassId as AnyObject,
+            Constants.FIREBASE_USER_ACCOUNT_PASSWORD : userAccount.password as AnyObject]
 
         userAccountsRef.child(userAccount.id).updateChildValues(account) { (error, ref) in
             if error != nil { // upload error occurred - provide feedback
@@ -126,41 +111,140 @@ class DataService {
     }
     
     
-    func createSchoolClass(schoolClass: SchoolClass, completion: @escaping (_ classId: String?, _ message: String?) -> Void) {
-        
-        let newSchoolClass: Dictionary<String, AnyObject> = [
-            Constants.FIREBASE_SCHOOL_CLASS_NAME : schoolClass.className as AnyObject
-        ]
-        
-        schoolClassRef.child(schoolClass.id).updateChildValues(newSchoolClass) { (error, ref) in
-            if error != nil {
-                // handle upload failure
-                print (error)
-//                print ("Error creating School Class: \(error!.localizedDescription)")
-            } else {
-                let newUserAccount = UserAccount(
-                    id: Constants.getUniqueId(),
-                    accountName: schoolClass.className,
-                    securityLevel: 1,
-                    schoolClassId: schoolClass.id)
-//                    String(ref))
-                self.createUserAccount(userAccount: newUserAccount, completion: { (success, message) in
-                    if success {
-                        print ("New Class created: \(schoolClass.className)")
-                        print (message)
-                        completion(schoolClass.id, schoolClass.className)
-                    } else {
-                        print (message)
-                        completion(nil, "failed")
-                    }
-                })
+    // Searches Database for all User Accounts. Asynchronous method - call-back returns an array of User Account object.If not found, returns nil.
+    func getAllUserAccounts() {
+        let queryRef = userAccountsRef
+        queryRef.queryOrdered(byChild: Constants.FIREBASE_USER_ACCOUNT_NAME).observeSingleEvent(of: .value, with: { (snapshot) in
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                
+                var fetchedUserAccounts = [UserAccount]()
+                
+                for snap in snapshots {
+                    
+                    let storedAccountID = snap.key
+                    let storedAccountName = snap.childSnapshot(forPath: Constants.FIREBASE_USER_ACCOUNT_NAME).value as! String
+                    let storedSecurityLevel = snap.childSnapshot(forPath: Constants.FIREBASE_USER_ACCOUNT_SECURITY_LEVEL).value as! Int
+                    let storedSchoolClassID = snap.childSnapshot(forPath: Constants.FIREBASE_USER_ACCOUNT_CLASS_ID).value as! String
+                    let storedPassword = snap.childSnapshot(forPath: Constants.FIREBASE_USER_ACCOUNT_PASSWORD).value as! String
+                    
+                    let storedUserAccount = UserAccount(
+                        id: storedAccountID,
+                        accountName: storedAccountName,
+                        securityLevel: storedSecurityLevel,
+                        schoolClassId: storedSchoolClassID,
+                        password: storedPassword
+                    )
+                    
+                    fetchedUserAccounts.append(storedUserAccount)
+                }
+                self.userAccountFetchingDelegate?.finishedFetching(userAccounts: fetchedUserAccounts)
             }
-            
-        }
+        })
     }
     
     
     
+    // Searches Database for a single User Account with a given id. Asynchronous method - call-back returns an array with single User Account object. If not found, returns nil.
+    func getUserAccountWithID(withId id: String) {
+        let queryRef = userAccountsRef.child(id)
+        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            var fetchedUserAccounts = [UserAccount]()
+            
+            let storedAccountID = snapshot.key
+            let storedAccountName = snapshot.childSnapshot(forPath: Constants.FIREBASE_USER_ACCOUNT_NAME).value as! String
+            let storedSecurityLevel = snapshot.childSnapshot(forPath: Constants.FIREBASE_USER_ACCOUNT_SECURITY_LEVEL).value as! Int
+            let storedSchoolClassId = snapshot.childSnapshot(forPath: Constants.FIREBASE_USER_ACCOUNT_CLASS_ID).value as! String
+            let storedPassword = snapshot.childSnapshot(forPath: Constants.FIREBASE_USER_ACCOUNT_PASSWORD).value as! String
+            
+            let storedUserAccount = UserAccount(
+                id: storedAccountID,
+                accountName: storedAccountName,
+                securityLevel: storedSecurityLevel,
+                schoolClassId: storedSchoolClassId,
+                password: storedPassword)
+            
+            fetchedUserAccounts.append(storedUserAccount)
+            
+            self.userAccountFetchingDelegate?.finishedFetching(userAccounts: fetchedUserAccounts)
+            
+        })
+    }
+    
+    
+    func deleteUserAccount() {
+        
+    }
+    
+    
+    // ---------- School Classes
+    
+    // Creates  a new School Class object in the Firebase database. If the new object is created successfully, a new User Account object is also created in the database - associated with the School Class object.
+    func createSchoolClass(schoolClass: SchoolClass, onComplete: @escaping (_ classId: String?, _ message: String?) -> Void) {
+        
+        let newSchoolClass: Dictionary<String, AnyObject> = [
+            Constants.FIREBASE_SCHOOL_CLASS_NAME : schoolClass.className as AnyObject
+        ]
+            // create School Class object
+        schoolClassRef.child(schoolClass.id).updateChildValues(newSchoolClass) { (error, ref) in
+            if error != nil {
+                // deal with error
+            } else {
+                // save successful
+                onComplete(schoolClass.id, schoolClass.className)
+            }
+        }
+    }
+    
+    
+    // Searches Database for all School Classes.Asynchronous method - call-back returns an array of School Class objects. If not found, returns nil.
+    func getAllSchoolClasses() {
+        let queryRef = schoolClassRef
+        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                
+                var fetchedSchoolClasses = [SchoolClass]()
+                
+                for snap in snapshots {
+                    
+                    let storedSchoolClassID = snap.key
+                    let storedSchoolClassName = snap.childSnapshot(forPath: Constants.FIREBASE_SCHOOL_CLASS_NAME).value as! String
+                    
+                    let storedSchoolClass = SchoolClass(
+                        id: storedSchoolClassID,
+                        className: storedSchoolClassName)
+                    fetchedSchoolClasses.append(storedSchoolClass)
+                }
+                self.schoolClassFetchingDelegate?.finishedFetching(schoolClasses: fetchedSchoolClasses)
+            }
+        })
+    }
+    
+    
+    // Searches Database for a single School Class with a given id. Asynchronous method - call-back returns an array with single School Class object. If not found, returns nil.
+    func getSchoolClass(withId id: String) {
+        let queryRef = schoolClassRef.child(id)
+        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            var fetchedSchoolClasses = [SchoolClass]()
+            
+            let storedSchoolClassID = id
+            let storedSchoolClassName = snapshot.childSnapshot(forPath: Constants.FIREBASE_SCHOOL_CLASS_NAME).value as! String
+            
+            let storedSchoolClass = SchoolClass(
+                id: storedSchoolClassID,
+                className: storedSchoolClassName)
+            
+            fetchedSchoolClasses.append(storedSchoolClass)
+            
+            self.schoolClassFetchingDelegate?.finishedFetching(schoolClasses: fetchedSchoolClasses)
+        })
+    }
+    
+    
+    // ---------- Staff
+    
+    // Creates a new Staff object in the Firebase database
     func createStaffMember(staffMember: Staff, completion: @escaping (_ staffId: String?, _ message: String?) -> Void) {
         
         let newStaffMember: Dictionary<String, AnyObject> = [
@@ -178,8 +262,65 @@ class DataService {
     }
     
     
+    // Searches Database for all Staff Members. Asynchronous method - call-back returns an array of Staff object. If not found, returns nil.
+    func getAllStaffMembers() {
+        let queryRef = staffRef
+        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                
+                var fetchedStaffMembers = [Staff]()
+                
+                for snap in snapshots {
+                    
+                    let storedStaffMemberID = snap.key
+                    let storedStaffMemberNumber = snap.childSnapshot(forPath: Constants.FIREBASE_STAFF_NUMBER).value as! Int
+                    let storedStaffMemberFirstName = snap.childSnapshot(forPath: Constants.FIREBASE_STAFF_FIRST_NAME).value as! String
+                    let storedStaffMemberLastName = snap.childSnapshot(forPath: Constants.FIREBASE_STAFF_LAST_NAME).value as! String
+                    
+                    let storedStaffMember = Staff(
+                        id: storedStaffMemberID,
+                        staffNumber: storedStaffMemberNumber,
+                        firstName: storedStaffMemberFirstName,
+                        lastName: storedStaffMemberLastName)
+                    
+                    fetchedStaffMembers.append(storedStaffMember)
+                }
+                self.staffFetchingDelegate?.finishedFetching(staffMembers: fetchedStaffMembers)
+            }
+        })
+    }
     
     
+    
+    // Searches Database for a single Staff Member with a given id. Asynchronous method - call-back returns an array with single Staff object. If not found, returns nil.
+    func getStaffMember(withId id: String) {
+        let queryRef = staffRef.child(id)
+        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            var fetchedStaffMembers = [Staff]()
+            
+            let storedStaffMemberID = snapshot.key
+            let storedStaffMemberNumber = snapshot.childSnapshot(forPath: Constants.FIREBASE_STAFF_NUMBER).value as! Int
+            let storedStaffMemberFirstName = snapshot.childSnapshot(forPath: Constants.FIREBASE_STAFF_FIRST_NAME).value as! String
+            let storedStaffMemberLastName = snapshot.childSnapshot(forPath: Constants.FIREBASE_STAFF_LAST_NAME).value as! String
+            
+            let storedStaffMember = Staff(
+                id: storedStaffMemberID,
+                staffNumber: storedStaffMemberNumber,
+                firstName: storedStaffMemberFirstName,
+                lastName: storedStaffMemberLastName)
+            
+            fetchedStaffMembers.append(storedStaffMember)
+            
+            self.staffFetchingDelegate?.finishedFetching(staffMembers: fetchedStaffMembers)
+        })
+    }
+    
+    
+    
+    // ---------- Students
+    
+    // Creates a new Student object in the Firebase database
     func createStudent(student: Student, completion: @escaping (_ studentId: String?, _ message: String?) -> Void) {
         
         let newStudent: Dictionary<String, AnyObject> = [
@@ -198,9 +339,190 @@ class DataService {
         }
     }
     
+    // Searches Database for all Students. Asynchronous method - call-back returns an array of Student objects. If not found, returns nil.
+    func getAllStudents() {
+        let queryRef = studentsRef
+        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                
+                var fetchedStudents = [Student]()
+                
+                for snap in snapshots {
+                    
+                    let storedStudentID = snap.key
+                    let storedStudentNumber = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_NUMBER).value as! Int
+                    let storedStudentFirstName = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_FIRST_NAME).value as! String
+                    let storedStudentLastName = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_LAST_NAME).value as! String
+                    let storedStudentClassId = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_CLASS_ID).value as! String
+                    
+                    let storedStudent = Student(
+                        id: storedStudentID,
+                        studentNumber: storedStudentNumber,
+                        firstName: storedStudentFirstName,
+                        lastName: storedStudentLastName,
+                        schoolClassId: storedStudentClassId)
+                    
+                    fetchedStudents.append(storedStudent)
+                }
+                self.studentFetchingDelegate?.finishedFetching(students: fetchedStudents)
+            }
+        })
+    }
     
     
-//     func createStaffMember(staffMember: Staff, completion: @escaping (_ staffId: String?, _ message: String?) -> Void) {
+    // Searches Database for a single Student with a given id. Asynchronous method - call-back returns an array with single Student object.  If not found, returns nil.
+    func getStudent(withId id: String) {
+        let queryRef = studentsRef.child(id)
+        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            var fetchedStudents = [Student]()
+            
+            let storedStudentID = snapshot.key
+            let storedStudentNumber = snapshot.childSnapshot(forPath: Constants.FIREBASE_STUDENT_NUMBER).value as! Int
+            let storedStudentFirstName = snapshot.childSnapshot(forPath: Constants.FIREBASE_STUDENT_FIRST_NAME).value as! String
+            let storedStudentLastName = snapshot.childSnapshot(forPath: Constants.FIREBASE_STUDENT_LAST_NAME).value as! String
+            //                    let storedStudentClassNumber = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_CLASS_NUMBER).value as! String
+            let storedStudentClassId = snapshot.childSnapshot(forPath: Constants.FIREBASE_STUDENT_CLASS_ID).value as! String
+            
+            let storedStudent = Student(
+                id: storedStudentID,
+                studentNumber: storedStudentNumber,
+                firstName: storedStudentFirstName,
+                lastName: storedStudentLastName,
+                schoolClassId: storedStudentClassId)
+            
+            fetchedStudents.append(storedStudent)
+            
+            self.studentFetchingDelegate?.finishedFetching(students: fetchedStudents)
+        })
+    }
+    
+    
+    // Searches Database for all Students associated with a given School Class. Asynchronous method - call-back returns an array of Student objects.  If not found, returns nil.
+    func getStudents(for schoolClass: SchoolClass) {
+        let queryRef = studentsRef
+        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                
+                var fetchedStudents = [Student]()
+                
+                for snap in snapshots {
+                    
+                    let storedStudentID = snap.key
+                    let storedStudentNumber = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_NUMBER).value as! Int
+                    let storedStudentFirstName = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_FIRST_NAME).value as! String
+                    let storedStudentLastName = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_LAST_NAME).value as! String
+                    let storedStudentClassId = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_CLASS_ID).value as! String
+                    
+                    let storedStudent = Student(
+                        id: storedStudentID,
+                        studentNumber: storedStudentNumber,
+                        firstName: storedStudentFirstName,
+                        lastName: storedStudentLastName,
+                        schoolClassId: storedStudentClassId)
+                    
+                    if storedStudent.schoolClassId == schoolClass.id {
+                        fetchedStudents.append(storedStudent)
+                    }
+                }
+                self.studentFetchingDelegate?.finishedFetching(students: fetchedStudents)
+            }
+        })
+    }
+    
+    // Searches Database for all Students associated with a given set of School Classes. Asynchronous method - call-back returns an array of tuples containing a School Class aobject and array of associated Student objects.  If not found, returns nil.
+    func getStudents(for schoolClasses: [SchoolClass]) {
+        let queryRef = studentsRef
+        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                
+                var allStudents = [Student]()
+                
+                for snap in snapshots {
+                    
+                    let storedStudentID = snap.key
+                    let storedStudentNumber = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_NUMBER).value as! Int
+                    let storedStudentFirstName = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_FIRST_NAME).value as! String
+                    let storedStudentLastName = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_LAST_NAME).value as! String
+                    let storedStudentClassId = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_CLASS_ID).value as! String
+                    
+                    let storedStudent = Student(
+                        id: storedStudentID,
+                        studentNumber: storedStudentNumber,
+                        firstName: storedStudentFirstName,
+                        lastName: storedStudentLastName,
+                        schoolClassId: storedStudentClassId)
+                    allStudents.append(storedStudent)
+                    
+                }
+                
+                var fetchedClassesWithStudents = [  (schoolClass: SchoolClass, students: [Student])  ]()
+                
+                for schoolClass in schoolClasses {
+                    var classStudents = [Student]()
+                    for student in allStudents {
+                        if student.schoolClassId == schoolClass.id {
+                            classStudents.append(student)
+                        }
+                    }
+                    let classWithStudents = (schoolClass: schoolClass, students: classStudents)
+                    fetchedClassesWithStudents.append( classWithStudents )
+                }
+                
+                self.studentFetchingDelegate?.finishedFetching(classesWithStudents: fetchedClassesWithStudents)
+            }
+        })
+    }
+    
+    // -------- Entity Deletion
+    
+    // Deletes a given entity from Firebase database
+    func delete(entity: Any, account: UserAccount?, completion: @escaping (_ success: Bool, _ message: String?) -> Void) {
+        
+            // if School-Class object passed in for deletion
+        if let schoolClass = entity as? SchoolClass {
+            guard account != nil else {
+                print ("no associated account passed in for deletion with school class")
+                return
+            }
+            
+            schoolClassRef.child(schoolClass.id).removeValue { (error, ref) in
+                if error != nil {
+                    completion(false, error?.localizedDescription)
+                } else {
+                        // also delete associated user account
+                    self.userAccountsRef.child(account!.id).removeValue()
+                    completion(true, nil)
+                }
+            }
+            
+            // if Staff object passed in for deletion
+        } else if let staffMember = entity as? Staff {
+            staffRef.child(staffMember.id).removeValue { (error, ref) in
+                if error != nil {
+                    completion(false, error?.localizedDescription)
+                } else {
+                    completion(true, nil)
+                }
+            }
+            
+            // if Student object passed in for deletion
+        } else if let student = entity as? Student {
+            studentsRef.child(student.id).removeValue { (error, ref) in
+                if error != nil {
+                    completion(false, error?.localizedDescription)
+                } else {
+                    completion(true, nil)
+                }
+            }
+        }
+    }
+    
+    
+    
+    // -------- RAG Assessments
+    
+    // Creates a new RAG Assessment object in the Firebase database
     func createRAGAssessment(rAGAssessment: RAGAssessment, completion: @escaping (_ rAGAssessmentId: String?, _ message: String?) -> Void) {
         
         let newRAGAssessment: Dictionary<String, AnyObject> = [
@@ -208,7 +530,7 @@ class DataService {
             Constants.FIREBASE_RAG_ASSESSMENT_PERIOD : rAGAssessment.period as AnyObject,
             Constants.FIREBASE_RAG_ASSESSMENT_STUDENT : rAGAssessment.studentNumber as AnyObject,
             Constants.FIREBASE_RAG_ASSESSMENT_STATUS : rAGAssessment.assessment as AnyObject
-            ]
+        ]
         
         rAGAssessmentsRef.child(rAGAssessment.id).updateChildValues(newRAGAssessment) { (error, ref) in
             if error != nil { // upload error occurred - provide feedback
@@ -219,9 +541,93 @@ class DataService {
         }
     }
     
+    // Searches Database for all RAG Assessments associated with a given set of Students. Asynchronous method - call-back returns an array of RAG Assessment objects.  If not found, returns nil.
+    func getAllRAGAssessments(for students: [Student]) {
+        let queryRef = rAGAssessmentsRef
+        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                
+                var studentNumbers = [Int]()
+                for student in students {
+                    studentNumbers.append(student.studentNumber)
+                }
+                
+                var fetchedRAGAssessments = [RAGAssessment]()
+                
+                for snap in snapshots {
+                    
+                    let storedRAGAssessmentID = snap.key
+                    let storedRAGAssessmentDate = snap.childSnapshot(forPath: Constants.FIREBASE_RAG_ASSESSMENT_DATE).value as! Double
+                    let storedRAGAssessmentPeriod = snap.childSnapshot(forPath: Constants.FIREBASE_RAG_ASSESSMENT_PERIOD).value as! String
+                    let storedRAGAssessmentStudentNumber = snap.childSnapshot(forPath: Constants.FIREBASE_RAG_ASSESSMENT_STUDENT).value as! Int
+                    let storedRAGAssessmentAssessmentStatus = snap.childSnapshot(forPath: Constants.FIREBASE_RAG_ASSESSMENT_STATUS).value as! String
+                    
+                    let storedRAGAssessment = RAGAssessment(
+                        id: storedRAGAssessmentID,
+                        date: Date(timeIntervalSince1970: TimeInterval(storedRAGAssessmentDate)),
+                        period: storedRAGAssessmentPeriod,
+                        studentNumber: storedRAGAssessmentStudentNumber,
+                        assessment: storedRAGAssessmentAssessmentStatus)
+                    
+                    if studentNumbers.contains(storedRAGAssessment.studentNumber) {
+                        fetchedRAGAssessments.append(storedRAGAssessment)
+                    }
+
+                }
+                self.rAGAssessmentsFetchingDelegate?.finishedFetching(rAGAssessments: fetchedRAGAssessments)
+            }
+        })
+    }
     
     
-//    DataService().createIncident(id: incident.id , incident: incident) { (incidentId, message) in
+    // Returns all RAG Assessment objects from the Firebase database - for a given selection of Students, and in a given time-period.
+    func getRAGAssessments(for students: [Student], fromTimePeriod timePeriod: TimePeriod) {
+        
+        let timePeriodStartDate = DataService.getTimePeriodStartDate(for: timePeriod)!
+        let timePeriodEndDate = DataService.getTimePeriodEndDate(for: timePeriod)!
+        
+        let queryRef = rAGAssessmentsRef
+        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
+            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
+                
+                
+                var studentNumbers = [Int]()
+                for student in students {
+                    studentNumbers.append(student.studentNumber)
+                }
+                
+                var fetchedRAGAssessments = [RAGAssessment]()
+                
+                for snap in snapshots {
+                    
+                    let storedRAGAssessmentID = snap.key
+                    let storedRAGAssessmentDate = snap.childSnapshot(forPath: Constants.FIREBASE_RAG_ASSESSMENT_DATE).value as! Double
+                    let storedRAGAssessmentPeriod = snap.childSnapshot(forPath: Constants.FIREBASE_RAG_ASSESSMENT_PERIOD).value as! String
+                    let storedRAGAssessmentStudentNumber = snap.childSnapshot(forPath: Constants.FIREBASE_RAG_ASSESSMENT_STUDENT).value as! Int
+                    let storedRAGAssessmentAssessmentStatus = snap.childSnapshot(forPath: Constants.FIREBASE_RAG_ASSESSMENT_STATUS).value as! String
+                    
+                    let storedRAGAssessment = RAGAssessment(
+                        id: storedRAGAssessmentID,
+                        date: Date(timeIntervalSince1970: TimeInterval(storedRAGAssessmentDate)),
+                        period: storedRAGAssessmentPeriod,
+                        studentNumber: storedRAGAssessmentStudentNumber,
+                        assessment: storedRAGAssessmentAssessmentStatus)
+    
+                    if studentNumbers.contains(storedRAGAssessment.studentNumber) && storedRAGAssessment.date >= timePeriodStartDate && storedRAGAssessment.date <= timePeriodEndDate {
+                        fetchedRAGAssessments.append(storedRAGAssessment)
+                    }
+                    
+                }
+                self.rAGAssessmentsFetchingDelegate?.finishedFetching(rAGAssessments: fetchedRAGAssessments)
+            }
+        })
+    }
+    
+    
+    
+    // -------- Incidents
+    
+    // Creates a new Incident object in the Firebase database
     func createIncident(incident: Incident, completion: @escaping (_ incidentId: String?, _ message: String?) -> Void) {
         
         var incidentBehaviours = [String: Any]()
@@ -261,584 +667,6 @@ class DataService {
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
-    // Searches Database for all User Accounts. Asynchronous method - call-back returns an array of User Account object.If not found, returns nil.
-    func getAllUserAccounts() {
-        let queryRef = userAccountsRef
-        queryRef.queryOrdered(byChild: Constants.FIREBASE_USER_ACCOUNTS_NAME).observeSingleEvent(of: .value, with: { (snapshot) in
-            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
-
-                var fetchedUserAccounts = [UserAccount]()
-                
-                for snap in snapshots {
-     
-                    let storedAccountID = snap.key
-                    let storedAccountName = snap.childSnapshot(forPath: Constants.FIREBASE_USER_ACCOUNTS_NAME).value as! String
-                    let storedSecurityLevel = snap.childSnapshot(forPath: Constants.FIREBASE_USER_ACCOUNTS_SECURITY_LEVEL).value as! Int
-                    let storedSchoolClassID = snap.childSnapshot(forPath: Constants.FIREBASE_USER_ACCOUNTS_CLASS_ID).value as! String
-
-                    let storedUserAccount = UserAccount(
-                        id: storedAccountID,
-                        accountName: storedAccountName,
-                        securityLevel: storedSecurityLevel,
-                        schoolClassId: storedSchoolClassID
-                        )
-
-                    fetchedUserAccounts.append(storedUserAccount)
-                }
-                self.userAccountFetchingDelegate?.finishedFetching(userAccounts: fetchedUserAccounts)
-            }
-        })
-    }
-    
-    
-
-    // Searches Database for a single User Account with a given id. Asynchronous method - call-back returns an array with single User Account object. If not found, returns nil.
-    func getUserAccountWithID(withId id: String) {
-        let queryRef = userAccountsRef.child(id)
-        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            var fetchedUserAccounts = [UserAccount]()
-            
-            let storedAccountID = snapshot.key
-            let storedAccountName = snapshot.childSnapshot(forPath: Constants.FIREBASE_USER_ACCOUNTS_NAME).value as! String
-            let storedSecurityLevel = snapshot.childSnapshot(forPath: Constants.FIREBASE_USER_ACCOUNTS_SECURITY_LEVEL).value as! Int
-            let storedSchoolClassId = snapshot.childSnapshot(forPath: Constants.FIREBASE_USER_ACCOUNTS_CLASS_ID).value as! String
-            
-            let storedUserAccount = UserAccount(
-                id: storedAccountID,
-                accountName: storedAccountName,
-                securityLevel: storedSecurityLevel,
-                schoolClassId: storedSchoolClassId)
-            
-            fetchedUserAccounts.append(storedUserAccount)
-            
-            self.userAccountFetchingDelegate?.finishedFetching(userAccounts: fetchedUserAccounts)
-            
-            
-//            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
-//
-//                var fetchedUserAccounts = [UserAccount]()
-//
-//                for snap in snapshots {
-//
-//                    let storedAccountID = snap.key
-//                    let storedAccountName = snap.childSnapshot(forPath: Constants.FIREBASE_USER_ACCOUNTS_NAME).value as! String
-//                    let storedSecurityLevel = snap.childSnapshot(forPath: Constants.FIREBASE_USER_ACCOUNTS_SECURITY_LEVEL).value as! Int
-//                    let storedSchoolClassId = snap.childSnapshot(forPath: Constants.FIREBASE_USER_ACCOUNTS_CLASS_ID).value as! String
-//
-//                    let storedUserAccount = UserAccount(
-//                        id: storedAccountID,
-//                        accountName: storedAccountName,
-//                        securityLevel: storedSecurityLevel,
-//                        schoolClassId: storedSchoolClassId)
-////                    let storedUserAccount = UserAccount(
-////                        id: storedAccountID,
-////                        accountName: storedAccountName,
-////                        securityLevel: Int(storedSecurityLevel)!,
-////                        schoolClassNumber: Int(storedSchoolClassNumber))
-//
-//                   fetchedUserAccounts.append(storedUserAccount)
-//                }
-////                self.userAccountFetchingDelegate?.finishedFetching(userAccounts: fetchedUserAccounts)
-//            }
-        })
-    }
-    
-    
-    
-    
-    // ---------- School Classes
-    
-    // Searches Database for all School Classes.Asynchronous method - call-back returns an array of School Class objects. If not found, returns nil.
-    func getAllSchoolClasses() {
-        let queryRef = schoolClassRef
-        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
-                
-                var fetchedSchoolClasses = [SchoolClass]()
-                
-                for snap in snapshots {
-                    
-                    let storedSchoolClassID = snap.key
-//                    let storedSchoolClassNumber = snap.childSnapshot(forPath: Constants.FIREBASE_SCHOOL_CLASS_NUMBER).value as! String
-                    let storedSchoolClassName = snap.childSnapshot(forPath: Constants.FIREBASE_SCHOOL_CLASS_NAME).value as! String
-
-                    let storedSchoolClass = SchoolClass(
-                        id: storedSchoolClassID,
-                        className: storedSchoolClassName)
-//                    let storedSchoolClass = SchoolClass(
-//                        id: storedSchoolClassID,
-//                        classNumber: Int(storedSchoolClassNumber)!,
-//                        className: storedSchoolClassName)
-
-                    fetchedSchoolClasses.append(storedSchoolClass)
-                }
-                self.schoolClassFetchingDelegate?.finishedFetching(schoolClasses: fetchedSchoolClasses)
-            }
-        })
-    }
-    
-    
-    
-    // Searches Database for a single School Class with a given id. Asynchronous method - call-back returns an array with single School Class object. If not found, returns nil.
-    func getSchoolClass(withId id: String) {
-        let queryRef = schoolClassRef.child(id)
-        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            var fetchedSchoolClasses = [SchoolClass]()
-            
-            let storedSchoolClassID = id
-            let storedSchoolClassName = snapshot.childSnapshot(forPath: Constants.FIREBASE_SCHOOL_CLASS_NAME).value as! String
-            
-            let storedSchoolClass = SchoolClass(
-                id: storedSchoolClassID,
-                className: storedSchoolClassName)
-            
-            fetchedSchoolClasses.append(storedSchoolClass)
-            
-            self.schoolClassFetchingDelegate?.finishedFetching(schoolClasses: fetchedSchoolClasses)
-            
-//            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
-//
-//                var fetchedSchoolClasses = [SchoolClass]()
-//
-//                let storedSchoolClassID = id
-//                let storedSchoolClassName = snap.childSnapshot(forPath: Constants.FIREBASE_SCHOOL_CLASS_NAME).value as! String
-//
-//                for snap in snapshots {
-//                    print("ClassID: \(snap.key) , Name: ")
-//                    let storedSchoolClassID = id
-////                    let storedSchoolClassNumber = snap.childSnapshot(forPath: Constants.FIREBASE_SCHOOL_CLASS_NUMBER).value as! String
-//                    let storedSchoolClassName = snap.childSnapshot(forPath: Constants.FIREBASE_SCHOOL_CLASS_NAME).value as! String
-//
-//                    let storedSchoolClass = SchoolClass(
-//                        id: storedSchoolClassID,
-//                        className: storedSchoolClassName)
-////                    let storedSchoolClass = SchoolClass(
-////                        id: storedSchoolClassID,
-////                        classNumber: Int(storedSchoolClassNumber)!,
-////                        className: storedSchoolClassName)
-//
-//                    fetchedSchoolClasses.append(storedSchoolClass)
-//                }
-            
-//            }
-        })
-    }
-    
-    
-    
-    
-    
-    // ---------- Staff
-    
-    // Searches Database for all Staff Members. Asynchronous method - call-back returns an array of Staff object. If not found, returns nil.
-    func getAllStaffMembers() {
-        let queryRef = staffRef
-        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
-                
-                var fetchedStaffMembers = [Staff]()
-                
-                for snap in snapshots {
-                    
-                    let storedStaffMemberID = snap.key
-                    let storedStaffMemberNumber = snap.childSnapshot(forPath: Constants.FIREBASE_STAFF_NUMBER).value as! Int
-                    let storedStaffMemberFirstName = snap.childSnapshot(forPath: Constants.FIREBASE_STAFF_FIRST_NAME).value as! String
-                    let storedStaffMemberLastName = snap.childSnapshot(forPath: Constants.FIREBASE_STAFF_LAST_NAME).value as! String
-                    
-                    let storedStaffMember = Staff(
-                        id: storedStaffMemberID,
-                        staffNumber: storedStaffMemberNumber,
-                        firstName: storedStaffMemberFirstName,
-                        lastName: storedStaffMemberLastName)
-                    
-                    fetchedStaffMembers.append(storedStaffMember)
-                }
-                self.staffFetchingDelegate?.finishedFetching(staffMembers: fetchedStaffMembers)
-            }
-        })
-    }
-    
-    
-    
-    // Searches Database for a single Staff Member with a given id. Asynchronous method - call-back returns an array with single Staff object. If not found, returns nil.
-    func getStaffMember(withId id: String) {
-        let queryRef = staffRef.child(id)
-        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            var fetchedStaffMembers = [Staff]()
-                
-            let storedStaffMemberID = snapshot.key
-            let storedStaffMemberNumber = snapshot.childSnapshot(forPath: Constants.FIREBASE_STAFF_NUMBER).value as! Int
-            let storedStaffMemberFirstName = snapshot.childSnapshot(forPath: Constants.FIREBASE_STAFF_FIRST_NAME).value as! String
-            let storedStaffMemberLastName = snapshot.childSnapshot(forPath: Constants.FIREBASE_STAFF_LAST_NAME).value as! String
-                
-            let storedStaffMember = Staff(
-                id: storedStaffMemberID,
-                staffNumber: storedStaffMemberNumber,
-                firstName: storedStaffMemberFirstName,
-                lastName: storedStaffMemberLastName)
-                
-            fetchedStaffMembers.append(storedStaffMember)
-            
-            self.staffFetchingDelegate?.finishedFetching(staffMembers: fetchedStaffMembers)
-            
-//            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
-//
-//                var fetchedStaffMembers = [Staff]()
-//
-//                for snap in snapshots {
-//
-//                    let storedStaffMemberID = snap.key
-//                    let storedStaffMemberNumber = snap.childSnapshot(forPath: Constants.FIREBASE_STAFF_NUMBER).value as! String
-//                    let storedStaffMemberFirstName = snap.childSnapshot(forPath: Constants.FIREBASE_STAFF_FIRST_NAME).value as! String
-//                    let storedStaffMemberLastName = snap.childSnapshot(forPath: Constants.FIREBASE_STAFF_LAST_NAME).value as! String
-//
-//                    let storedStaffMember = Staff(
-//                        id: storedStaffMemberID,
-//                        staffNumber: Int(storedStaffMemberNumber)!,
-//                        firstName: storedStaffMemberFirstName,
-//                        lastName: storedStaffMemberLastName)
-//
-//                    fetchedStaffMembers.append(storedStaffMember)
-//                }
-//                self.staffFetchingDelegate?.finishedFetching(staffMembers: fetchedStaffMembers)
-//            }
-        })
-    }
-    
-    
-    // ---------- Students
-    
-    // Searches Database for all Students. Asynchronous method - call-back returns an array of Student objects. If not found, returns nil.
-    func getAllStudents() {
-        let queryRef = studentsRef
-        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
-                
-                var fetchedStudents = [Student]()
-                
-                for snap in snapshots {
-                    
-                    let storedStudentID = snap.key
-                    let storedStudentNumber = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_NUMBER).value as! Int
-                    let storedStudentFirstName = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_FIRST_NAME).value as! String
-                    let storedStudentLastName = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_LAST_NAME).value as! String
-//                    let storedStudentClassNumber = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_CLASS_NUMBER).value as! String
-                    let storedStudentClassId = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_CLASS_ID).value as! String
-                    
-                    let storedStudent = Student(
-                        id: storedStudentID,
-                        studentNumber: storedStudentNumber,
-                        firstName: storedStudentFirstName,
-                        lastName: storedStudentLastName,
-                        schoolClassId: storedStudentClassId)
-//                        schoolClassNumber: Int(storedStudentClassNumber)!)
-                    
-                    fetchedStudents.append(storedStudent)
-                }
-                self.studentFetchingDelegate?.finishedFetching(students: fetchedStudents)
-            }
-        })
-    }
-    
-    
-    
-    // Searches Database for a single Student with a given id. Asynchronous method - call-back returns an array with single Student object.  If not found, returns nil.
-    func getStudent(withId id: String) {
-        let queryRef = studentsRef.child(id)
-        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            
-            var fetchedStudents = [Student]()
-                
-            let storedStudentID = snapshot.key
-            let storedStudentNumber = snapshot.childSnapshot(forPath: Constants.FIREBASE_STUDENT_NUMBER).value as! Int
-            let storedStudentFirstName = snapshot.childSnapshot(forPath: Constants.FIREBASE_STUDENT_FIRST_NAME).value as! String
-            let storedStudentLastName = snapshot.childSnapshot(forPath: Constants.FIREBASE_STUDENT_LAST_NAME).value as! String
-                //                    let storedStudentClassNumber = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_CLASS_NUMBER).value as! String
-            let storedStudentClassId = snapshot.childSnapshot(forPath: Constants.FIREBASE_STUDENT_CLASS_ID).value as! String
-                
-            let storedStudent = Student(
-                id: storedStudentID,
-                studentNumber: storedStudentNumber,
-                firstName: storedStudentFirstName,
-                lastName: storedStudentLastName,
-                schoolClassId: storedStudentClassId)
-                //                        schoolClassNumber: Int(storedStudentClassNumber)!)
-                
-            fetchedStudents.append(storedStudent)
-            
-            self.studentFetchingDelegate?.finishedFetching(students: fetchedStudents)
-//
-//
-//            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
-//
-//                var fetchedStudents = [Student]()
-//
-//                for snap in snapshots {
-//
-//                    let storedStudentID = snap.key
-//                    let storedStudentNumber = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_NUMBER).value as! String
-//                    let storedStudentFirstName = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_FIRST_NAME).value as! String
-//                    let storedStudentLastName = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_LAST_NAME).value as! String
-////                    let storedStudentClassNumber = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_CLASS_NUMBER).value as! String
-//                    let storedStudentClassId = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_CLASS_ID).value as! String
-//
-//                    let storedStudent = Student(
-//                        id: storedStudentID,
-//                        studentNumber: Int(storedStudentNumber)!,
-//                        firstName: storedStudentFirstName,
-//                        lastName: storedStudentLastName,
-//                        schoolClassId: storedStudentClassId)
-////                        schoolClassNumber: Int(storedStudentClassNumber)!)
-//
-//                    fetchedStudents.append(storedStudent)
-//                }
-//                self.studentFetchingDelegate?.finishedFetching(students: fetchedStudents)
-//            }
-        })
-    }
-    
-    
-    
-    // Searches Database for all Students associated with a given School Class. Asynchronous method - call-back returns an array of Student objects.  If not found, returns nil.
-    func getStudents(for schoolClass: SchoolClass) {
-        let queryRef = studentsRef
-        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
-                
-                var fetchedStudents = [Student]()
-                
-                for snap in snapshots {
-                    
-                    let storedStudentID = snap.key
-                    let storedStudentNumber = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_NUMBER).value as! Int
-                    let storedStudentFirstName = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_FIRST_NAME).value as! String
-                    let storedStudentLastName = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_LAST_NAME).value as! String
-                    let storedStudentClassId = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_CLASS_ID).value as! String
-
-                    let storedStudent = Student(
-                        id: storedStudentID,
-                        studentNumber: storedStudentNumber,
-                        firstName: storedStudentFirstName,
-                        lastName: storedStudentLastName,
-                        schoolClassId: storedStudentClassId)
-//                        schoolClassNumber: Int(storedStudentClassNumber)!)
-
-                    if storedStudent.schoolClassId == schoolClass.id {
-                        fetchedStudents.append(storedStudent)
-                    }
-                }
-                self.studentFetchingDelegate?.finishedFetching(students: fetchedStudents)
-            }
-        })
-    }
-    
-    // Searches Database for all Students associated with a given set of School Classes. Asynchronous method - call-back returns an array of tuples containing a School Class aobject and array of associated Student objects.  If not found, returns nil.
-    func getStudents(for schoolClasses: [SchoolClass]) {
-        let queryRef = studentsRef
-        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
-                
-                var allStudents = [Student]()
-                    
-                for snap in snapshots {
-
-                    let storedStudentID = snap.key
-                    let storedStudentNumber = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_NUMBER).value as! Int
-                    let storedStudentFirstName = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_FIRST_NAME).value as! String
-                    let storedStudentLastName = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_LAST_NAME).value as! String
-                    let storedStudentClassId = snap.childSnapshot(forPath: Constants.FIREBASE_STUDENT_CLASS_ID).value as! String
-
-                    let storedStudent = Student(
-                        id: storedStudentID,
-                        studentNumber: storedStudentNumber,
-                        firstName: storedStudentFirstName,
-                        lastName: storedStudentLastName,
-                        schoolClassId: storedStudentClassId)
-//                        schoolClassNumber: Int(storedStudentClassNumber)!)
-                    allStudents.append(storedStudent)
-                    
-//                    for schoolClass in fetchedClassesWithStudents {
-//                        if schoolClass.schoolClass.classNumber == storedStudent.schoolClassNumber {
-//                            schoolClass.students.append(storedStudent)
-//                        }
-//                    }
-    
-                }
-                
-                var fetchedClassesWithStudents = [  (schoolClass: SchoolClass, students: [Student])  ]()
-                
-                for schoolClass in schoolClasses {
-                    var classStudents = [Student]()
-                    for student in allStudents {
-                        if student.schoolClassId == schoolClass.id {
-                            classStudents.append(student)
-                        }
-                    }
-                    let classWithStudents = (schoolClass: schoolClass, students: classStudents)
-                    fetchedClassesWithStudents.append( classWithStudents )
-                }
-                
-                
-                self.studentFetchingDelegate?.finishedFetching(classesWithStudents: fetchedClassesWithStudents)
-            }
-        })
-    }
-    
-    
-    
-    
-    
-    // -------- Behaviours
-    // Searches Database for all Behaviours. Asynchronous method - call-back returns an array of Behaviour objects. If not found, returns nil.
-//    func getAllBehaviours() {
-//        let queryRef = behavioursRef
-//        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
-//            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
-//
-//                var fetchedBehaviours = [Behaviour]()
-//
-//                for snap in snapshots {
-//
-//                    let storedBehaviourID = snap.key
-//                    let storedBehaviourType = snap.childSnapshot(forPath: Constants.FIREBASE_BEHAVIOUR_TYPE).value as! String
-//
-//                    let storedBehaviour = Behaviour(
-//                        id: storedBehaviourID,
-//                        type: storedBehaviourType)
-//
-//                    fetchedBehaviours.append(storedBehaviour)
-//                }
-//                self.behaviourFetchingDelegate?.finishedFetching(behaviours: fetchedBehaviours)
-//            }
-//        })
-//    }
-    
-    
-    
-    // -------- Purposes
-    
-    // Searches Database for all Purposes. Asynchronous method - call-back returns an array of Purpose objects. If not found, returns nil.
-//    func getAllPurposes() {
-//        let queryRef = purposesRef
-//        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
-//            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
-//
-//                var fetchedPurposes = [Purpose]()
-//
-//                for snap in snapshots {
-//
-//                    let storedPurposeID = snap.key
-//                    let storedPurposeType = snap.childSnapshot(forPath: Constants.FIREBASE_PURPOSE_TYPE).value as! String
-//
-//                    let storedPurpose = Purpose(
-//                        id: storedPurposeID,
-//                        type: storedPurposeType)
-//
-//                    fetchedPurposes.append(storedPurpose)
-//                }
-//                self.purposeFetchingDelegate?.finishedFetching(purposes: fetchedPurposes)
-//            }
-//        })
-//    }
-    
-    
-    
-    // -------- RAG Assessments
-    
-    // Searches Database for all RAG Assessments associated with a given set of Students. Asynchronous method - call-back returns an array of RAG Assessment objects.  If not found, returns nil.
-    func getAllRAGAssessments(for students: [Student]) {
-        let queryRef = rAGAssessmentsRef
-        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
-          
-                var fetchedRAGAssessments = [RAGAssessment]()
-                
-                 for snap in snapshots {
-                    
-                    let storedRAGAssessmentID = snap.key
-                    let storedRAGAssessmentDate = snap.childSnapshot(forPath: Constants.FIREBASE_RAG_ASSESSMENT_DATE).value as! Int
-                    let storedRAGAssessmentPeriod = snap.childSnapshot(forPath: Constants.FIREBASE_RAG_ASSESSMENT_PERIOD).value as! String
-                    let storedRAGAssessmentStudentNumber = snap.childSnapshot(forPath: Constants.FIREBASE_RAG_ASSESSMENT_STUDENT).value as! Int
-                    let storedRAGAssessmentAssessmentStatus = snap.childSnapshot(forPath: Constants.FIREBASE_RAG_ASSESSMENT_STATUS).value as! String
-
-                    let storedRAGAssessment = RAGAssessment(
-                        id: storedRAGAssessmentID,
-                        date: Date(timeIntervalSince1970: TimeInterval(storedRAGAssessmentDate)),
-                        period: storedRAGAssessmentPeriod,
-                        studentNumber: storedRAGAssessmentStudentNumber,
-                        assessment: storedRAGAssessmentAssessmentStatus)
-
-                    fetchedRAGAssessments.append(storedRAGAssessment)
-                }
-                self.rAGAssessmentsFetchingDelegate?.finishedFetching(rAGAssessments: fetchedRAGAssessments)
-            }
-        })
-    }
-    
-    
-    
-
-    func getRAGAssessments(for students: [Student], fromTimePeriod timePeriod: TimePeriod) {
-        
-        let timePeriodStartDate = DataService.getTimePeriodStartDate(for: timePeriod)!
-        let timePeriodEndDate = DataService.getTimePeriodEndDate(for: timePeriod)!
-        
-//        print (DataService.getShortDateString(for: timePeriodStartDate))
-//        print (DataService.getShortDateString(for: timePeriodEndDate))
-        
-        let queryRef = rAGAssessmentsRef
-        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
-            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
-                
-                var fetchedRAGAssessments = [RAGAssessment]()
-                
-                for snap in snapshots {
-                    
-                    let storedRAGAssessmentID = snap.key
-                    let storedRAGAssessmentDate = snap.childSnapshot(forPath: Constants.FIREBASE_RAG_ASSESSMENT_DATE).value as! Int
-                    let storedRAGAssessmentPeriod = snap.childSnapshot(forPath: Constants.FIREBASE_RAG_ASSESSMENT_PERIOD).value as! String
-                    let storedRAGAssessmentStudentNumber = snap.childSnapshot(forPath: Constants.FIREBASE_RAG_ASSESSMENT_STUDENT).value as! Int
-                    let storedRAGAssessmentAssessmentStatus = snap.childSnapshot(forPath: Constants.FIREBASE_RAG_ASSESSMENT_STATUS).value as! String
-
-                    let storedRAGAssessment = RAGAssessment(
-                        id: storedRAGAssessmentID,
-                        date: Date(timeIntervalSince1970: TimeInterval(storedRAGAssessmentDate)),
-                        period: storedRAGAssessmentPeriod,
-                        studentNumber: storedRAGAssessmentStudentNumber,
-                        assessment: storedRAGAssessmentAssessmentStatus)
-    
-
-                    if storedRAGAssessment.date >= timePeriodStartDate && storedRAGAssessment.date <= timePeriodEndDate {
-                        fetchedRAGAssessments.append(storedRAGAssessment)
-                    }
-                    
-                }
-                self.rAGAssessmentsFetchingDelegate?.finishedFetching(rAGAssessments: fetchedRAGAssessments)
-            }
-        })
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    // -------- Incidents
-    
-    
     // Searches Database for all Incidents. Asynchronous method - call-back returns an array of Incident objects. If not found, returns nil.
     func getAllIncidents() {
         let queryRef = incidentsRef
@@ -850,8 +678,7 @@ class DataService {
                 for snap in snapshots {
                     
                     let storedIncidentID = snap.key
-//                    let storedIncidentNumber = snap.childSnapshot(forPath: Constants.FIREBASE_BEHAVIOUR_TYPE).value as! String
-                    let storedIncidentDate = snap.childSnapshot(forPath: Constants.FIREBASE_INCIDENT_DATE).value as! Int
+                    let storedIncidentDate = snap.childSnapshot(forPath: Constants.FIREBASE_INCIDENT_DATE).value as! Double
                     let storedIncidentDuration = snap.childSnapshot(forPath: Constants.FIREBASE_INCIDENT_DURATION).value as! Int
                     let storedIncidentStudent = snap.childSnapshot(forPath: Constants.FIREBASE_INCIDENT_STUDENT).value as! Int
                     
@@ -861,7 +688,8 @@ class DataService {
                         storedIncidentBehaviours.append(behaviour.value as! String)
                     }
                     
-                    let storedIncidentIntensity = snap.childSnapshot(forPath: Constants.FIREBASE_INCIDENT_INTENSITY).value as! Float
+                    let intensityNumber = snap.childSnapshot(forPath: Constants.FIREBASE_INCIDENT_INTENSITY).value as! NSNumber
+                    let storedIncidentIntensity = intensityNumber.floatValue
                     
                     var storedIncidentStaff = [Int]()
                     let incidentStaff = snap.childSnapshot(forPath: Constants.FIREBASE_INCIDENT_STAFF).value
@@ -883,7 +711,6 @@ class DataService {
                     
                     let storedIncident = Incident(
                         id: storedIncidentID,
-//                        incidentNumber: storedIncidentNumber,
                         dateTime: Date(timeIntervalSince1970: TimeInterval(storedIncidentDate)),
                         duration: storedIncidentDuration,
                         student: storedIncidentStudent,
@@ -905,8 +732,7 @@ class DataService {
     }
 
     
-    
-    
+    // Returns all Incident objects from the Firebase database for a given selection of Students.
     func getIncidents(for students: [Student]){
         
         var studentNumbers = [Int]()
@@ -924,8 +750,7 @@ class DataService {
                 for snap in snapshots {
                     
                     let storedIncidentID = snap.key
-//                    let storedIncidentNumber = snap.childSnapshot(forPath: Constants.FIREBASE_BEHAVIOUR_TYPE).value as! String
-                    let storedIncidentDate = snap.childSnapshot(forPath: Constants.FIREBASE_INCIDENT_DATE).value as! Int
+                    let storedIncidentDate = snap.childSnapshot(forPath: Constants.FIREBASE_INCIDENT_DATE).value as! Double
                     let storedIncidentDuration = snap.childSnapshot(forPath: Constants.FIREBASE_INCIDENT_DURATION).value as! Int
                     let storedIncidentStudent = snap.childSnapshot(forPath: Constants.FIREBASE_INCIDENT_STUDENT).value as! Int
                     
@@ -935,7 +760,8 @@ class DataService {
                         storedIncidentBehaviours.append(behaviour.value as! String)
                     }
                     
-                    let storedIncidentIntensity = snap.childSnapshot(forPath: Constants.FIREBASE_INCIDENT_INTENSITY).value as! Float
+                    let intensityNumber = snap.childSnapshot(forPath: Constants.FIREBASE_INCIDENT_INTENSITY).value as! NSNumber
+                    let storedIncidentIntensity = intensityNumber.floatValue
                     
                     var storedIncidentStaff = [Int]()
                     let incidentStaff = snap.childSnapshot(forPath: Constants.FIREBASE_INCIDENT_STAFF).value
@@ -958,7 +784,6 @@ class DataService {
 
                     let storedIncident = Incident(
                         id: storedIncidentID,
-//                        incidentNumber: storedIncidentNumber,
                         dateTime: Date(timeIntervalSince1970: TimeInterval(storedIncidentDate)),
                         duration: storedIncidentDuration,
                         student: storedIncidentStudent,
@@ -982,11 +807,7 @@ class DataService {
     }
     
     
-    
-    
-    
-    
-    
+    // Returns all Incident objects from the Firebase database - for a given selection of Students, and in a given time-period.
     func getIncidents(for students: [Student], fromTimePeriod timePeriod: TimePeriod) {
         
         var studentNumbers = [Int]()
@@ -1007,8 +828,7 @@ class DataService {
                 for snap in snapshots {
                     
                     let storedIncidentID = snap.key
-//                    let storedIncidentNumber = snap.childSnapshot(forPath: Constants.FIREBASE_BEHAVIOUR_TYPE).value as! String
-                    let storedIncidentDate = snap.childSnapshot(forPath: Constants.FIREBASE_INCIDENT_DATE).value as! Int
+                    let storedIncidentDate = snap.childSnapshot(forPath: Constants.FIREBASE_INCIDENT_DATE).value as! Double
                     let storedIncidentDuration = snap.childSnapshot(forPath: Constants.FIREBASE_INCIDENT_DURATION).value as! Int
                     let storedIncidentStudent = snap.childSnapshot(forPath: Constants.FIREBASE_INCIDENT_STUDENT).value as! Int
                     
@@ -1017,8 +837,9 @@ class DataService {
                     for behaviour in incidentBehaviours  as! [String: Any] {
                         storedIncidentBehaviours.append(behaviour.value as! String)
                     }
-
-                    let storedIncidentIntensity = snap.childSnapshot(forPath: Constants.FIREBASE_INCIDENT_INTENSITY).value as! Float
+                    
+                    let intensityNumber = snap.childSnapshot(forPath: Constants.FIREBASE_INCIDENT_INTENSITY).value as! NSNumber
+                    let storedIncidentIntensity = intensityNumber.floatValue
                     
                     var storedIncidentStaff = [Int]()
                     let incidentStaff = snap.childSnapshot(forPath: Constants.FIREBASE_INCIDENT_STAFF).value
@@ -1041,7 +862,6 @@ class DataService {
                     
                     let storedIncident = Incident(
                         id: storedIncidentID,
-//                        incidentNumber: Int(storedIncidentNumber)!,
                         dateTime: Date(timeIntervalSince1970: TimeInterval(storedIncidentDate)),
                         duration: storedIncidentDuration,
                         student: storedIncidentStudent,
@@ -1067,95 +887,9 @@ class DataService {
     
     
     
-    // ------- Ananlysis
+    // ------- General Ananlysis Support
     
-   
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    static func getNumberOfPeriodsAlreadyPastToday() -> Int {
-        
-        var schoolDayPeriodsCount = 0
-        
-        if Date() > Date().dateAt(hours: Constants.P1_END_HOURS, minutes: Constants.P1_END_MINS) && Date() < Date().dateAt(hours: Constants.P2_END_HOURS, minutes: Constants.P2_END_MINS) {
-            schoolDayPeriodsCount = 1
-        } else if Date() >= Date().dateAt(hours: Constants.P2_END_HOURS, minutes: Constants.P2_END_MINS) && Date() < Date().dateAt(hours: Constants.P3_END_HOURS, minutes: Constants.P3_END_MINS) {
-            schoolDayPeriodsCount = 2
-        } else if Date() >= Date().dateAt(hours: Constants.P3_END_HOURS, minutes: Constants.P3_END_MINS) && Date() < Date().dateAt(hours: Constants.L1_END_HOURS, minutes: Constants.L1_END_MINS) {
-            schoolDayPeriodsCount = 3
-        } else if Date() >= Date().dateAt(hours: Constants.L1_END_HOURS, minutes: Constants.L1_END_MINS) && Date() < Date().dateAt(hours: Constants.L2_END_HOURS, minutes: Constants.L2_END_MINS) {
-            schoolDayPeriodsCount = 4
-        } else if Date() >= Date().dateAt(hours: Constants.L2_END_HOURS, minutes: Constants.L2_END_MINS) && Date() < Date().dateAt(hours: Constants.P4_END_HOURS, minutes: Constants.P4_END_MINS) {
-            schoolDayPeriodsCount = 5
-        } else if Date() >= Date().dateAt(hours: Constants.P4_END_HOURS, minutes: Constants.P4_END_MINS) && Date() < Date().dateAt(hours: Constants.P5_END_HOURS, minutes: Constants.P5_END_MINS) {
-            schoolDayPeriodsCount = 6
-        } else if Date() >= Date().dateAt(hours: Constants.P5_END_HOURS, minutes: Constants.P5_END_MINS) && Date() < Date().dateAt(hours: Constants.P6_END_HOURS, minutes: Constants.P6_END_MINS) {
-            schoolDayPeriodsCount = 7
-        } else if Date() >= Date().dateAt(hours: Constants.P6_END_HOURS, minutes: Constants.P6_END_MINS) && Date() < Date().dateAt(hours: Constants.P7_END_HOURS, minutes: Constants.P7_END_MINS) {
-            schoolDayPeriodsCount = 8
-        } else if Date() >= Date().dateAt(hours: Constants.P7_END_HOURS, minutes: Constants.P7_END_MINS) {
-            schoolDayPeriodsCount = 9
-        }
-        
-        return schoolDayPeriodsCount
-    }
-    
-    
-    static func getTimePeriodEndDate(for timePeriod: TimePeriod) -> Date? {
-        
-        switch timePeriod {
-            
-        case .today:
-            return Date()
-            
-        case .currentWeek:
-            return Date()
-            
-        case .lastWeek:
-            
-            switch getDayString(for: Date()) {
-            case "Monday":
-                return Date().dateAt(hours: 0, minutes: 0)
-            case "Tuesday":
-                return Date().withOffset(dateOffset: -1).dateAt(hours: 0, minutes: 0)
-            case "Wednesday":
-                return Date().withOffset(dateOffset: -2).dateAt(hours: 0, minutes: 0)
-            case "Thursday":
-                return Date().withOffset(dateOffset: -3).dateAt(hours: 0, minutes: 0)
-            case "Friday":
-                return Date().withOffset(dateOffset: -4).dateAt(hours: 0, minutes: 0)
-            case "Saturday":
-                return Date().withOffset(dateOffset: -5).dateAt(hours: 0, minutes: 0)
-            case "Sunday":
-                return Date().withOffset(dateOffset: -6).dateAt(hours: 0, minutes: 0)
-            default: break
-            }
-            
-        case .thisTerm:
-            return Date()
-        case .lastTerm:
-            return Constants.LAST_TERM_END_TIME
-        case .thisYear:
-            return Date()
-        case .lastYear:
-            return Constants.LAST_YEAR_END_TIME
-        case.allTime:
-            return Date()
-        }
-        
-        return nil
-    }
-    
-    
-    
-    
+    // Returns a Date value for the start-point of a given TimePeriod
     static func getTimePeriodStartDate(for timePeriod: TimePeriod) -> Date? {
         
         switch timePeriod {
@@ -1218,80 +952,80 @@ class DataService {
         return nil
     }
     
+    // Returns the number of periods that have already been passed in the current day
+    static func getNumberOfPeriodsAlreadyPastToday() -> Int {
+        
+        var schoolDayPeriodsCount = 0
+        
+        if Date() > Date().dateAt(hours: Constants.P1_END_HOURS, minutes: Constants.P1_END_MINS) && Date() < Date().dateAt(hours: Constants.P2_END_HOURS, minutes: Constants.P2_END_MINS) {
+            schoolDayPeriodsCount = 1
+        } else if Date() >= Date().dateAt(hours: Constants.P2_END_HOURS, minutes: Constants.P2_END_MINS) && Date() < Date().dateAt(hours: Constants.P3_END_HOURS, minutes: Constants.P3_END_MINS) {
+            schoolDayPeriodsCount = 2
+        } else if Date() >= Date().dateAt(hours: Constants.P3_END_HOURS, minutes: Constants.P3_END_MINS) && Date() < Date().dateAt(hours: Constants.L1_END_HOURS, minutes: Constants.L1_END_MINS) {
+            schoolDayPeriodsCount = 3
+        } else if Date() >= Date().dateAt(hours: Constants.L1_END_HOURS, minutes: Constants.L1_END_MINS) && Date() < Date().dateAt(hours: Constants.L2_END_HOURS, minutes: Constants.L2_END_MINS) {
+            schoolDayPeriodsCount = 4
+        } else if Date() >= Date().dateAt(hours: Constants.L2_END_HOURS, minutes: Constants.L2_END_MINS) && Date() < Date().dateAt(hours: Constants.P4_END_HOURS, minutes: Constants.P4_END_MINS) {
+            schoolDayPeriodsCount = 5
+        } else if Date() >= Date().dateAt(hours: Constants.P4_END_HOURS, minutes: Constants.P4_END_MINS) && Date() < Date().dateAt(hours: Constants.P5_END_HOURS, minutes: Constants.P5_END_MINS) {
+            schoolDayPeriodsCount = 6
+        } else if Date() >= Date().dateAt(hours: Constants.P5_END_HOURS, minutes: Constants.P5_END_MINS) && Date() < Date().dateAt(hours: Constants.P6_END_HOURS, minutes: Constants.P6_END_MINS) {
+            schoolDayPeriodsCount = 7
+        } else if Date() >= Date().dateAt(hours: Constants.P6_END_HOURS, minutes: Constants.P6_END_MINS) && Date() < Date().dateAt(hours: Constants.P7_END_HOURS, minutes: Constants.P7_END_MINS) {
+            schoolDayPeriodsCount = 8
+        } else if Date() >= Date().dateAt(hours: Constants.P7_END_HOURS, minutes: Constants.P7_END_MINS) {
+            schoolDayPeriodsCount = 9
+        }
+        
+        return schoolDayPeriodsCount
+    }
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-//    
-//    func saveUserAccount(userAccount: UserAccount, onComplete: @escaping Completion) {
-//        
-//        
-//        let queryRef = self.mainRef.child(Constants.FIREBASE_USER_ACCOUNTS)
-//        queryRef.observeSingleEvent(of: .value, with: { (snapshot) in
-//          
-//            if let snapshots = snapshot.children.allObjects as? [DataSnapshot] {
-//                
-//                var fetchedUserAccounts = [UserAccount]()
-//                var accountNumbers = [0]
-//                
-//                for snap in snapshots {
-//                    let storedAccountID = snap.key
-//                    let storedAccountNumber = snap.childSnapshot(forPath: Constants.FIREBASE_USER_ACCOUNTS_NUMBER).value as! String
-//                    let storedAccountName = snap.childSnapshot(forPath: Constants.FIREBASE_USER_ACCOUNTS_NAME).value as! String
-//                    let storedSecurityLevel = snap.childSnapshot(forPath: Constants.FIREBASE_USER_ACCOUNTS_SECURITY_LEVEL).value as! String
-//                    let storedSchoolClassNumber = snap.childSnapshot(forPath: Constants.FIREBASE_USER_ACCOUNTS_CLASS_NUMBER).value as! String
-//                    
-//                    let fetchedUserAccount = UserAccount(
-//                        id: storedAccountID,
-//                        accountNumber: Int(storedAccountNumber)!,
-//                        accountName: storedAccountName,
-//                        securityLevel: Int(storedSecurityLevel)!,
-//                        schoolClassNumber: Int(storedSchoolClassNumber))
-//                    
-//                    fetchedUserAccounts.append(fetchedUserAccount)
-//                    accountNumbers.append(Int(storedAccountNumber)!)
-//                }
-//                
-//                let accountNumberToSave = accountNumbers.max()! + 1
-//                
-//                let userAccountForUpload: Dictionary<String, AnyObject> = [
-//                    Constants.FIREBASE_USER_ACCOUNTS_NUMBER : String(accountNumberToSave) as AnyObject,
-//                    Constants.FIREBASE_USER_ACCOUNTS_NAME : userAccount.accountName as AnyObject,
-//                    Constants.FIREBASE_USER_ACCOUNTS_SECURITY_LEVEL : String(1) as AnyObject,
-//                    Constants.FIREBASE_USER_ACCOUNTS_CLASS_NUMBER : userAccount.schoolClassNumber != nil ? String(userAccount.schoolClassNumber!) as AnyObject : "" as AnyObject
-//                ]
-//                
-//                let accountID = userAccount.id == nil ? NSUUID().uuidString : userAccount.id
-//                
-//                self.mainRef.child(Constants.FIREBASE_USER_ACCOUNTS).child(accountID!).updateChildValues(userAccountForUpload, withCompletionBlock: { (error, ref) in
-//                    
-//                    if error != nil {
-//                        onComplete("ERROR: \(String(describing: error))", ref)
-//                    } else {
-//                        print ("Success saving User Account!")
-//                        onComplete(nil, ref)
-//                    }
-//                    
-//                })
-//                
-//            }
-//            
-//            
-//            
-//            
-//            
-//        })
-//    }
-//    
-//    
-//    
-    
+    // Returns a Date value for the end-point of a given TimePeriod
+    static func getTimePeriodEndDate(for timePeriod: TimePeriod) -> Date? {
+        
+        switch timePeriod {
+            
+        case .today:
+            return Date()
+            
+        case .currentWeek:
+            return Date()
+            
+        case .lastWeek:
+            
+            switch getDayString(for: Date()) {
+            case "Monday":
+                return Date().dateAt(hours: 0, minutes: 0)
+            case "Tuesday":
+                return Date().withOffset(dateOffset: -1).dateAt(hours: 0, minutes: 0)
+            case "Wednesday":
+                return Date().withOffset(dateOffset: -2).dateAt(hours: 0, minutes: 0)
+            case "Thursday":
+                return Date().withOffset(dateOffset: -3).dateAt(hours: 0, minutes: 0)
+            case "Friday":
+                return Date().withOffset(dateOffset: -4).dateAt(hours: 0, minutes: 0)
+            case "Saturday":
+                return Date().withOffset(dateOffset: -5).dateAt(hours: 0, minutes: 0)
+            case "Sunday":
+                return Date().withOffset(dateOffset: -6).dateAt(hours: 0, minutes: 0)
+            default: break
+            }
+            
+        case .thisTerm:
+            return Date()
+        case .lastTerm:
+            return Constants.LAST_TERM_END_TIME
+        case .thisYear:
+            return Date()
+        case .lastYear:
+            return Constants.LAST_YEAR_END_TIME
+        case.allTime:
+            return Date()
+        }
+        
+        return nil
+    }
     
     
     
@@ -1359,27 +1093,8 @@ class DataService {
 
 
 
+// ----- Type extensions
 
-
-
-
-// ---------
-extension String {
-    func toBool() -> Bool? {
-        switch self {
-        case "True", "true", "yes", "1":
-            return true
-        case "False", "false", "no", "0":
-            return false
-        default:
-            return nil
-        }
-    }
-}
-
-
-
-/// for checking current time against end of periods
 extension Date
 {
     
@@ -1404,13 +1119,13 @@ extension Date
         return newDate
     }
     
-    
+    // Returns the Date-representation of noon for a day that is offset from the current day by a given number
     func withOffset(dateOffset: Int) -> Date {
         let noonToday = Calendar.current.date(bySettingHour: 12, minute: 0, second: 0, of: self)!
         return Calendar.current.date(byAdding: .day, value: dateOffset, to: noonToday)!
     }
     
-    
+    // Returns a Date value for a given set of integers representing day, month and year
     func dateFor(day: Int, month: Int, year: Int) -> Date? {
         
         // Initialize Date components
@@ -1461,12 +1176,4 @@ enum TimePeriod: CustomStringConvertible {
         }
     }
 }
-    
-    
-    
-    
-    
-    
-    
-    
 

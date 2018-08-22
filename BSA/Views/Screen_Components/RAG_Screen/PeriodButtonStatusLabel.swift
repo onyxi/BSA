@@ -22,6 +22,12 @@ class PeriodButtonStatusLabel: UILabel {
         self.layer.cornerRadius = 15
         self.layer.masksToBounds = true
     }
+    
+    // clear label before updating
+    func clearStatusLabel() {
+        self.backgroundColor = .clear
+         self.text = ""
+    }
 
     // Update label color and text value to reflect when a given period's RAG assessment has been completed
     func setStatusComplete() {

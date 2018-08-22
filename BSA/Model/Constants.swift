@@ -51,7 +51,7 @@ class Constants {
     static let GRAY = UIColor(red: 203/255, green: 203/255, blue: 203/255, alpha: 1.0)
     static let GRAY_DARK = UIColor(red: 191/255, green: 191/255, blue: 191/255, alpha: 1.0)
     static let GRAY_LIGHT = UIColor(red: 216/255, green: 216/255, blue: 216/255, alpha: 1.0)
-    static let GRAY_VERY_LIGHT = UIColor(red: 251/255, green: 251/255, blue: 251/255, alpha: 1.0)
+    static let GRAY_VERY_LIGHT = UIColor(red: 241/255, green: 241/255, blue: 241/255, alpha: 1.0)
     
     static let RED = UIColor(red: 195/255, green: 95/255, blue: 95/255, alpha: 1.0)
     static let RED_DARK = UIColor(red: 177/255, green: 55/255, blue: 55/255, alpha: 1.0)
@@ -127,9 +127,10 @@ class Constants {
 
     /// Firebase Database values:
     static let FIREBASE_USER_ACCOUNTS = "user_accounts"
-    static let FIREBASE_USER_ACCOUNTS_NAME = "account_name"
-    static let FIREBASE_USER_ACCOUNTS_SECURITY_LEVEL = "account_security_level"
-    static let FIREBASE_USER_ACCOUNTS_CLASS_ID = "account_class_Id"
+    static let FIREBASE_USER_ACCOUNT_NAME = "account_name"
+    static let FIREBASE_USER_ACCOUNT_SECURITY_LEVEL = "account_security_level"
+    static let FIREBASE_USER_ACCOUNT_CLASS_ID = "account_class_Id"
+    static let FIREBASE_USER_ACCOUNT_PASSWORD = "account_password"
     
     static let FIREBASE_SCHOOL_CLASSES = "school_classes"
     static let FIREBASE_SCHOOL_CLASS_NAME = "class_name"

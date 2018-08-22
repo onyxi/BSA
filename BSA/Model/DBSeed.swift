@@ -23,50 +23,6 @@ class DBSeed {
         }
     }
     
-//    static func createUserAccounts() {
-//        let userAccounts: [UserAccount] = [
-////                UserAccount(id: Constants.getUniqueId(), accountName: "Class A", securityLevel: 1, schoolClassId: 1),
-////                UserAccount(id: Constants.getUniqueId(), accountName: "Class B", securityLevel: 1, schoolClassId: 2),
-////                UserAccount(id: Constants.getUniqueId(), accountName: "Class C", securityLevel: 1, schoolClassId: 3)
-//            ]
-//        for account in userAccounts {
-//            DataService().createUserAccount(userAccount: account) { (success, message) in
-//                if success {
-//                    print (message)
-//                    // do something
-//                } else {
-//                    print (message)
-//                    // do something
-//                }
-//            }
-//        }
-//    }
-    
-//     static func createSchoolClassesAndStudents() {
-//        let schoolClasses: [SchoolClass] = [
-//            SchoolClass(id: Constants.getUniqueId(), className: "Class A"),
-//            SchoolClass(id: Constants.getUniqueId(), className: "Class B"),
-//            SchoolClass(id: Constants.getUniqueId(), className: "Class C")
-//        ]
-//
-//        for schoolClass in schoolClasses {
-//            DataService().createSchoolClass(schoolClass: schoolClass) { (classId, message) in
-//                if classId != nil {
-//                    switch message {
-//                    case "Class A":
-//                        createClassAStudents(classID: classId!)
-//                    case "Class B":
-//                        createClassBStudents(classID: classId!)
-//                    case "Class C":
-//                        createClassCStudents(classID: classId!)
-//                    default: break
-//                    }
-//                }
-//            }
-//        }
-//    }
-    
-    
     static func createSchoolClasses() {
         let schoolClasses: [SchoolClass] = [
             SchoolClass(id: "1", className: "Class A"),
@@ -80,9 +36,6 @@ class DBSeed {
             }
         }
     }
-    
-    
-    //        Data.saveUserAccount(id: nil, accountNumber: nil, name: "Test", schoolClassNumber: 4)
     
     
     static func createStaffMembers() {
@@ -102,18 +55,6 @@ class DBSeed {
         }
     }
 
-//
-
-//    
-//    static let staffMembers: [Staff] = [
-//        Staff(id: nil, staffNumber: 1, firstName: "Nicholas", lastName: "Plastow", schoolClassNumber: 1),
-//        Staff(id: nil, staffNumber: 2, firstName: "Timothy", lastName: "Holdsworth", schoolClassNumber: 1),
-//        Staff(id: nil, staffNumber: 3, firstName: "Jamie", lastName: "Saunter", schoolClassNumber: 2),
-//        Staff(id: nil, staffNumber: 4, firstName: "Simonne", lastName: "Ackwood", schoolClassNumber: 2),
-//        Staff(id: nil, staffNumber: 5, firstName: "Tobin", lastName: "Sharpin", schoolClassNumber: 3),
-//        Staff(id: nil, staffNumber: 6, firstName: "Odetta", lastName: "Tailby", schoolClassNumber: 3)
-//    ]
-//
     
     
     static func createStudents() {
@@ -148,111 +89,9 @@ class DBSeed {
     }
     
     
-//    "517E0132-0E41-43DE-BA3F-25DD109E8DFC"
-//    static func createClassAStudents(classID: String) {
-//        let classAStudents: [Student] = [
-//            Student(id: nil, studentNumber: 1, firstName: "Eula", lastName: "Kennon", schoolClassId: classID),
-//            Student(id: nil, studentNumber: 2, firstName: "Timmie", lastName: "Schuck", schoolClassId: classID),
-//            Student(id: nil, studentNumber: 3, firstName: "Taber", lastName: "Volker", schoolClassId: classID),
-//            Student(id: nil, studentNumber: 4, firstName: "Aluino", lastName: "Pinkerton", schoolClassId: classID),
-//            Student(id: nil, studentNumber: 5, firstName: "Matty", lastName: "Roan", schoolClassId: classID),
-//            Student(id: nil, studentNumber: 6, firstName: "Latashia", lastName: "Jakes", schoolClassId: classID)]
-//            for student in classAStudents {
-//                DataService().createStudent(student: student) { (success, message) in
-//                print (message)
-//            }
-//        }
-//    }
-//
-////        "94F943F2-4BA1-48AA-8230-6790BE8FEC9B"
-//    static func createClassBStudents(classID: String) {
-//        let classBStudents: [Student] = [
-//            Student(id: nil, studentNumber: 7, firstName: "Jase", lastName: "Commins", schoolClassId: classID),
-//            Student(id: nil, studentNumber: 8, firstName: "Maurizia", lastName: "Waylett", schoolClassId: classID),
-//            Student(id: nil, studentNumber: 9, firstName: "Saira", lastName: "Diaz", schoolClassId: classID),
-//            Student(id: nil, studentNumber: 10, firstName: "Kealan", lastName: "Woodward", schoolClassId: classID),
-//            Student(id: nil, studentNumber: 11, firstName: "Brandy", lastName: "Southern", schoolClassId: classID),
-//            Student(id: nil, studentNumber: 12, firstName: "Bertha", lastName: "Liu", schoolClassId: classID),
-//            Student(id: nil, studentNumber: 13, firstName: "Aryan", lastName: "Torres", schoolClassId: classID),
-//            Student(id: nil, studentNumber: 14, firstName: "Trent", lastName: "Weber", schoolClassId: classID),
-//            Student(id: nil, studentNumber: 15, firstName: "Rikesh", lastName: "Neal", schoolClassId: classID)
-//            ]
-//
-//        for student in classBStudents {
-//            DataService().createStudent(student: student) { (success, message) in
-//                print (message)
-//            }
-//        }
-//    }
-//
-////        "21622530-7201-4B78-A9F7-DE8F47ED83E4"
-//    static func createClassCStudents(classID: String) {
-//        let classCStudents: [Student] = [
-//            Student(id: nil, studentNumber: 16, firstName: "Caleb", lastName: "Sanders", schoolClassId: classID),
-//            Student(id: nil, studentNumber: 17, firstName: "Sameera", lastName: "Lovell", schoolClassId: classID),
-//            Student(id: nil, studentNumber: 18, firstName: "Londin", lastName: "Betts", schoolClassId: classID),
-//            Student(id: nil, studentNumber: 19, firstName: "Khia", lastName: "Johnson", schoolClassId: classID),
-//            Student(id: nil, studentNumber: 20, firstName: "Hal", lastName: "Garcia", schoolClassId: classID),
-//            Student(id: nil, studentNumber: 21, firstName: "Bianca", lastName: "Bates", schoolClassId: classID)
-//        ]
-//
-//        for student in classCStudents {
-//            DataService().createStudent(student: student) { (success, message) in
-//                print (message)
-//            }
-//        }
-//    }
     
     
-    
-    
-//    
-//    static let students: [Student] = [
-//        Student(id: nil, studentNumber: 1, firstName: "Eula", lastName: "Kennon", schoolClassNumber: 1),
-//        Student(id: nil, studentNumber: 2, firstName: "Timmie", lastName: "Schuck", schoolClassNumber: 1),
-//        Student(id: nil, studentNumber: 3, firstName: "Taber", lastName: "Volker", schoolClassNumber: 1),
-//        Student(id: nil, studentNumber: 4, firstName: "Aluino", lastName: "Pinkerton", schoolClassNumber: 1),
-//        Student(id: nil, studentNumber: 5, firstName: "Matty", lastName: "Roan", schoolClassNumber: 1),
-//        Student(id: nil, studentNumber: 6, firstName: "Latashia", lastName: "Jakes", schoolClassNumber: 1),
-//        Student(id: nil, studentNumber: 7, firstName: "Jase", lastName: "Commins", schoolClassNumber: 2),
-//        Student(id: nil, studentNumber: 8, firstName: "Maurizia", lastName: "Waylett", schoolClassNumber: 2),
-//        Student(id: nil, studentNumber: 9, firstName: "Saira", lastName: "Diaz", schoolClassNumber: 2),
-//        Student(id: nil, studentNumber: 10, firstName: "Kealan", lastName: "Woodward", schoolClassNumber: 2),
-//        Student(id: nil, studentNumber: 11, firstName: "Brandy", lastName: "Southern", schoolClassNumber: 2),
-//        Student(id: nil, studentNumber: 12, firstName: "Bertha", lastName: "Liu", schoolClassNumber: 2),
-//        Student(id: nil, studentNumber: 13, firstName: "Aryan", lastName: "Torres", schoolClassNumber: 2),
-//        Student(id: nil, studentNumber: 14, firstName: "Trent", lastName: "Weber", schoolClassNumber: 2),
-//        Student(id: nil, studentNumber: 15, firstName: "Rikesh", lastName: "Neal", schoolClassNumber: 2),
-//        Student(id: nil, studentNumber: 16, firstName: "Caleb", lastName: "Sanders", schoolClassNumber: 3),
-//        Student(id: nil, studentNumber: 17, firstName: "Sameera", lastName: "Lovell", schoolClassNumber: 3),
-//        Student(id: nil, studentNumber: 18, firstName: "Londin", lastName: "Betts", schoolClassNumber: 3),
-//        Student(id: nil, studentNumber: 19, firstName: "Khia", lastName: "Johnson", schoolClassNumber: 3),
-//        Student(id: nil, studentNumber: 20, firstName: "Hal", lastName: "Garcia", schoolClassNumber: 3),
-//        Student(id: nil, studentNumber: 21, firstName: "Bianca", lastName: "Bates", schoolClassNumber: 3)
-//    ]
-//    
-//    static let behaviours: [Behaviour] = [
-//        Behaviour(id: "b1", behaviourNumber: 1, type: "Kicking"),
-//        Behaviour(id: "b2", behaviourNumber: 2, type: "Headbutt"),
-//        Behaviour(id: "b3", behaviourNumber: 3, type: "Hitting"),
-//        Behaviour(id: "b4", behaviourNumber: 4, type: "Biting"),
-//        Behaviour(id: "b5", behaviourNumber: 5, type: "Slapping"),
-//        Behaviour(id: "b6", behaviourNumber: 6, type: "Scratching"),
-//        Behaviour(id: "b7", behaviourNumber: 7, type: "Clothes-Grabbing"),
-//        Behaviour(id: "b8", behaviourNumber: 8, type: "Hair-Pulling")
-//    ]
-//    
-//    static let purposes: [Purpose] = [
-//        Purpose(id: "p1", purposeNumber: 1, type: "Social Attention"),
-//        Purpose(id: "p2", purposeNumber: 2, type: "Tangibles"),
-//        Purpose(id: "p3", purposeNumber: 3, type: "Escape"),
-//        Purpose(id: "p4", purposeNumber: 4, type: "Sensory"),
-//        Purpose(id: "p5", purposeNumber: 5, type: "Health"),
-//        Purpose(id: "p6", purposeNumber: 6, type: "Activity Avoidance"),
-//        Purpose(id: "p7", purposeNumber: 7, type: "Unknown")
-//    ]
-    
-    
+    // Creates seed data for RAG Assessments
     static func createRAGAssessments() {
     
 //        let ragAssessments: [RAGAssessment] = [
@@ -1362,26 +1201,9 @@ class DBSeed {
     }
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
   
 
-    
+    // Creates seed data for Incidents
     static func createIncidents() {
 
 //        let incidents: [Incident] = [

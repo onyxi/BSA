@@ -14,7 +14,6 @@ class IncidentFormVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     // UI handles:
     @IBOutlet weak var tableView: UITableView!
-//    @IBOutlet weak var tableViewHeight: NSLayoutConstraint!
     
     /// Properties:
     var incidentDateTime: Date?
@@ -28,6 +27,7 @@ class IncidentFormVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     var incidentAlarmPressed = false
     var incidentPurposes: [String]?
     var incidentNotes = ""
+    var dataService: DataService?
 
     // Configures view when loaded
     override func viewDidLoad() {
@@ -42,6 +42,37 @@ class IncidentFormVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.dataSource = self
         tableView.backgroundColor = UIColor.clear
         tableView.tableFooterView = UIView()
+        
+            // initialise DataService
+        dataService = DataService()
+        
+            // add swipe-gesture recognisers to main view
+        addGestureRecognisers()
+    }
+    
+    // Adds right swipe-gesture recogniser to the main view
+    func addGestureRecognisers() {
+        
+        // add right-swipe recogniser
+        var swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(processGesture))
+        swipeRight.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(swipeRight)
+    }
+    
+    
+    // Processes recognised right swipe recognisers
+    @objc func processGesture(gesture: UIGestureRecognizer) {
+        if let gesture = gesture as? UISwipeGestureRecognizer {
+            switch gesture.direction {
+                
+            // navigate back to previous screen
+            case UISwipeGestureRecognizerDirection.right:
+                self.navigationController?.popViewController(animated: true)
+                
+            default:
+                break
+            }
+        }
     }
     
     // Submits a completed Incident Form to be saved to storage. If not all fields have been completed, an alert is shown to the user to inform them they must do so before submitting. Animates back to parent VC when submission is successful.
@@ -61,20 +92,33 @@ class IncidentFormVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         
             // create Incident object from field data
         let incident = Incident(id: NSUUID().uuidString, dateTime: incidentDateTime!, duration: incidentDuration, student: incidentStudent!, behaviours: incidentBehaviours!, intensity: incidentIntensity!, staff: incidentStaff!, accidentFormCompleted: incidentAccidentFormCompleted, restraint: incidentRestraint, alarmPressed: incidentAlarmPressed, purposes: incidentPurposes!, notes: incidentNotes)
-//            Incident(id: "I1", incidentNumber: 1, dateTime: incidentDateTime!, duration: incidentDuration, student: incidentStudent!, behaviours: incidentBehaviours!, intensity: incidentIntensity!, staff: incidentStaff!, accidentFormCompleted: incidentAccidentFormCompleted, restraint: incidentRestraint, alarmPressed: incidentAlarmPressed, purposes: incidentPurposes!, notes: incidentNotes)
         
             // commit Incident object to storage
-        print(incident)
+        dataService?.createIncident(incident: incident, completion: { (incidentID, message) in
+            if incidentID != nil {
+                print ("Created Incident: \(message)")
+
+                    // show alert to inform user that submission was successful
+                let alert = UIAlertController(title: "Incident Saved", message: nil, preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                    alert.dismiss(animated: true, completion: nil)
+                    
+                        // animate back to parent VC
+                    self.navigationController?.popViewController(animated: true)
+                }))
+                self.present(alert, animated: true, completion: nil)
+                
+           
+                // alert user if problem with upload
+            } else {
+                let alert = UIAlertController(title: "Error Saving Incident", message: "Please check your connection and try again", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+                self.present(alert, animated: true, completion: nil)
+            }
+        })
         
-            // show alert to inform user that submission was successful
-        let alert = UIAlertController(title: "Incident Saved", message: nil, preferredStyle: UIAlertControllerStyle.alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-            alert.dismiss(animated: true, completion: nil)
-        }))
-        self.present(alert, animated: true, completion: nil)
-        
-            // animate back to parent VC
-        self.navigationController?.popViewController(animated: true)
     }
     
     
@@ -130,7 +174,6 @@ class IncidentFormVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     // Sets the new Incident Form's 'Staff' property to the value selected in delegated VC - and updates the 'Staff' cell's value label
     func setStaff(to selection: [Staff]) {
-//        self.incidentStaff = selection
         var incidentStaff = [Int]()
         var staffString = ""
         for i in 1...selection.count {
@@ -148,7 +191,6 @@ class IncidentFormVC: UIViewController, UITableViewDelegate, UITableViewDataSour
                 staffCell.setMultiLine()
             }
             self.incidentStaff = incidentStaff
-//            self.incidentStaff = selection
         }
         tableView.reloadData()
     }

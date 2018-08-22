@@ -16,12 +16,12 @@ class StudentDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     @IBOutlet weak var tableView: MaterialTableView!
     
     // Properties:
+    var existingStudents = [Student]()
     var student: Student?
     var id = NSUUID().uuidString
-    var studentNumber: Int?
+    var studentNumber: String?
     var firstName: String?
     var lastName: String?
-//    var schoolClassNumber: Int?
     var schoolClassId: String?
     var schoolClass: SchoolClass?
     var schoolClassName: String?
@@ -48,24 +48,49 @@ class StudentDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
             // unpack Student object if passed in from parent VC, reload table to include object data, and add 'Delete' button for presented object
         if student != nil {
             id = student!.id
-            studentNumber = student!.studentNumber
+            studentNumber = String(student!.studentNumber)
             firstName = student!.firstName
             lastName = student!.lastName
-//            schoolClassNumber = student?.schoolClassNumber
             schoolClassId = student!.schoolClassId
             
+                // request Studnt's associated School Class object
             dataService?.getSchoolClass(withId: schoolClassId!)
             
-//            schoolClass = Data.getSchoolClass(numbered: schoolClassNumber)
-//            schoolClassName = schoolClass?.className
-//            tableView.reloadData()
             addDeleteButton()
         }
+    
+            // add swipe-gesture recognisers to main view
+        addGestureRecognisers()
+    }
+    
+    // Adds right swipe-gesture recogniser to the main view
+    func addGestureRecognisers() {
+        
+        // add right-swipe recogniser
+        var swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(processGesture))
+        swipeRight.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(swipeRight)
     }
     
     
+    // Processes recognised right swipe recognisers
+    @objc func processGesture(gesture: UIGestureRecognizer) {
+        if let gesture = gesture as? UISwipeGestureRecognizer {
+            switch gesture.direction {
+                
+            // navigate back to previous screen
+            case UISwipeGestureRecognizerDirection.right:
+                self.navigationController?.popViewController(animated: true)
+                
+            default:
+                break
+            }
+        }
+    }
+    
+    // Populates Student's class-name field with name of fetched School-Class object
     func finishedFetching(schoolClasses: [SchoolClass]) {
-        schoolClassName = schoolClass?.className
+        schoolClassName = schoolClasses[0].className
         tableView.reloadData()
     }
     
@@ -179,17 +204,44 @@ class StudentDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     func addDeleteButton() {
         let deleteButton = UIButton(type: .system)
         deleteButton.setImage(UIImage(named: "deleteIcon"), for: .normal)
+        deleteButton.setTitle(" Delete", for: .normal)
         deleteButton.sizeToFit()
         deleteButton.addTarget(self, action: #selector(self.deleteButtonPressed), for: .touchUpInside)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: deleteButton)
     }
     
-    //  Triggers deletion of the presented entity - and unwinds to parent VC if successful
+    // Checks to make sure user actually wants to delete the Student object
     @objc func deleteButtonPressed() {
-        print("Deleting Student: \n\(String(describing: student!))")
-        self.navigationController?.popViewController(animated: true)
+        let alert = UIAlertController(title: "Are you sure?", message: "Deleting a Student cannot be undone", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            self.deleteStudent()
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { action in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
     
+    //  Triggers deletion of the presented entity - and unwinds to parent VC if successful
+    func deleteStudent() {
+        dataService!.delete(entity: self.student, account: nil) { (success, errMsg) in
+            if success {
+                let alert = UIAlertController(title: "Student Deleted", message: nil, preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                    alert.dismiss(animated: true, completion: nil)
+                    self.navigationController?.popViewController(animated: true)
+                }))
+                self.present(alert, animated: true, completion: nil)
+            } else {
+                let alert = UIAlertController(title: "Deletion Error", message: "Unable to delete Student, please check your connection and try again", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
     
 
     
@@ -199,11 +251,7 @@ class StudentDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
         switch cellTag {
             
         case 1: // Staff Number field edited
-            if let studentNumberIntValue = Int(value) {
-                studentNumber = studentNumberIntValue
-            } else {
-                print ("invalid student number")
-            }
+            studentNumber = value
             
         case 2: // First Name field edited
             firstName = value
@@ -218,7 +266,7 @@ class StudentDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     // Sets the Student object's schoolClass value to the SchoolClass object sent from a delegated EntityClassSelectionVC. Useful properties (schoolClassNumber and schoolClassName) are also unpacked for convenient use in table values - before reloading the table of Student details
     func didSelect(schoolClass: SchoolClass) {
         self.schoolClass = schoolClass
-//        schoolClassNumber = schoolClass.classNumber
+        self.schoolClassId = schoolClass.id
         schoolClassName = schoolClass.className
         tableView.reloadData()
     }
@@ -243,7 +291,7 @@ class StudentDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
     @IBAction func saveChangesButtonPressed(_ sender: Any) {
         
         // makue sure a student has been given. If not, present alert to prompt name entry
-        guard studentNumber != nil else {
+        guard studentNumber != nil && studentNumber != "" else {
             let alert = UIAlertController(title: "No Student Number Given", message: "Please enter a unique number for the Student", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
                 alert.dismiss(animated: true, completion: nil)
@@ -252,11 +300,39 @@ class StudentDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
             return
         }
         
+        // make sure the student number is a valid integer value
+        guard let studentNumberIntValue = Int(studentNumber!) else {
+            print ("invalid student number")
+            let alert = UIAlertController(title: "Invalid Student Number", message: "Please enter numeric integer values only for the Student Number", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                alert.dismiss(animated: true, completion: nil)
+            }))
+            self.present(alert, animated: true, completion: nil)
+            
+            return
+        }
+        
+        // make sure the student number is unique in the database
+        var existingStudentNumbers = [Int]()
+        for student in existingStudents {
+            existingStudentNumbers.append(student.studentNumber)
+        }
+        guard !existingStudentNumbers.contains(studentNumberIntValue) else {
+            print ("Student Number Already In Use")
+            let alert = UIAlertController(title: "Student Number Already In Use", message: "Student number must be unique", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                alert.dismiss(animated: true, completion: nil)
+            }))
+            self.present(alert, animated: true, completion: nil)
+            
+            return
+        }
+        
         //------
         
         // makue sure a name has been given. If not, present alert to prompt name entry
         guard firstName != nil && firstName != "" else {
-            let alert = UIAlertController(title: "No Name Given", message: "Please enter a First Name for the Student", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "No First Name Given", message: "Please enter a First Name for the Student", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
                 alert.dismiss(animated: true, completion: nil)
             }))
@@ -268,7 +344,7 @@ class StudentDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
  
         // makue sure a name has been given. If not, present alert to prompt name entry
         guard lastName != nil && lastName != "" else {
-            let alert = UIAlertController(title: "No Name Given", message: "Please enter a Last Name for the Student", preferredStyle: UIAlertControllerStyle.alert)
+            let alert = UIAlertController(title: "No Last Name Given", message: "Please enter a Last Name for the Student", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
                 alert.dismiss(animated: true, completion: nil)
             }))
@@ -276,13 +352,35 @@ class StudentDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSo
             return
         }
         
+        // ------
+        
+        guard schoolClassId != nil else {
+            let alert = UIAlertController(title: "No Class Assigned", message: "Please select a Class to associate with this Student", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                alert.dismiss(animated: true, completion: nil)
+            }))
+            self.present(alert, animated: true, completion: nil)
+            return
+        }
         
         // save changes to storage and unwind to parent VC
         
-            //  package Staff object and save changes here...
-        let updatedStudent = Student(id: self.id, studentNumber: self.studentNumber!, firstName: self.firstName!, lastName: self.lastName!, schoolClassId: NSUUID().uuidString)
-//            Student(id: self.id, studentNumber: self.studentNumber!, firstName: self.firstName!, lastName: self.lastName!, schoolClassNumber: self.schoolClassNumber)
-        print (updatedStudent)
+            //  package Staff object 
+        let updatedStudent = Student(id: self.id, studentNumber: Int(self.studentNumber!)!, firstName: self.firstName!, lastName: self.lastName!, schoolClassId: schoolClassId!)
+
+        dataService?.createStudent(student: updatedStudent, completion: { (studentID, studentName) in
+            if studentID != nil {
+                print ("Created Student: \(studentName)")
+                
+                // alert user if problem with upload
+            } else {
+                let alert = UIAlertController(title: "Error Creating Student", message: "Please check your connection and try again", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+                self.present(alert, animated: true, completion: nil)
+            }
+        })
         
         self.navigationController?.popViewController(animated: true)
         

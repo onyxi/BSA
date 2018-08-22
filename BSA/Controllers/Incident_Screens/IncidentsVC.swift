@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 class IncidentsVC: UIViewController {
 
@@ -49,10 +50,9 @@ class IncidentsVC: UIViewController {
             alert.dismiss(animated: true, completion: nil)
         } ))
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {action in
-            // remove record of logged in account and segue to login screen
-//            UserDefaults.standard.removeObject(forKey: Constants.LOGGED_IN_ACCOUNT_NUMBER_KEY)
-            // remove record of logged in account and segue to login screen
-            //            UserDefaults.standard.removeObject(forKey: Constants.LOGGED_IN_ACCOUNT_NUMBER_KEY)
+            let notifsCenter = UNUserNotificationCenter.current()
+            notifsCenter.removeAllPendingNotificationRequests()
+            
             UserDefaults.standard.removeObject(forKey: Constants.LOGGED_IN_ACCOUNT_ID)
             UserDefaults.standard.removeObject(forKey: Constants.LOGGED_IN_ACCOUNT_NAME)
             UserDefaults.standard.removeObject(forKey: Constants.LOGGED_IN_ACCOUNT_SECURITY_LEVEL)

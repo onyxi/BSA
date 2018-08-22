@@ -10,6 +10,7 @@ import UIKit
 
 class SelectionIndicator: UIView {
 
+    // Configure view appearance when loaded
     override func awakeFromNib() {
         self.layer.cornerRadius = 4
         self.layer.masksToBounds = true

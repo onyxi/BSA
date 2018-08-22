@@ -30,6 +30,34 @@ class DateTimePickerVC: UIViewController {
         view.layer.backgroundColor = Constants.INCIDENTS_SCREEN_COLOR.cgColor
         self.navigationItem.title = "Please Select..."
         dateTimePicker.maximumDate = Date()
+        
+            // add swipe-gesture recognisers to main view
+        addGestureRecognisers()
+    }
+    
+    // Adds right swipe-gesture recogniser to the main view
+    func addGestureRecognisers() {
+        
+        // add right-swipe recogniser
+        var swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(processGesture))
+        swipeRight.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(swipeRight)
+    }
+    
+    
+    // Processes recognised right swipe recognisers
+    @objc func processGesture(gesture: UIGestureRecognizer) {
+        if let gesture = gesture as? UISwipeGestureRecognizer {
+            switch gesture.direction {
+                
+            // navigate back to previous screen
+            case UISwipeGestureRecognizerDirection.right:
+                self.navigationController?.popViewController(animated: true)
+                
+            default:
+                break
+            }
+        }
     }
     
     // Sets parent VC's 'Date/Time' value to thic VC's selected value, before segueing back to parent VC

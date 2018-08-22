@@ -15,6 +15,8 @@
 		C112DB3620E8D24A009AC85B /* Incident.swift in Sources */ = {isa = PBXBuildFile; fileRef = C112DB3520E8D24A009AC85B /* Incident.swift */; };
 		C112DB3820E9606E009AC85B /* ClassReportsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C112DB3720E9606E009AC85B /* ClassReportsVC.swift */; };
 		C112DB3B20E960B2009AC85B /* ChartCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = C112DB3A20E960B2009AC85B /* ChartCard.swift */; };
+		C114EC7E2120852900DEC649 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C114EC7D2120852900DEC649 /* GoogleService-Info.plist */; };
+		C114EC802122CE4900DEC649 /* MaterialTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C114EC7F2122CE4900DEC649 /* MaterialTextField.swift */; };
 		C119041320F7D078001FD166 /* ClassesTableContainerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C119041220F7D078001FD166 /* ClassesTableContainerVC.swift */; };
 		C119041520F7D095001FD166 /* StaffTableContainerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C119041420F7D095001FD166 /* StaffTableContainerVC.swift */; };
 		C119041720F7D0A6001FD166 /* StudentsTableContainerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C119041620F7D0A6001FD166 /* StudentsTableContainerVC.swift */; };
@@ -25,7 +27,6 @@
 		C131D12A20E281C600B557F8 /* StudentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C131D12920E281C600B557F8 /* StudentCell.swift */; };
 		C1374A8520D1872A0089E1F4 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1374A8420D1872A0089E1F4 /* Constants.swift */; };
 		C1374A8A20D1A2FF0089E1F4 /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1374A8920D1A2FF0089E1F4 /* AccountCell.swift */; };
-		C1374A8C20D1A53D0089E1F4 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1374A8B20D1A53D0089E1F4 /* Data.swift */; };
 		C1374A8E20D1B2370089E1F4 /* OKButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1374A8D20D1B2370089E1F4 /* OKButton.swift */; };
 		C1374A9020D1B3070089E1F4 /* MaterialTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1374A8F20D1B3070089E1F4 /* MaterialTableView.swift */; };
 		C1374A9220D1B3600089E1F4 /* LoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1374A9120D1B3600089E1F4 /* LoginButton.swift */; };
@@ -37,12 +38,10 @@
 		C156E5A520FC9A6100DDB698 /* AdminReportsEntityGroupCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C156E5A420FC9A6100DDB698 /* AdminReportsEntityGroupCell.swift */; };
 		C156E5A720FC9A7F00DDB698 /* AdminReportsIndividualEntityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C156E5A620FC9A7F00DDB698 /* AdminReportsIndividualEntityCell.swift */; };
 		C156E5A920FCA4A600DDB698 /* AdminReportsEntityTableContainerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C156E5A820FCA4A600DDB698 /* AdminReportsEntityTableContainerVC.swift */; };
-		C16AF94E21066F8900A95779 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C16AF94D21066F8900A95779 /* GoogleService-Info.plist */; };
 		C17751AE2103CA240061FF5E /* SelectionIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C17751AD2103CA240061FF5E /* SelectionIndicator.swift */; };
 		C17751B0210483840061FF5E /* RAGAssessment.swift in Sources */ = {isa = PBXBuildFile; fileRef = C17751AF210483840061FF5E /* RAGAssessment.swift */; };
 		C17751B22104F5220061FF5E /* DBSeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = C17751B12104F5220061FF5E /* DBSeed.swift */; };
 		C18F16DE20E3856B008E0EAF /* BehaviourSelectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18F16DD20E3856B008E0EAF /* BehaviourSelectionVC.swift */; };
-		C18F16E020E3860C008E0EAF /* Behaviour.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18F16DF20E3860C008E0EAF /* Behaviour.swift */; };
 		C18F16E320E3919F008E0EAF /* BehaviourCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18F16E220E3919F008E0EAF /* BehaviourCell.swift */; };
 		C18F16E720E3949E008E0EAF /* StaffCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18F16E620E3949E008E0EAF /* StaffCell.swift */; };
 		C18F16E920E394B0008E0EAF /* PurposeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C18F16E820E394B0008E0EAF /* PurposeCell.swift */; };
@@ -99,14 +98,12 @@
 		C1C9401320EA3ED900962E41 /* SchoolClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C9401220EA3ED900962E41 /* SchoolClass.swift */; };
 		C1C9401520EA544100962E41 /* ReportItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1C9401420EA544100962E41 /* ReportItem.swift */; };
 		C1CAF20F20D3B81A004F2190 /* PeriodButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1CAF20E20D3B81A004F2190 /* PeriodButton.swift */; };
-		C1CAF21120D449A7004F2190 /* DayRAGs.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1CAF21020D449A7004F2190 /* DayRAGs.swift */; };
 		C1CF0ACC210335F1001E5744 /* HorizontalBarChartLegend.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1CF0ACB210335F1001E5744 /* HorizontalBarChartLegend.swift */; };
 		C1CF0ACE2103361E001E5744 /* PercentFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1CF0ACD2103361D001E5744 /* PercentFormatter.swift */; };
 		C1CF0AD021038996001E5744 /* AdminReportDataSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1CF0ACF21038996001E5744 /* AdminReportDataSet.swift */; };
 		C1D0881620E4D36A0047D2E4 /* StaffSelectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D0881520E4D36A0047D2E4 /* StaffSelectionVC.swift */; };
 		C1D0881820E4D4190047D2E4 /* PurposeSelectionVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D0881720E4D4190047D2E4 /* PurposeSelectionVC.swift */; };
 		C1D0881A20E4D7070047D2E4 /* Staff.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D0881920E4D7070047D2E4 /* Staff.swift */; };
-		C1D0881C20E4D7E10047D2E4 /* Purpose.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D0881B20E4D7E10047D2E4 /* Purpose.swift */; };
 		C1D0881E20E527610047D2E4 /* IntensityIndicatorVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D0881D20E527610047D2E4 /* IntensityIndicatorVC.swift */; };
 		C1D0882020E527CA0047D2E4 /* NotesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D0881F20E527CA0047D2E4 /* NotesVC.swift */; };
 		C1D0882320E535420047D2E4 /* IntensityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C1D0882220E535420047D2E4 /* IntensityIndicator.swift */; };
@@ -127,6 +124,8 @@
 		C112DB3520E8D24A009AC85B /* Incident.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Incident.swift; sourceTree = "<group>"; };
 		C112DB3720E9606E009AC85B /* ClassReportsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassReportsVC.swift; sourceTree = "<group>"; };
 		C112DB3A20E960B2009AC85B /* ChartCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartCard.swift; sourceTree = "<group>"; };
+		C114EC7D2120852900DEC649 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C114EC7F2122CE4900DEC649 /* MaterialTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialTextField.swift; sourceTree = "<group>"; };
 		C119041220F7D078001FD166 /* ClassesTableContainerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassesTableContainerVC.swift; sourceTree = "<group>"; };
 		C119041420F7D095001FD166 /* StaffTableContainerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffTableContainerVC.swift; sourceTree = "<group>"; };
 		C119041620F7D0A6001FD166 /* StudentsTableContainerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentsTableContainerVC.swift; sourceTree = "<group>"; };
@@ -137,7 +136,6 @@
 		C131D12920E281C600B557F8 /* StudentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentCell.swift; sourceTree = "<group>"; };
 		C1374A8420D1872A0089E1F4 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		C1374A8920D1A2FF0089E1F4 /* AccountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
-		C1374A8B20D1A53D0089E1F4 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		C1374A8D20D1B2370089E1F4 /* OKButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OKButton.swift; sourceTree = "<group>"; };
 		C1374A8F20D1B3070089E1F4 /* MaterialTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MaterialTableView.swift; sourceTree = "<group>"; };
 		C1374A9120D1B3600089E1F4 /* LoginButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginButton.swift; sourceTree = "<group>"; };
@@ -149,12 +147,10 @@
 		C156E5A420FC9A6100DDB698 /* AdminReportsEntityGroupCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminReportsEntityGroupCell.swift; sourceTree = "<group>"; };
 		C156E5A620FC9A7F00DDB698 /* AdminReportsIndividualEntityCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminReportsIndividualEntityCell.swift; sourceTree = "<group>"; };
 		C156E5A820FCA4A600DDB698 /* AdminReportsEntityTableContainerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminReportsEntityTableContainerVC.swift; sourceTree = "<group>"; };
-		C16AF94D21066F8900A95779 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C17751AD2103CA240061FF5E /* SelectionIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectionIndicator.swift; sourceTree = "<group>"; };
 		C17751AF210483840061FF5E /* RAGAssessment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RAGAssessment.swift; sourceTree = "<group>"; };
 		C17751B12104F5220061FF5E /* DBSeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DBSeed.swift; sourceTree = "<group>"; };
 		C18F16DD20E3856B008E0EAF /* BehaviourSelectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BehaviourSelectionVC.swift; sourceTree = "<group>"; };
-		C18F16DF20E3860C008E0EAF /* Behaviour.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Behaviour.swift; sourceTree = "<group>"; };
 		C18F16E220E3919F008E0EAF /* BehaviourCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BehaviourCell.swift; sourceTree = "<group>"; };
 		C18F16E620E3949E008E0EAF /* StaffCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffCell.swift; sourceTree = "<group>"; };
 		C18F16E820E394B0008E0EAF /* PurposeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurposeCell.swift; sourceTree = "<group>"; };
@@ -213,14 +209,12 @@
 		C1C9401220EA3ED900962E41 /* SchoolClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SchoolClass.swift; sourceTree = "<group>"; };
 		C1C9401420EA544100962E41 /* ReportItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportItem.swift; sourceTree = "<group>"; };
 		C1CAF20E20D3B81A004F2190 /* PeriodButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeriodButton.swift; sourceTree = "<group>"; };
-		C1CAF21020D449A7004F2190 /* DayRAGs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayRAGs.swift; sourceTree = "<group>"; };
 		C1CF0ACB210335F1001E5744 /* HorizontalBarChartLegend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HorizontalBarChartLegend.swift; sourceTree = "<group>"; };
 		C1CF0ACD2103361D001E5744 /* PercentFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PercentFormatter.swift; sourceTree = "<group>"; };
 		C1CF0ACF21038996001E5744 /* AdminReportDataSet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminReportDataSet.swift; sourceTree = "<group>"; };
 		C1D0881520E4D36A0047D2E4 /* StaffSelectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StaffSelectionVC.swift; sourceTree = "<group>"; };
 		C1D0881720E4D4190047D2E4 /* PurposeSelectionVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurposeSelectionVC.swift; sourceTree = "<group>"; };
 		C1D0881920E4D7070047D2E4 /* Staff.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Staff.swift; sourceTree = "<group>"; };
-		C1D0881B20E4D7E10047D2E4 /* Purpose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Purpose.swift; sourceTree = "<group>"; };
 		C1D0881D20E527610047D2E4 /* IntensityIndicatorVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntensityIndicatorVC.swift; sourceTree = "<group>"; };
 		C1D0881F20E527CA0047D2E4 /* NotesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesVC.swift; sourceTree = "<group>"; };
 		C1D0882220E535420047D2E4 /* IntensityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntensityIndicator.swift; sourceTree = "<group>"; };
@@ -534,6 +528,7 @@
 				C14EC1DC20EC2E9A00532CB6 /* MaterialTableViewCell.swift */,
 				C1BB5DCD20D17538004E16C8 /* MaterialButton.swift */,
 				C1BB5DCF20D17538004E16C8 /* ActionButton.swift */,
+				C114EC7F2122CE4900DEC649 /* MaterialTextField.swift */,
 				C1374A8D20D1B2370089E1F4 /* OKButton.swift */,
 				C1EF33F720D94A3B009D07B9 /* SaveChangesButton.swift */,
 				C14EC1D620EB7FC200532CB6 /* ClassTabBarController.swift */,
@@ -560,11 +555,10 @@
 		C1BB5DD920D17546004E16C8 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				C16AF94D21066F8900A95779 /* GoogleService-Info.plist */,
+				C114EC7D2120852900DEC649 /* GoogleService-Info.plist */,
 				C1BB5DBA20D1737E004E16C8 /* AppDelegate.swift */,
 				C1374A8420D1872A0089E1F4 /* Constants.swift */,
 				C1BB5DDA20D17546004E16C8 /* AnimationEngine.swift */,
-				C1374A8B20D1A53D0089E1F4 /* Data.swift */,
 				C19AA0A821077971007E63E8 /* DataService.swift */,
 				C19AA0AA2107CBDC007E63E8 /* ClassReportAnalysis.swift */,
 				C1EA1398210B126C0041C154 /* AdminReportAnalysis.swift */,
@@ -574,9 +568,6 @@
 				C1D0881920E4D7070047D2E4 /* Staff.swift */,
 				C1EF33FC20D94D06009D07B9 /* Student.swift */,
 				C112DB3520E8D24A009AC85B /* Incident.swift */,
-				C18F16DF20E3860C008E0EAF /* Behaviour.swift */,
-				C1D0881B20E4D7E10047D2E4 /* Purpose.swift */,
-				C1CAF21020D449A7004F2190 /* DayRAGs.swift */,
 				C17751AF210483840061FF5E /* RAGAssessment.swift */,
 				C1C9401020EA367600962E41 /* ClassReportDataSet.swift */,
 				C1CF0ACF21038996001E5744 /* AdminReportDataSet.swift */,
@@ -663,8 +654,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				C1BB5DC520D17380004E16C8 /* LaunchScreen.storyboard in Resources */,
-				C16AF94E21066F8900A95779 /* GoogleService-Info.plist in Resources */,
 				C1BB5DC220D17380004E16C8 /* Assets.xcassets in Resources */,
+				C114EC7E2120852900DEC649 /* GoogleService-Info.plist in Resources */,
 				C1BB5DC020D1737E004E16C8 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -744,7 +735,6 @@
 				C1B3855220F8B81A00E332D0 /* EntityClassSelectionCell.swift in Sources */,
 				C1AA4DF320DA6CC00033E9E9 /* IncidentFormSelectionCell.swift in Sources */,
 				C1374A9020D1B3070089E1F4 /* MaterialTableView.swift in Sources */,
-				C1374A8C20D1A53D0089E1F4 /* Data.swift in Sources */,
 				C19AA0A921077971007E63E8 /* DataService.swift in Sources */,
 				C119041320F7D078001FD166 /* ClassesTableContainerVC.swift in Sources */,
 				C1EF33F820D94A3B009D07B9 /* SaveChangesButton.swift in Sources */,
@@ -766,6 +756,7 @@
 				C156E5A720FC9A7F00DDB698 /* AdminReportsIndividualEntityCell.swift in Sources */,
 				C1B88A2A20F632D400CF0C62 /* AdminReportsVC.swift in Sources */,
 				C1AA4DF020DA65770033E9E9 /* NewIncidentButton.swift in Sources */,
+				C114EC802122CE4900DEC649 /* MaterialTextField.swift in Sources */,
 				C10FD00120FFA63700A9F9D5 /* IncidentCharacteristicsReportContainerVC.swift in Sources */,
 				C1D0881E20E527610047D2E4 /* IntensityIndicatorVC.swift in Sources */,
 				C1D0881820E4D4190047D2E4 /* PurposeSelectionVC.swift in Sources */,
@@ -788,7 +779,6 @@
 				C1A4897621012B2C0099B67D /* RAGsAndIncidentsChartWeekViewXAxisFormatter.swift in Sources */,
 				C1374A9220D1B3600089E1F4 /* LoginButton.swift in Sources */,
 				C1BB5DD120D17539004E16C8 /* MaterialButton.swift in Sources */,
-				C1D0881C20E4D7E10047D2E4 /* Purpose.swift in Sources */,
 				C1A4896E2100F37D0099B67D /* LineLegendView.swift in Sources */,
 				C1EA1399210B126C0041C154 /* AdminReportAnalysis.swift in Sources */,
 				C10FCFFB20FF51F900A9F9D5 /* AdminReportsDataVC.swift in Sources */,
@@ -808,7 +798,6 @@
 				C1BB5DD320D17539004E16C8 /* ActionButton.swift in Sources */,
 				C1AA4DF520DA76FA0033E9E9 /* CellArrowView.swift in Sources */,
 				C131D12A20E281C600B557F8 /* StudentCell.swift in Sources */,
-				C1CAF21120D449A7004F2190 /* DayRAGs.swift in Sources */,
 				C1A4896C2100F33B0099B67D /* BarLegendView.swift in Sources */,
 				C1AA4DEB20DA648A0033E9E9 /* IncidentsVC.swift in Sources */,
 				C1B88A2C20F64CC600CF0C62 /* AdminTabBarController.swift in Sources */,
@@ -825,7 +814,6 @@
 				C17751AE2103CA240061FF5E /* SelectionIndicator.swift in Sources */,
 				C1AA4E0020DAEDE20033E9E9 /* MaterialDatePicker.swift in Sources */,
 				C1B3855020F8B80200E332D0 /* EntityDetailsSelectionCell.swift in Sources */,
-				C18F16E020E3860C008E0EAF /* Behaviour.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -987,7 +975,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = co.uk.onyxinteractive.BSA;
+				PRODUCT_BUNDLE_IDENTIFIER = co.uk.onyxinteractive.BSA.ipad;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -1014,7 +1002,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = co.uk.onyxinteractive.BSA;
+				PRODUCT_BUNDLE_IDENTIFIER = co.uk.onyxinteractive.BSA.ipad;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

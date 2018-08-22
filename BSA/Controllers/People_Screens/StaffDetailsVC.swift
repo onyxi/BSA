@@ -16,14 +16,12 @@ class StaffDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var tableView: MaterialTableView!
     
     //Properties:
+    var existingStaff = [Staff]()
     var staffMember: Staff?
     var id = NSUUID().uuidString
-    var staffNumber: Int?
+    var staffNumber: String?
     var firstName: String?
     var lastName: String?
-//    var schoolClassNumber: Int?
-//    var schoolClassId: String?
-//    var schoolClass: SchoolClass?
     var schoolClassName: String?
     
     var dataService: DataService?
@@ -42,20 +40,45 @@ class StaffDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.backgroundColor = .clear
         tableView.tableFooterView = UIView()
         
+            // initalise DataService
         dataService = DataService()
-//        dataService?.schoolClassFetchingDelegate = self
         
         // unpack Staff object if passed in from parent VC, reload table to include object data, and add 'Delete' button for presented object
         if staffMember != nil {
             id = staffMember!.id
-            staffNumber = staffMember!.staffNumber
+            staffNumber = String(staffMember!.staffNumber)
             firstName = staffMember!.firstName
             lastName = staffMember!.lastName
-//            schoolClassNumber = staffMember?.schoolClassNumber
-//            schoolClassId = staffMember.
-//            schoolClassName = Data.getSchoolClass(numbered: schoolClassNumber)?.className
             tableView.reloadData()
             addDeleteButton()
+        }
+    
+            // add swipe-gesture recognisers to main view
+        addGestureRecognisers()
+    }
+    
+    // Adds right swipe-gesture recogniser to the main view
+    func addGestureRecognisers() {
+        
+        // add right-swipe recogniser
+        var swipeRight = UISwipeGestureRecognizer(target: self, action: #selector(processGesture))
+        swipeRight.direction = UISwipeGestureRecognizerDirection.right
+        self.view.addGestureRecognizer(swipeRight)
+    }
+    
+    
+    // Processes recognised right swipe recognisers
+    @objc func processGesture(gesture: UIGestureRecognizer) {
+        if let gesture = gesture as? UISwipeGestureRecognizer {
+            switch gesture.direction {
+                
+            // navigate back to previous screen
+            case UISwipeGestureRecognizerDirection.right:
+                self.navigationController?.popViewController(animated: true)
+                
+            default:
+                break
+            }
         }
     }
     
@@ -64,7 +87,7 @@ class StaffDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     // Sets number of rows in the table of Staff Member details
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 6
+        return 5
     }
     
     // Configures cells in the table of Staff Member details
@@ -122,24 +145,6 @@ class StaffDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
             
             return cell
             
-            // configure cell for staff details Class
-        } else if indexPath.row == 4 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "StaffDetailsSelectionCell", for: indexPath) as! EntityDetailsSelectionCell
-            cell.titleLabel.text = "Class"
-            cell.valueLabel.text = "Please select..."
-            cell.valueLabel.textColor = Constants.GRAY_LIGHT
-            cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: .greatestFiniteMagnitude)
-            cell.selectionStyle = .none
-//            cell.showEntityClassSelectionDelegate = self
-            
-                // if a Staff object was passed in from parent VC, update cell with that object's value
-//            if schoolClassName != nil {
-//                cell.valueLabel.text = schoolClassName!
-//                cell.valueLabel.textColor = .black
-//            }
-            
-            return cell
-            
             // transparent cell containing the 'Save Changes' button as the last row in the table
         } else {
             let cell = tableView.dequeueReusableCell(withIdentifier: "StaffDetailsSaveChangesButtonCell", for: indexPath) as! TransparentCell
@@ -153,7 +158,7 @@ class StaffDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         if indexPath.row == 0 {
             return 10
-        } else if indexPath.row == 5 {
+        } else if indexPath.row == 4 {
             return 125
         } else {
             return 80
@@ -165,17 +170,44 @@ class StaffDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     func addDeleteButton() {
         let deleteButton = UIButton(type: .system)
         deleteButton.setImage(UIImage(named: "deleteIcon"), for: .normal)
+        deleteButton.setTitle(" Delete", for: .normal)
         deleteButton.sizeToFit()
         deleteButton.addTarget(self, action: #selector(self.deleteButtonPressed), for: .touchUpInside)
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: deleteButton)
     }
     
-    //  Triggers deletion of the presented entity - and unwinds to parent VC if successful
+    // Checks to make sure user actually wants to delete the Staff object
     @objc func deleteButtonPressed() {
-        print("Deleting Staff Member: \n\(String(describing: staffMember!))")
-        self.navigationController?.popViewController(animated: true)
+        let alert = UIAlertController(title: "Are you sure?", message: "Deleting a Staff Member cannot be undone", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+            self.deleteStaff()
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { action in
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
     
+    //  Triggers deletion of the presented entity - and unwinds to parent VC if successful
+    func deleteStaff() {
+        dataService!.delete(entity: self.staffMember, account: nil) { (success, errMsg) in
+            if success {
+                let alert = UIAlertController(title: "Staff Member Deleted", message: nil, preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                    alert.dismiss(animated: true, completion: nil)
+                    self.navigationController?.popViewController(animated: true)
+                }))
+                self.present(alert, animated: true, completion: nil)
+            } else {
+                let alert = UIAlertController(title: "Deletion Error", message: "Unable to delete Staff Member, please check your connection and try again", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+                self.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
     
     
     // Sets the Staff object's 'First Name', 'Last Name' or 'Staff Number' value to the string sent from an edited text field - depending on the cell/textField that was edited by the user (identified using the cell's tag).
@@ -184,11 +216,8 @@ class StaffDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         switch cellTag {
             
         case 1: // Staff Number field edited
-            if let staffNumberIntValue = Int(value) {
-                staffNumber = staffNumberIntValue
-            } else {
-                print ("invalid staff number")
-            }
+            staffNumber = value
+            
         case 2: // First Name field edited
             firstName = value
         
@@ -199,41 +228,29 @@ class StaffDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
-    // Sets the Staff object's schoolClass value to the SchoolClass object sent from a delegated EntityClassSelectionVC. Useful properties (schoolClassNumber and schoolClassName) are also unpacked for convenient use in table values - before reloading the table of Staff details
-//    func didSelect(schoolClass: SchoolClass) {
-////        self.schoolClass = schoolClass
-////        schoolClassNumber = schoolClass.classNumber
-////        schoolClassName = schoolClass.className
-////        tableView.reloadData()
-//    }
-//
-//    // Initiates segue to VC for selecting a class object to assign to the Staff member. Trigger when the user presses the 'Class' cell in the staff details table
-//    func showClassSelection() {
-//        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-//        let staffClassSelectionVC = storyboard.instantiateViewController(withIdentifier: "EntityClassSelectionVC") as! EntityClassSelectionVC
-//        staffClassSelectionVC.entityClassSelectionDelegate = self
-//
-//            // if a schoolClass object has already been assigned to the Staff object, pass to the destination/selection VC so that current seletion can be displayed
-//        if schoolClass != nil {
-//            staffClassSelectionVC.selectedClass = schoolClass
-//        }
-//
-//            // perform segue
-//        self.navigationController?.pushViewController(staffClassSelectionVC, animated: true)
-//    }
-    
-
     
     // Saves changes to Staff object details and unwinds to parent VC (first checking to make sure that required values have been given)
     @IBAction func saveChangesButtonPressed(_ sender: Any) {
         
         // makue sure a staff number has been given. If not, present alert to prompt name entry
-        guard staffNumber != nil else {
+        guard staffNumber != nil && staffNumber != "" else {
             let alert = UIAlertController(title: "No Staff Number Given", message: "Please enter a unique number for the Staff Member", preferredStyle: UIAlertControllerStyle.alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
                 alert.dismiss(animated: true, completion: nil)
             }))
             self.present(alert, animated: true, completion: nil)
+            return
+        }
+        
+        // make sure the staff number is a valid integer value
+        guard let staffNumberIntValue = Int(staffNumber!) else {
+            print ("invalid staff number")
+            let alert = UIAlertController(title: "Invalid Staff Number", message: "Please enter numeric integer values only for the Staff Number", preferredStyle: UIAlertControllerStyle.alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                alert.dismiss(animated: true, completion: nil)
+            }))
+            self.present(alert, animated: true, completion: nil)
+            
             return
         }
         
@@ -264,11 +281,23 @@ class StaffDetailsVC: UIViewController, UITableViewDelegate, UITableViewDataSour
     
         // save changes to storage and unwind to parent VC
         
-            //  package Staff object and save changes here...
-        let updatedStaffMember = Staff(id: self.id, staffNumber: self.staffNumber!, firstName: self.firstName!, lastName: self.lastName!)
-//            Staff(id: self.id, staffNumber: self.staffNumber!, firstName: self.firstName!, lastName: self.lastName!, schoolClassNumber: self.schoolClassNumber)
+            //  package Staff object
+        let updatedStaffMember = Staff(id: self.id, staffNumber: Int(self.staffNumber!)!, firstName: self.firstName!, lastName: self.lastName!)
         
-        print (updatedStaffMember)
+            // save obejct to database
+        dataService?.createStaffMember(staffMember: updatedStaffMember, completion: { (staffID, staffName) in
+            if staffID != nil {
+                print ("Created Staff Member: \(staffName)")
+                
+                // alert user if problem with upload
+            } else {
+                let alert = UIAlertController(title: "Error Creating Staff Member", message: "Please check your connection and try again", preferredStyle: UIAlertControllerStyle.alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                    alert.dismiss(animated: true, completion: nil)
+                }))
+                self.present(alert, animated: true, completion: nil)
+            }
+        })
         
         self.navigationController?.popViewController(animated: true)
         

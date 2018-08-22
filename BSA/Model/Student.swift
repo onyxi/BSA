@@ -15,17 +15,14 @@ class Student: CustomStringConvertible, Equatable {
     let studentNumber: Int!
     let firstName: String!
     let lastName: String!
-//    var schoolClassNumber: Int!
     var schoolClassId: String!
     
     // Custom initialiser
     init(id: String!, studentNumber: Int, firstName: String, lastName: String, schoolClassId: String) {
-//         schoolClassNumber: Int!) {
         self.id = id
         self.studentNumber = studentNumber
         self.firstName = firstName
         self.lastName = lastName
-//        self.schoolClassNumber = schoolClassNumber
         self.schoolClassId = schoolClassId
     }
     
@@ -40,11 +37,9 @@ class Student: CustomStringConvertible, Equatable {
         let studentNumberString = String(describing: studentNumber!)
         let firstNameString = String(describing: firstName!)
         let lastNameString = String(describing: lastName!)
-//        let schoolClassNumberString = String(describing: schoolClassNumber)
         let schoolClassIdString = String(describing: schoolClassId)
         
         return "Student object:\n Database_id: \(idString)\n Student_Number: \(studentNumberString)\n First_Name: \(firstNameString)\n Last_Name: \(lastNameString)\n Assigned_Class: \(schoolClassIdString)"
-//        schoolClassNumberString)"
     }
     
 }

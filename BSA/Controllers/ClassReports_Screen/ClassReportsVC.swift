@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 class ClassReportsVC: UIViewController, SchoolClassFetchingDelegate, ClassReportAnalysisDelegate {
     
@@ -35,10 +36,12 @@ class ClassReportsVC: UIViewController, SchoolClassFetchingDelegate, ClassReport
     @IBOutlet weak var bottomChart2Legend2: UILabel!
     @IBOutlet weak var bottomChart2IncidentLikelihoodItem: ReportItem!
     
+    @IBOutlet weak var activityIndicatorBackground: UIView!
+    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    var blurEffectView: UIView?
     
     // Properties:
     var schoolClass: SchoolClass?
-//    var classStudents: [Student]?
     var topChartsData: ClassReportDataSet?
     var bottomChartsData: ClassReportDataSet?
     
@@ -46,7 +49,6 @@ class ClassReportsVC: UIViewController, SchoolClassFetchingDelegate, ClassReport
     var bottomChartTimePeriod = TimePeriod.allTime
     
     var dataService: DataService?
-//    var analysis: Analysis?
     
     // Configure view when loaded
     override func viewDidLoad() {
@@ -56,34 +58,39 @@ class ClassReportsVC: UIViewController, SchoolClassFetchingDelegate, ClassReport
         view.layer.backgroundColor = Constants.CLASS_REPORTS_SCREEN_COLOR.cgColor
         self.navigationItem.title = "Reports"
         
-            // set up logout button
+            // set up 'logout' and 'refresh' buttons
         addLogoutButton()
+        addRefreshButton()
         
-        
+            // initialise DataService and request School Class object for logged-in user
         dataService = DataService()
         dataService?.schoolClassFetchingDelegate = self
-        
-        
         dataService?.getSchoolClass(withId: UserDefaults.standard.string(forKey: Constants.LOGGED_IN_ACCOUNT_CLASS_ID)!)
         
-            // retrieve data for charts from storage
-//        getClass()
-//        retrieveAndUnpackChartData()
+            // add blur while data loads
+        setupActivityIndicator()
+    }
+    
+    // Adds screen-blur and activity indicator while data is loading
+    func setupActivityIndicator() {
         
-        // for testing...
-//        schoolClass = Data.getSchoolClass(numbered: UserDefaults.standard.integer(forKey: Constants.LOGGED_IN_ACCOUNT_NUMBER_KEY))
-//
-//        if schoolClass != nil {
-//            topChartsData = Data.getClassReportData(for: schoolClass!, from: .currentWeek)
-//                    bottomChartsData = Data.getClassReportData(for: schoolClass!, from: .lastWeek)
-//
-//            setupTopCharts()
-//            setupBottomCharts()
-//        }
+        self.activityIndicatorBackground.isHidden = false
+        self.activityIndicator.isHidden = false
+        
+        activityIndicatorBackground.backgroundColor = .clear
+        let blurEffect = UIBlurEffect(style: UIBlurEffectStyle.extraLight)
+        blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView!.frame = activityIndicatorBackground.bounds
+        blurEffectView!.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        activityIndicatorBackground.addSubview(blurEffectView!)
+        
+        activityIndicatorBackground.bringSubview(toFront: activityIndicator)
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.startAnimating()
     }
     
     
-
+    // Requests Class-Report data sets for fetched School Class and for given time periods
     func finishedFetching(schoolClasses: [SchoolClass]) {
         
         // dispatch group...
@@ -94,9 +101,6 @@ class ClassReportsVC: UIViewController, SchoolClassFetchingDelegate, ClassReport
         let bottomChartsAnalysis = ClassReportAnalysis()
         bottomChartsAnalysis.classReportAnalysisDelegate = self
         bottomChartsAnalysis.analyseClassReportData(for: schoolClasses[0], from: bottomChartTimePeriod)
-        /// resume...
-        //  setupTopCharts()
-        //  setupBottomCharts()
     }
     
     func finishedAnalysingClassReportData(dataSet: ClassReportDataSet, for timePeriod: TimePeriod) {
@@ -108,53 +112,15 @@ class ClassReportsVC: UIViewController, SchoolClassFetchingDelegate, ClassReport
             setupBottomCharts()
         }
         
-//        switch timePeriod{
-//        case .today:
-//            topChartsData = dataSet
-//            setupTopCharts()
-//        default:
-//            bottomChartsData = dataSet
-//            setupBottomCharts()
-//        }
+            // hide activity indicator ow that data is loaded
+        activityIndicator.stopAnimating()
+        UIView.animate(withDuration: 0.2, animations: {
+            self.blurEffectView?.alpha = 0.0
+        }) { (nil) in
+            self.activityIndicatorBackground.isHidden = true
+            self.activityIndicator.isHidden = true
+        }
     }
-    
-    
-//    func getClass() {
-    
-        
-//        if let schoolClass = Data.getSchoolClass(numbered: UserDefaults.standard.integer(forKey: Constants.LOGGED_IN_ACCOUNT_NUMBER_KEY)) {
-//            self.schoolClass = schoolClass
-////            classStudents = Data.getStudents(for: schoolClass)
-//        } else {
-//            // failed to get school class
-//             print ("failed to get school class")
-//        }
-//    }
-    
-//    func retrieveAndUnpackChartData() {
-//        guard schoolClass != nil else {
-//            // no schoolClass data
-//            print ("no schoolClass data")
-//            return
-//        }
-//
-//        if let dataSet1 = Data.getClassReportData(for: schoolClass!, from: topChartTimePeriod) {
-//            topChartsData = dataSet1
-//            setupTopCharts()
-//        } else {
-//            // problem getting data
-//            print("error getting data set 1 for class reports")
-//        }
-//
-//        if let dataSet2 = Data.getClassReportData(for: schoolClass!, from: bottomChartTimePeriod) {
-//            bottomChartsData = dataSet2
-//            setupBottomCharts()
-//        } else {
-//            // problem getting data
-//            print("error getting data set 1 for class reports")
-//        }
-//
-//    }
     
     
     // Adds a configured logout button to the navigation bar
@@ -166,7 +132,6 @@ class ClassReportsVC: UIViewController, SchoolClassFetchingDelegate, ClassReport
         logoutButton.addTarget(self, action: #selector(self.logoutButtonPressed), for: .touchUpInside)
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(customView: logoutButton)
     }
-    
 
     // Logs out the user and segue's to the app's initial login screen
     @objc func logoutButtonPressed() {
@@ -176,8 +141,10 @@ class ClassReportsVC: UIViewController, SchoolClassFetchingDelegate, ClassReport
             alert.dismiss(animated: true, completion: nil)
         } ))
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: {action in
+            let notifsCenter = UNUserNotificationCenter.current()
+            notifsCenter.removeAllPendingNotificationRequests()
+            
                 // remove record of logged in account and segue to login screen
-//            UserDefaults.standard.removeObject(forKey: Constants.LOGGED_IN_ACCOUNT_NUMBER_KEY)
             UserDefaults.standard.removeObject(forKey: Constants.LOGGED_IN_ACCOUNT_ID)
             UserDefaults.standard.removeObject(forKey: Constants.LOGGED_IN_ACCOUNT_NAME)
             UserDefaults.standard.removeObject(forKey: Constants.LOGGED_IN_ACCOUNT_SECURITY_LEVEL)
@@ -185,6 +152,20 @@ class ClassReportsVC: UIViewController, SchoolClassFetchingDelegate, ClassReport
             self.performSegue(withIdentifier: "unwindClassReportsVCToLoginVCSegue", sender: self)
         }))
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    func addRefreshButton() {
+        let refreshButton = UIButton(type: .system)
+        refreshButton.setImage(UIImage(named: "refreshButton"), for: .normal)
+        refreshButton.setTitle(" Refresh", for: .normal)
+        refreshButton.sizeToFit()
+        refreshButton.addTarget(self, action: #selector(self.refreshButtonPressed), for: .touchUpInside)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: refreshButton)
+    }
+    
+    @objc func refreshButtonPressed() {
+        setupActivityIndicator()
+        dataService?.getSchoolClass(withId: UserDefaults.standard.string(forKey: Constants.LOGGED_IN_ACCOUNT_CLASS_ID)!)
     }
     
     
@@ -205,8 +186,6 @@ class ClassReportsVC: UIViewController, SchoolClassFetchingDelegate, ClassReport
         bottomChart1Reds.animateColumn()
         bottomChart1Ambers.animateColumn()
         bottomChart1Greens.animateColumn()
-//        print(bottomChartsData!.averageIntensity)
-            // bottom chart 2
         if bottomChartsData != nil {
             bottomChart2IntensityChart.animateIntensity(to: bottomChartsData!.averageIntensity)
         }
