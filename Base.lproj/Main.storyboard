@@ -5631,7 +5631,7 @@
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                 </subviews>
-                                                                <color key="backgroundColor" red="0.97150390625000005" green="0.97150390625000005" blue="0.97150390625000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
                                                                     <constraint firstItem="79V-k6-m7C" firstAttribute="top" secondItem="ZBq-FV-XDf" secondAttribute="bottom" constant="6" id="1rk-fy-ktI"/>
                                                                     <constraint firstItem="BNE-kt-QYZ" firstAttribute="leading" secondItem="Gan-iE-tox" secondAttribute="trailing" constant="8" id="28G-6L-QUr"/>
@@ -5842,7 +5842,7 @@
                                                                         <nil key="highlightedColor"/>
                                                                     </label>
                                                                 </subviews>
-                                                                <color key="backgroundColor" red="0.97150390630000005" green="0.97150390630000005" blue="0.97150390630000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                                 <constraints>
                                                                     <constraint firstItem="uMc-ap-itm" firstAttribute="centerY" secondItem="UPj-A0-Sei" secondAttribute="centerY" id="21S-Kv-1pd"/>
                                                                     <constraint firstItem="8bU-JS-mmJ" firstAttribute="centerX" secondItem="HVp-Ug-r2Z" secondAttribute="centerX" id="3yx-uI-FbL"/>

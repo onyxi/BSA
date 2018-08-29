@@ -111,7 +111,29 @@ class BehaviourSelectionVC: UIViewController, UITableViewDelegate, UITableViewDa
         } else {
             let behaviour = allBehaviours[indexPath.row - 1]
             let cell = tableView.dequeueReusableCell(withIdentifier: "BehaviourCell", for: indexPath) as! BehaviourCell
-            cell.behaviourTypeLabel.text = behaviour
+            
+            var behaviourString = ""
+            switch behaviour {
+            case Constants.BEHAVIOURS.kicking:
+                behaviourString = "Kicking"
+            case Constants.BEHAVIOURS.headbutt:
+                behaviourString = "Headbutt"
+            case Constants.BEHAVIOURS.hitting:
+                behaviourString = "Hitting"
+            case Constants.BEHAVIOURS.biting:
+                behaviourString = "Biting"
+            case Constants.BEHAVIOURS.slapping:
+                behaviourString = "Slapping"
+            case Constants.BEHAVIOURS.scratching:
+                behaviourString = "Scratching"
+            case Constants.BEHAVIOURS.clothesGrabbing:
+                behaviourString = "Clothes Grabbing"
+            case Constants.BEHAVIOURS.hairPulling:
+                behaviourString = "Hair Pulling"
+            default: break
+            }
+        
+            cell.behaviourTypeLabel.text = behaviourString
     
                 // update cell appearance according to whether the current cell corresponds to a Behaviour currently contained in the array of selected Behaviours
             if selectedBehaviours.contains(behaviour) {

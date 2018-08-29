@@ -110,7 +110,27 @@ class PurposeSelectionVC: UIViewController, UITableViewDelegate, UITableViewData
         } else {
             let purpose = allPurposes[indexPath.row - 1]
             let cell = tableView.dequeueReusableCell(withIdentifier: "PurposeCell", for: indexPath) as! PurposeCell
-            cell.purposeTypeLabel.text = purpose
+            
+            var purposeString = ""
+            switch purpose {
+            case Constants.PURPOSES.socialAttention:
+                purposeString = "Social Attention"
+            case Constants.PURPOSES.tangibles:
+                purposeString = "Tangibles"
+            case Constants.PURPOSES.escape:
+                purposeString = "Escape"
+            case Constants.PURPOSES.sensory:
+                purposeString = "Sensory"
+            case Constants.PURPOSES.health:
+                purposeString = "Health"
+            case Constants.PURPOSES.activityAvoidance:
+                purposeString = "Activity Avoidance"
+            case Constants.PURPOSES.unknown:
+                purposeString = "Unknown"
+            default: break
+            }
+            
+            cell.purposeTypeLabel.text = purposeString
             
                 // update cell appearance according to whether the current cell corresponds to a Purpose currently contained in the array of selected Purposes
             if selectedPurposes.contains(purpose) {

@@ -130,9 +130,12 @@ class RAGsAndIncidentsDayViewReportContainerVC: UIViewController {
         amberBarValues = chartData.amberValues
         greenBarValues = chartData.greenValues
         incidentLineValues = chartData.incidentValues
-        redAverageValue = DataService.getAverage(of: redBarValues)
-        amberAverageValue = DataService.getAverage(of: amberBarValues)
-        greenAverageValue = DataService.getAverage(of: greenBarValues)
+        let redPeriodValues = [redBarValues[0], redBarValues[1], redBarValues[2], redBarValues[5], redBarValues[6], redBarValues[7], redBarValues[8]]
+        let amberPeriodValues = [amberBarValues[0], amberBarValues[1], amberBarValues[2], amberBarValues[5], amberBarValues[6], amberBarValues[7], amberBarValues[8]]
+        let greenPeriodValues = [greenBarValues[0], greenBarValues[1], greenBarValues[2], greenBarValues[5], greenBarValues[6], greenBarValues[7], greenBarValues[8]]
+        redAverageValue = DataService.getAverage(of: redPeriodValues)
+        amberAverageValue = DataService.getAverage(of: amberPeriodValues)
+        greenAverageValue = DataService.getAverage(of: greenPeriodValues)
         incidentAverageValue = DataService.getAverage(of: incidentLineValues)
         
         // update charts

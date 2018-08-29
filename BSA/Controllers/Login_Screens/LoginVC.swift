@@ -37,6 +37,9 @@ class LoginVC: UIViewController, UITableViewDelegate, UITableViewDataSource, Use
     
     var dataService: DataService?
     
+    var connectionTimer: Timer!
+    
+    
     // Configure view when loaded
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,6 +73,18 @@ class LoginVC: UIViewController, UITableViewDelegate, UITableViewDataSource, Use
             // add swipe-gesture recognisers to main view
         addGestureRecognisers()
         
+        // add timer for connection time-out
+        connectionTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(showConnectionTimeOutAlert), userInfo: nil, repeats: false)
+        
+    }
+    
+    @objc func showConnectionTimeOutAlert() {
+        let alert = UIAlertController(title: "Network Error", message: "Please check your network connection", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+//            self.connectionTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.showConnectionTimeOutAlert), userInfo: nil, repeats: false)
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
     
     // Adds left / right swipe-gesture recognisers to the main view
@@ -112,6 +127,7 @@ class LoginVC: UIViewController, UITableViewDelegate, UITableViewDataSource, Use
     
     // Assigns fetched user accounts to class-level scope and reloads table
     func finishedFetching(userAccounts: [UserAccount]) {
+        connectionTimer.invalidate()
         allAccounts = userAccounts
         tableView.reloadData()
     }

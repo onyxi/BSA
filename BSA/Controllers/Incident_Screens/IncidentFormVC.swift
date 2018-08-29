@@ -148,10 +148,32 @@ class IncidentFormVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.incidentBehaviours = selection
         var behavioursString = ""
         for i in 1...selection.count {
+            
+            var behaviourString = ""
+            switch selection[i-1] {
+            case Constants.BEHAVIOURS.kicking:
+                behaviourString = "Kicking"
+            case Constants.BEHAVIOURS.headbutt:
+                behaviourString = "Headbutt"
+            case Constants.BEHAVIOURS.hitting:
+                behaviourString = "Hitting"
+            case Constants.BEHAVIOURS.biting:
+                behaviourString = "Biting"
+            case Constants.BEHAVIOURS.slapping:
+                behaviourString = "Slapping"
+            case Constants.BEHAVIOURS.scratching:
+                behaviourString = "Scratching"
+            case Constants.BEHAVIOURS.clothesGrabbing:
+                behaviourString = "Clothes Grabbing"
+            case Constants.BEHAVIOURS.hairPulling:
+                behaviourString = "Hair Pulling"
+            default: break
+            }
+            
             if i < selection.count {
-                behavioursString.append("\(selection[i-1])\n")
+                behavioursString.append("\(behaviourString)\n")
             } else {
-                behavioursString.append("\(selection[i-1])")
+                behavioursString.append("\(behaviourString)")
             }
         }
         if let behavioursCell = tableView.cellForRow(at: IndexPath(row: 4, section: 0)) as? IncidentFormSelectionCell {
@@ -215,10 +237,30 @@ class IncidentFormVC: UIViewController, UITableViewDelegate, UITableViewDataSour
         self.incidentPurposes = selection
         var purposesString = ""
         for i in 1...selection.count {
+            
+            var purposeString = ""
+            switch selection[i-1] {
+            case Constants.PURPOSES.socialAttention:
+                purposeString = "Social Attention"
+            case Constants.PURPOSES.tangibles:
+                purposeString = "Tangibles"
+            case Constants.PURPOSES.escape:
+                purposeString = "Escape"
+            case Constants.PURPOSES.sensory:
+                purposeString = "Sensory"
+            case Constants.PURPOSES.health:
+                purposeString = "Health"
+            case Constants.PURPOSES.activityAvoidance:
+                purposeString = "Activity Avoidance"
+            case Constants.PURPOSES.unknown:
+                purposeString = "Unknown"
+            default: break
+            }
+            
             if i < selection.count {
-                purposesString.append("\(selection[i-1])\n")
+                purposesString.append("\(purposeString)\n")
             } else {
-                purposesString.append("\(selection[i-1])")
+                purposesString.append("\(purposeString)")
             }
         }
         if let purposesCell = tableView.cellForRow(at: IndexPath(row: 10, section: 0)) as? IncidentFormSelectionCell {

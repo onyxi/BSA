@@ -417,7 +417,7 @@ class AdminReportAnalysis: RAGAssessmentsFetchingDelegate, IncidentsFetchingDele
         // Calculate percentage of 'Green' RAG assessments - by day
         let mondayGreensPercent: Double = mondayTotal == 0 ? 0.0 : Double(mondayGreensCount)/Double(mondayTotal) * 100
         let tuesdayGreensPercent: Double = tuesdayTotal == 0 ? 0.0 : Double(tuesdayGreensCount)/Double(tuesdayTotal) * 100
-        let wednesdayGreensPercent: Double = wednesdayTotal == 0 ? 0.0 : Double(wednesdayGreensCount)/Double(wednesdayTotal) * 10
+        let wednesdayGreensPercent: Double = wednesdayTotal == 0 ? 0.0 : Double(wednesdayGreensCount)/Double(wednesdayTotal) * 100
         let thursdayGreensPercent: Double = thursdayTotal == 0 ? 0.0 : Double(thursdayGreensCount)/Double(thursdayTotal) * 100
         let fridayGreensPercent: Double = fridayTotal == 0 ? 0.0 : Double(fridayGreensCount)/Double(fridayTotal) * 100
         

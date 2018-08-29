@@ -68,7 +68,7 @@ class RAGVC: UIViewController, UNUserNotificationCenterDelegate, SchoolClassFetc
     var day6RAGs = [(period: String, rAGAssessments: [RAGAssessment])]()
     var day7RAGs = [(period: String, rAGAssessments: [RAGAssessment])]()
     
-
+    var connectionTimer: Timer!
     
     // Configure view when loaded
     override func viewDidLoad() {
@@ -109,7 +109,19 @@ class RAGVC: UIViewController, UNUserNotificationCenterDelegate, SchoolClassFetc
        
             // add blur while data loads
         setupActivityIndicator()
-        
+    
+        // add timer for connection time-out
+        connectionTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(showConnectionTimeOutAlert), userInfo: nil, repeats: false)
+    }
+    
+
+    @objc func showConnectionTimeOutAlert() {
+        let alert = UIAlertController(title: "Network Error", message: "Please check your network connection", preferredStyle: UIAlertControllerStyle.alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+//            self.connectionTimer = Timer.scheduledTimer(timeInterval: 5, target: self, selector: #selector(self.showConnectionTimeOutAlert), userInfo: nil, repeats: false)
+            alert.dismiss(animated: true, completion: nil)
+        }))
+        self.present(alert, animated: true, completion: nil)
     }
     
     // Adds screen-blur and activity indicator while data is loading
@@ -265,6 +277,7 @@ class RAGVC: UIViewController, UNUserNotificationCenterDelegate, SchoolClassFetc
         
         // hide activity indicator ow that data is loaded
         activityIndicator.stopAnimating()
+        connectionTimer.invalidate()
         UIView.animate(withDuration: 0.2, animations: {
             self.blurEffectView!.alpha = 0.0
         }) { (nil) in
